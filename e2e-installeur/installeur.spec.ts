@@ -258,9 +258,8 @@ test('mise à jour : vérifiée, téléchargée et installée seulement sur dema
 
     // L'installation silencieuse remplace l'application puis la relance ; on attend la nouvelle version sur le disque
     await expect.poll(() => versionDuFichier(exe), { timeout: 180_000, intervals: [2000] }).toBe('0.1.1')
-    await new Promise((r) => setTimeout(r, 4000))
-    // Le relancement automatique est vérifié, puis on arrête ce processus pour libérer le fichier de verrou d'instance
-    expect(await processusLances(dossier)).toBeGreaterThan(0)
+    // Le relancement automatique est vérifié (il peut être lent sur un poste chargé), puis on arrête ce processus
+    await expect.poll(() => processusLances(dossier), { timeout: 60_000, intervals: [1000] }).toBeGreaterThan(0)
     await arreterProcessus(dossier)
 
     // La nouvelle version démarre et retrouve les données de la personne
