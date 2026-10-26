@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verifier:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests unitaires
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Les images Ubuntu récentes restreignent les espaces de noms utilisateur, ce qui empêche
+      # le bac à sable de Chromium de démarrer. On le rétablit plutôt que de le désactiver.
+      - name: Autoriser le bac à sable de Chromium (Linux)
+        if: runner.os == 'Linux'
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Test de fumée de l'application compilée (Linux, écran virtuel)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum npx playwright test
+
+      - name: Test de fumée de l'application compilée
+        if: runner.os != 'Linux'
+        run: npx playwright test

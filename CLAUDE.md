@@ -171,7 +171,7 @@ Skill    = { slug; name; category; description; environments[]; tokenEstimate; t
              source: 'integre'|'genere'|'importe'; sourceRepo?; sourcePath?; sourceHash?; scan?: 'clean'|'warning'|'danger' }
 ```
 
-- `slug` : `^[a-z0-9][a-z0-9-]{0,119}$` (utilisé comme nom de dossier ou de fichier, donc strict).
+- `slug` : `^[a-z0-9]+(-[a-z0-9]+)*$`, 64 caractères au plus (utilisé comme nom de dossier ou de fichier ; règle la plus stricte des assistants vérifiés, celle d'OpenCode, voir `docs/ASSISTANTS.md`). Les 102 skills intégrés la respectent.
 - Les skills **intégrés** sont en lecture seule (chargés depuis `shared/data/skills.json`) ; les skills générés ou importés vont dans `userSkills`.
 - Chaque lecture de fichier d'état passe par zod ; un fichier illisible ou d'une version future **n'est jamais écrasé** : sauvegarde, message clair, retour à `state.json.bak`.
 - Écriture atomique : écrire dans un fichier temporaire du **même dossier**, vider les tampons, puis renommer ; garder `.bak`. Utiliser une bibliothèque existante si elle est saine (`write-file-atomic`, `proper-lockfile` à évaluer).

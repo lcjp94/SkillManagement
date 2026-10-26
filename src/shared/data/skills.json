@@ -1,0 +1,3037 @@
+[
+  {
+    "name": "Analyse de données Python",
+    "slug": "analyse-donnees-python",
+    "category": "data",
+    "description": "Bonnes pratiques pour l'analyse de données avec Pandas/Polars",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "continue",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "pandas",
+      "data"
+    ],
+    "personas": [
+      "data",
+      "chercheur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: analyse-donnees\n---\n# Analyse de données\n\n## Règles\n- Validation en entrée\n- Pas de mutation in-place\n- Pipelines reproductibles\n- Documentation des transformations"
+  },
+  {
+    "name": "Machine Learning Pipeline",
+    "slug": "ml-pipeline",
+    "category": "data",
+    "description": "Construction de pipelines ML reproductibles",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 500,
+    "tags": [
+      "ml",
+      "pipeline"
+    ],
+    "personas": [
+      "data",
+      "chercheur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: ml-pipeline\n---\n# ML Pipeline\n\n## Étapes\n1. Préparation des données\n2. Feature engineering\n3. Entraînement\n4. Évaluation\n5. Déploiement\n\n## Règles\n- Version des datasets\n- Tracking des expériences\n- Tests de dérive"
+  },
+  {
+    "name": "Qualité des données",
+    "slug": "qualite-donnees",
+    "category": "data",
+    "description": "Vérification et validation de la qualité des données",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "data-quality",
+      "validation"
+    ],
+    "personas": [
+      "data",
+      "developpeur",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: data-quality\n---\n# Qualité des données\n\n## Checks\n- Complétude\n- Cohérence\n- Unicité\n- Validité\n- Fraîcheur\n\n## Outils\n- Great Expectations\n- dbt tests\n- Pandera"
+  },
+  {
+    "name": "SQL Avancé",
+    "slug": "sql-avance",
+    "category": "data",
+    "description": "Requêtes SQL avancées, CTEs, window functions",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "sql",
+      "analytics"
+    ],
+    "personas": [
+      "data",
+      "chercheur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: sql-avance\n---\n# SQL Avancé\n\n## Techniques\n- CTEs pour la lisibilité\n- Window functions pour l'analytique\n- EXPLAIN ANALYZE systématique\n- Partitionnement pour les grosses tables"
+  },
+  {
+    "name": "Visualisation de données",
+    "slug": "visualisation-donnees",
+    "category": "data",
+    "description": "Création de visualisations claires et informatives",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "dataviz",
+      "charts"
+    ],
+    "personas": [
+      "data",
+      "chercheur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: dataviz\n---\n# Visualisation\n\n## Principes\n- Un message par graphique\n- Pas de 3D inutile\n- Couleurs accessibles\n- Légendes claires\n- Ratio données/encre élevé"
+  },
+  {
+    "name": "Accessibilité web (a11y)",
+    "slug": "accessibilite-web",
+    "category": "design",
+    "description": "Checklist d'accessibilité WCAG pour interfaces web",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 420,
+    "tags": [
+      "a11y",
+      "wcag"
+    ],
+    "personas": [
+      "designer",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: a11y\n---\n# Accessibilité\n\n## Checklist WCAG\n- Contraste minimum 4.5:1\n- Navigation clavier\n- ARIA labels\n- Focus visible\n- Alt text\n- Structure sémantique"
+  },
+  {
+    "name": "Design System",
+    "slug": "design-system",
+    "category": "design",
+    "description": "Création et maintenance d'un design system cohérent",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "design",
+      "components"
+    ],
+    "personas": [
+      "designer"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: design-system\n---\n# Design System\n\n## Composants\n- Tokens (couleurs, espacement, typographie)\n- Composants de base (boutons, inputs, cartes)\n- Patterns (formulaires, navigation)\n- Templates (pages types)"
+  },
+  {
+    "name": "Responsive Design",
+    "slug": "responsive-design",
+    "category": "design",
+    "description": "Techniques de design responsive mobile-first",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "responsive",
+      "mobile"
+    ],
+    "personas": [
+      "designer",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: responsive\n---\n# Responsive Design\n\n## Breakpoints\n- Mobile: < 640px\n- Tablet: 640-1024px\n- Desktop: > 1024px\n\n## Règles\n- Mobile first\n- Flexbox/Grid\n- Images responsives\n- Touch targets 44px min"
+  },
+  {
+    "name": "UX Writing",
+    "slug": "ux-writing",
+    "category": "design",
+    "description": "Rédaction UX claire, cohérente et engageante",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "ux",
+      "writing"
+    ],
+    "personas": [
+      "designer",
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: ux-writing\n---\n# UX Writing\n\n## Règles\n- Voix active\n- Phrases courtes\n- Pas de jargon\n- Labels clairs\n- Messages d'erreur utiles\n- CTAs actionnable"
+  },
+  {
+    "name": "CI/CD Pipeline",
+    "slug": "ci-cd-pipeline",
+    "category": "devops",
+    "description": "Configuration de pipelines CI/CD robustes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "ci",
+      "cd",
+      "automation"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: ci-cd-pipeline\n---\n# CI/CD\n\n## Étapes\n1. Lint\n2. Tests\n3. Build\n4. Déploiement staging\n5. Tests E2E\n6. Déploiement prod\n\n## Règles\n- Pas de déploiement sans tests verts"
+  },
+  {
+    "name": "Docker Best Practices",
+    "slug": "docker-best-practices",
+    "category": "devops",
+    "description": "Optimisation des Dockerfiles et conteneurs",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "docker",
+      "containers"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: docker-best-practices\n---\n# Docker\n\n## Règles\n- Multi-stage builds\n- Images minimales (alpine)\n- .dockerignore complet\n- Pas de secrets dans l'image\n- Health checks"
+  },
+  {
+    "name": "Infrastructure as Code",
+    "slug": "infrastructure-as-code",
+    "category": "devops",
+    "description": "Gestion de l'infrastructure avec Terraform/Pulumi",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 420,
+    "tags": [
+      "terraform",
+      "iac"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: iac\n---\n# Infrastructure as Code\n\n## Règles\n- Tout en code versionné\n- Modules réutilisables\n- State remote\n- Plan avant apply\n- Pas de modifications manuelles"
+  },
+  {
+    "name": "Kubernetes Déploiement",
+    "slug": "kubernetes-deploiement",
+    "category": "devops",
+    "description": "Déploiement et gestion de services Kubernetes",
+    "environments": [
+      "claude-code",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 500,
+    "tags": [
+      "k8s",
+      "orchestration"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: kubernetes-deploiement\n---\n# Kubernetes\n\n## Règles\n- Limites de ressources\n- Readiness/Liveness probes\n- ConfigMaps pour la config\n- Secrets chiffrés"
+  },
+  {
+    "name": "Monitoring & Alerting",
+    "slug": "monitoring-alerting",
+    "category": "devops",
+    "description": "Mise en place de monitoring et système d'alertes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "monitoring",
+      "observability"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: monitoring-alerting\n---\n# Monitoring\n\n## Stack recommandée\n- Métriques : Prometheus/Grafana\n- Logs : ELK/Loki\n- Traces : Jaeger/Tempo\n- Alertes : alertmanager"
+  },
+  {
+    "name": "Architecture API REST",
+    "slug": "architecture-api-rest",
+    "category": "développement",
+    "description": "Bonnes pratiques pour concevoir des APIs REST robustes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 520,
+    "tags": [
+      "api",
+      "rest"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: architecture-api-rest\n---\n# Architecture API REST\n\n## Règles\n- Nommage REST standard\n- Pagination systématique\n- Validation des entrées\n- Gestion d'erreurs HTTP\n- Documentation OpenAPI"
+  },
+  {
+    "name": "Base de données SQL",
+    "slug": "base-donnees-sql",
+    "category": "développement",
+    "description": "Bonnes pratiques SQL, migrations, indexation",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 420,
+    "tags": [
+      "sql",
+      "database"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: base-donnees-sql\n---\n# SQL Best Practices\n\n## Règles\n- Migrations versionnées\n- Index sur les colonnes filtrées\n- Pas de SELECT *\n- Transactions pour les écritures multiples"
+  },
+  {
+    "name": "Code Review Checklist",
+    "slug": "code-review-checklist",
+    "category": "développement",
+    "description": "Checklist complète pour les revues de code",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "review",
+      "quality"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: code-review\n---\n# Code Review\n\n## Checklist\n- [ ] Lisibilité\n- [ ] Tests\n- [ ] Sécurité\n- [ ] Performance\n- [ ] Documentation\n- [ ] Edge cases\n- [ ] Dépendances"
+  },
+  {
+    "name": "Error Handling",
+    "slug": "error-handling",
+    "category": "développement",
+    "description": "Gestion d'erreurs robuste et informative",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "errors",
+      "resilience"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: error-handling\n---\n# Error Handling\n\n## Règles\n- Catch spécifique\n- Messages utilisateur clairs\n- Logs détaillés\n- Codes d'erreur standard\n- Retry pour les transitoires"
+  },
+  {
+    "name": "Git Workflow",
+    "slug": "git-workflow",
+    "category": "développement",
+    "description": "Workflow Git structuré avec conventions de commits",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "git",
+      "workflow"
+    ],
+    "personas": [
+      "developpeur",
+      "data"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: git-workflow\n---\n# Git Workflow\n\n## Conventions\n- Commits conventionnels (feat/fix/docs)\n- Branches feature/\n- Pas de force push sur main\n- PR avec description"
+  },
+  {
+    "name": "Performance Frontend",
+    "slug": "performance-frontend",
+    "category": "développement",
+    "description": "Optimisation des performances web et Core Web Vitals",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "performance",
+      "web"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: performance-frontend\n---\n# Performance Frontend\n\n## Optimisations\n- Lazy loading des images\n- Code splitting\n- Minimiser les re-renders\n- Optimiser le bundle size\n- Préférer les composants serveur"
+  },
+  {
+    "name": "Refactoring TypeScript",
+    "slug": "refactoring-typescript",
+    "category": "développement",
+    "description": "Guide de refactoring pour code TypeScript/React",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "typescript",
+      "react"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: refactoring-typescript\n---\n# Refactoring TypeScript\n\n## Principes\n- Extraire les fonctions pures\n- Typage strict partout\n- Composants < 100 lignes\n- Pas de any implicite"
+  },
+  {
+    "name": "Revue de code Python",
+    "slug": "revue-code-python",
+    "category": "développement",
+    "description": "Analyse qualité, sécurité et bonnes pratiques du code Python",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "continue",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "python",
+      "qualité"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: revue-code-python\ndescription: Revue de code Python\n---\n# Revue de code Python\n\n## Checklist\n1. Typage strict\n2. Gestion d'erreurs\n3. Pas de secrets en dur\n4. Tests unitaires\n5. Documentation\n\n## Règles\n- Toujours vérifier les annotations de type\n- S'assurer que chaque fonction publique est documentée\n- Vérifier la gestion des exceptions"
+  },
+  {
+    "name": "Tests unitaires",
+    "slug": "tests-unitaires",
+    "category": "développement",
+    "description": "Écriture de tests unitaires avec couverture complète",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "tests",
+      "qualité"
+    ],
+    "personas": [
+      "developpeur",
+      "securite"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tests-unitaires\n---\n# Tests unitaires\n\n## Règles\n- Un test par comportement\n- Noms descriptifs\n- AAA pattern\n- Mocks minimaux\n- Couverture > 80%"
+  },
+  {
+    "name": "Analytics & Métriques",
+    "slug": "analytics-metriques",
+    "category": "marketing",
+    "description": "Configuration et analyse des métriques marketing",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "analytics",
+      "kpi"
+    ],
+    "personas": [
+      "marketeur",
+      "data"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: analytics\n---\n# Analytics\n\n## KPIs\n- Trafic organique\n- Taux de conversion\n- Engagement\n- Retention\n- CAC / LTV"
+  },
+  {
+    "name": "Content Marketing",
+    "slug": "content-marketing",
+    "category": "marketing",
+    "description": "Stratégie de contenu et calendrier éditorial",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "marketing",
+      "contenu"
+    ],
+    "personas": [
+      "marketeur",
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: content-marketing\n---\n# Content Marketing\n\n## Stratégie\n- Personas définis\n- Calendrier éditorial\n- Mots-clés ciblés\n- Formats variés\n- Distribution multicanal"
+  },
+  {
+    "name": "Landing Page",
+    "slug": "landing-page",
+    "category": "marketing",
+    "description": "Création de landing pages optimisées conversion",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "landing",
+      "conversion"
+    ],
+    "personas": [
+      "marketeur",
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: landing-page\n---\n# Landing Page\n\n## Structure\n1. Hero + CTA\n2. Social proof\n3. Features\n4. Témoignages\n5. Pricing\n6. FAQ\n7. CTA final"
+  },
+  {
+    "name": "SEO Technique",
+    "slug": "seo-technique",
+    "category": "marketing",
+    "description": "Optimisation SEO technique complète",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "seo",
+      "technique"
+    ],
+    "personas": [
+      "marketeur",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: seo-technique\n---\n# SEO Technique\n\n## Checklist\n- Sitemap XML\n- Robots.txt\n- Schema.org\n- Open Graph\n- Core Web Vitals\n- HTTPS\n- Canonical URLs"
+  },
+  {
+    "name": "Automatisation de tâches",
+    "slug": "automatisation-taches",
+    "category": "productivité",
+    "description": "Scripts et workflows d'automatisation",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "automation",
+      "scripts"
+    ],
+    "personas": [],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: automation\n---\n# Automatisation\n\n## Règles\n- Automatiser les tâches répétitives\n- Scripts idempotents\n- Logs clairs\n- Rollback possible\n- Documentation"
+  },
+  {
+    "name": "Configuration MCP",
+    "slug": "configuration-mcp",
+    "category": "productivité",
+    "description": "Configuration du Model Context Protocol pour agents IA",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "mcp",
+      "agents"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: mcp-config\n---\n# MCP Configuration\n\n## Serveurs\n- GitHub MCP\n- Database MCP\n- Filesystem MCP\n\n## Règles\n- Permissions minimales\n- Timeouts\n- Retry policy"
+  },
+  {
+    "name": "Gestion de projet agile",
+    "slug": "gestion-projet-agile",
+    "category": "productivité",
+    "description": "Framework agile pour la gestion de projets",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "agile",
+      "scrum"
+    ],
+    "personas": [
+      "chef-projet",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: agile\n---\n# Agile\n\n## Principes\n- Sprints courts\n- Démos régulières\n- Rétrospectives\n- User stories\n- Definition of Done"
+  },
+  {
+    "name": "Prompt Engineering",
+    "slug": "prompt-engineering",
+    "category": "productivité",
+    "description": "Techniques de prompt engineering pour agents IA",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 500,
+    "tags": [
+      "prompt",
+      "ai"
+    ],
+    "personas": [
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: prompt-engineering\n---\n# Prompt Engineering\n\n## Techniques\n- Instructions claires\n- Exemples (few-shot)\n- Chain-of-thought\n- Contraintes explicites\n- Format de sortie défini\n- Température adaptée"
+  },
+  {
+    "name": "Workflow de développement",
+    "slug": "workflow-developpement",
+    "category": "productivité",
+    "description": "Optimisation du workflow de développement quotidien",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "workflow",
+      "productivity"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: dev-workflow\n---\n# Workflow de développement\n\n## Étapes\n1. Planifier\n2. Coder\n3. Tester\n4. Review\n5. Déployer\n6. Monitorer"
+  },
+  {
+    "name": "Analyse concurrentielle",
+    "slug": "analyse-concurrentielle",
+    "category": "recherche",
+    "description": "Framework d'analyse concurrentielle structurée",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "benchmark",
+      "analyse"
+    ],
+    "personas": [
+      "chercheur",
+      "marketeur",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: analyse-concurrentielle\n---\n# Analyse concurrentielle\n\n## Framework\n- Positionnement\n- Forces/faiblesses\n- Pricing\n- Features\n- UX\n- Technologie"
+  },
+  {
+    "name": "Recherche académique",
+    "slug": "recherche-academique",
+    "category": "recherche",
+    "description": "Méthodologie de recherche académique rigoureuse",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "recherche",
+      "academique"
+    ],
+    "personas": [
+      "chercheur",
+      "marketeur",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: recherche-academique\n---\n# Recherche académique\n\n## Méthode\n- Sources primaires\n- Citations correctes\n- Peer review\n- Reproductibilité\n- Biais identifiés"
+  },
+  {
+    "name": "Synthèse de documents",
+    "slug": "synthese-documents",
+    "category": "recherche",
+    "description": "Analyse et synthèse de documents longs",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "synthese",
+      "analyse"
+    ],
+    "personas": [
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: synthese\n---\n# Synthèse de documents\n\n## Méthode\n1. Lecture rapide\n2. Identification des points clés\n3. Structuration\n4. Rédaction synthèse\n5. Vérification"
+  },
+  {
+    "name": "Veille technologique",
+    "slug": "veille-technologique",
+    "category": "recherche",
+    "description": "Méthodologie de veille techno structurée",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "veille",
+      "techno"
+    ],
+    "personas": [
+      "chercheur",
+      "marketeur",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: veille-techno\n---\n# Veille technologique\n\n## Sources\n- GitHub Trending\n- Hacker News\n- ArXiv\n- Newsletters spécialisées\n\n## Workflow\n1. Collecter\n2. Filtrer\n3. Synthétiser\n4. Partager"
+  },
+  {
+    "name": "API Documentation",
+    "slug": "api-documentation",
+    "category": "rédaction",
+    "description": "Documentation d'API avec OpenAPI/Swagger",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "api",
+      "openapi"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: api-docs\n---\n# API Documentation\n\n## Standard OpenAPI\n- Paths et méthodes\n- Schemas\n- Exemples\n- Auth\n- Erreurs"
+  },
+  {
+    "name": "Changelog & Release Notes",
+    "slug": "changelog-release-notes",
+    "category": "rédaction",
+    "description": "Rédaction de changelogs structurés et release notes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 250,
+    "tags": [
+      "changelog",
+      "release"
+    ],
+    "personas": [
+      "developpeur",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: changelog\n---\n# Changelog\n\n## Format\n- Keep a Changelog\n- Sem Versioning\n- Catégories: Added, Changed, Deprecated, Removed, Fixed, Security"
+  },
+  {
+    "name": "Documentation technique",
+    "slug": "documentation-technique",
+    "category": "rédaction",
+    "description": "Rédaction de documentation technique claire et complète",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "docs",
+      "markdown"
+    ],
+    "personas": [
+      "developpeur",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: documentation-technique\n---\n# Documentation\n\n## Structure\n1. README avec quickstart\n2. Guide d'installation\n3. Guide d'utilisation\n4. Référence API\n5. Changelog\n\n## Règles\n- Exemples de code testables\n- Mise à jour à chaque PR"
+  },
+  {
+    "name": "Rédaction de contenu web",
+    "slug": "redaction-contenu-web",
+    "category": "rédaction",
+    "description": "Création de contenu web optimisé SEO",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "seo",
+      "contenu"
+    ],
+    "personas": [
+      "createur",
+      "marketeur",
+      "designer"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: contenu-web\n---\n# Contenu web\n\n## Règles SEO\n- Titre H1 unique\n- Méta description\n- Structure H2/H3\n- Liens internes\n- Images alt text"
+  },
+  {
+    "name": "Rédaction d'emails professionnels",
+    "slug": "redaction-emails",
+    "category": "rédaction",
+    "description": "Modèles et bonnes pratiques pour les emails pro",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 280,
+    "tags": [
+      "email",
+      "communication"
+    ],
+    "personas": [
+      "createur",
+      "marketeur",
+      "chef-projet",
+      "autre",
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: emails-pro\n---\n# Emails professionnels\n\n## Règles\n- Objet clair\n- 1 idée par paragraphe\n- Call-to-action\n- Ton adapté\n- Relecture"
+  },
+  {
+    "name": "Rédaction de README",
+    "slug": "redaction-readme",
+    "category": "rédaction",
+    "description": "Création de README engageants et informatifs",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 280,
+    "tags": [
+      "readme",
+      "docs"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: readme\n---\n# README efficace\n\n## Sections obligatoires\n1. Titre + badge\n2. Description (1-2 phrases)\n3. Installation\n4. Usage rapide\n5. Configuration\n6. Contribution\n7. Licence"
+  },
+  {
+    "name": "Analyse des statistiques sociales",
+    "slug": "analyse-stats-sociales",
+    "category": "réseaux sociaux",
+    "description": "Lecture des KPIs (portée, engagement, rétention) et recommandations",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "continue",
+      "cline",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "analytics",
+      "kpi",
+      "engagement"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: stats-sociales\n---\n# Analyse des statistiques\n\n## KPIs\n- Taux d'engagement = interactions / portée\n- Rétention vidéo moyenne\n- Taux d'abonnement par post\n- Clics vers le site\n\n## Règles\n- Comparer sur 4 semaines minimum\n- Identifier les 3 meilleurs et 3 pires contenus\n- Proposer 1 test A/B concret"
+  },
+  {
+    "name": "Calendrier éditorial social media",
+    "slug": "calendrier-social-media",
+    "category": "réseaux sociaux",
+    "description": "Planification multi-plateformes et recyclage de contenu",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 420,
+    "tags": [
+      "planning",
+      "social media",
+      "multi-plateforme"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: calendrier-social\n---\n# Calendrier social media\n\n## Méthode\n- Piliers de contenu (3-5)\n- Ratio 70 % valeur / 20 % partage / 10 % promotion\n- 1 contenu pilier → déclinaisons LinkedIn, Instagram, TikTok, X\n\n## Livrable\n| Date | Plateforme | Format | Sujet | Statut |"
+  },
+  {
+    "name": "Instagram : carrousels & légendes",
+    "slug": "instagram-carrousels",
+    "category": "réseaux sociaux",
+    "description": "Carrousels éducatifs, légendes, hashtags et stories Instagram",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "instagram",
+      "carrousel",
+      "stories"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: instagram\n---\n# Instagram\n\n## Carrousel (7-10 slides)\n1. Couverture : promesse claire\n2-8. Un point par slide\n9. Récap\n10. Appel à l'action (enregistrer / partager)\n\n## Légende\n- 1re ligne = hook\n- 5-10 hashtags ciblés\n- Format 4:5 (1080x1350)"
+  },
+  {
+    "name": "Networking & prospection LinkedIn",
+    "slug": "networking-linkedin",
+    "category": "réseaux sociaux",
+    "description": "Messages de connexion, relances et optimisation du profil LinkedIn",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "linkedin",
+      "networking",
+      "prospection"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: networking-linkedin\n---\n# Networking LinkedIn\n\n## Profil\n- Titre orienté bénéfice\n- Section Infos : problème résolu + preuve\n\n## Messages\n- Invitation < 300 caractères, personnalisée\n- Pas de pitch au premier message\n- Relance à J+5 avec une valeur ajoutée\n\n## Éthique\n- Respecter les limites de la plateforme, pas d'automatisation de masse"
+  },
+  {
+    "name": "Personal branding",
+    "slug": "personal-branding",
+    "category": "réseaux sociaux",
+    "description": "Positionnement, ton de voix et cohérence de marque personnelle",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "branding",
+      "positionnement"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: personal-branding\n---\n# Personal branding\n\n## Positionnement\n- J'aide [cible] à [résultat] grâce à [méthode]\n- 3 thèmes d'expertise max\n\n## Ton de voix\n- 3 adjectifs qui le définissent\n- Mots à utiliser / à éviter\n\n## Cohérence\n- Même photo et bio sur toutes les plateformes"
+  },
+  {
+    "name": "Posts LinkedIn & hooks",
+    "slug": "posts-linkedin-hooks",
+    "category": "réseaux sociaux",
+    "description": "Rédaction de posts LinkedIn engageants avec accroches fortes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "linkedin",
+      "copywriting",
+      "hook"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: posts-linkedin\n---\n# Posts LinkedIn\n\n## Structure\n1. Hook : 1-2 lignes avant « voir plus »\n2. Histoire ou insight concret\n3. Leçon / valeur\n4. Question d'engagement\n\n## Règles\n- Paragraphes d'une ligne\n- 3 hashtags max\n- Lien externe en commentaire\n- 1 300 à 2 000 caractères"
+  },
+  {
+    "name": "TikTok : scripts & tendances",
+    "slug": "tiktok-scripts-tendances",
+    "category": "réseaux sociaux",
+    "description": "Scripts TikTok, adaptation des tendances et sons, stratégie de publication",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "tiktok",
+      "tendances",
+      "script"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tiktok\n---\n# TikTok\n\n## Règles\n- Hook parlé + texte dans les 2 premières secondes\n- Adapter une tendance à sa niche, ne pas copier\n- Son tendance à volume faible sous la voix\n- 1 à 3 publications par jour en phase de test\n- Répondre aux commentaires en vidéo"
+  },
+  {
+    "name": "X (Twitter) & Threads",
+    "slug": "x-threads",
+    "category": "réseaux sociaux",
+    "description": "Threads, posts courts et engagement sur X et Threads",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "twitter",
+      "x",
+      "threads"
+    ],
+    "personas": [
+      "createur",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: x-threads\n---\n# X & Threads\n\n## Thread\n1. Tweet 1 : promesse + « 🧵 »\n2. Un point par tweet\n3. Dernier tweet : récap + appel à l'action\n\n## Règles\n- 280 caractères max par post\n- Visuels pour les points clés\n- Répondre dans la première heure"
+  },
+  {
+    "name": "Audit de sécurité",
+    "slug": "audit-securite",
+    "category": "sécurité",
+    "description": "Audit de sécurité complet d'une application",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 500,
+    "tags": [
+      "security",
+      "audit"
+    ],
+    "personas": [
+      "securite",
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: audit-securite\n---\n# Audit de sécurité\n\n## Checklist\n1. Secrets en dur\n2. Injection SQL/XSS\n3. Auth & authz\n4. CORS\n5. Rate limiting\n6. Dépendances vulnérables\n7. HTTPS\n8. Headers sécurité"
+  },
+  {
+    "name": "Conformité RGPD",
+    "slug": "conformite-rgpd",
+    "category": "sécurité",
+    "description": "Checklist de conformité RGPD pour applications",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "rgpd",
+      "privacy"
+    ],
+    "personas": [
+      "securite",
+      "chef-projet",
+      "marketeur",
+      "data",
+      "juriste",
+      "rh"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: rgpd\n---\n# Conformité RGPD\n\n## Checklist\n- Consentement explicite\n- Droit à l'effacement\n- Portabilité\n- Privacy by design\n- DPO désigné\n- Registre des traitements\n- Notification de violation"
+  },
+  {
+    "name": "Gestion des secrets",
+    "slug": "gestion-secrets",
+    "category": "sécurité",
+    "description": "Bonnes pratiques pour la gestion des secrets et credentials",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "secrets",
+      "vault"
+    ],
+    "personas": [
+      "securite",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: secrets-management\n---\n# Gestion des secrets\n\n## Règles\n- Jamais de secrets dans le code\n- Variables d'environnement\n- Vault / AWS Secrets Manager\n- Rotation automatique\n- .gitignore pour .env"
+  },
+  {
+    "name": "OWASP Top 10",
+    "slug": "owasp-top-10",
+    "category": "sécurité",
+    "description": "Vérification des 10 risques de sécurité OWASP",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "owasp",
+      "security"
+    ],
+    "personas": [
+      "securite",
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: owasp-top-10\n---\n# OWASP Top 10\n\n1. Broken Access Control\n2. Cryptographic Failures\n3. Injection\n4. Insecure Design\n5. Security Misconfiguration\n6. Vulnerable Components\n7. Auth Failures\n8. Data Integrity\n9. Logging Failures\n10. SSRF"
+  },
+  {
+    "name": "Coverage & Qualité",
+    "slug": "coverage-qualite",
+    "category": "tests",
+    "description": "Couverture de code et métriques qualité",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "copilot",
+      "aider",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "coverage",
+      "quality"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: coverage\n---\n# Coverage\n\n## Objectifs\n- > 80% lignes\n- > 70% branches\n- 100% chemins critiques\n\n## Outils\n- pytest-cov\n- c8/istanbul\n- SonarQube"
+  },
+  {
+    "name": "Test-Driven Development",
+    "slug": "tdd",
+    "category": "tests",
+    "description": "Méthodologie TDD : écrire les tests en premier",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "copilot",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "tdd",
+      "testing"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tdd\n---\n# TDD\n\n## Cycle\n1. Red : écrire un test qui échoue\n2. Green : écrire le code minimal\n3. Refactor : améliorer sans casser\n\n## Règles\n- Un test à la fois\n- Petit incrément"
+  },
+  {
+    "name": "Tests E2E",
+    "slug": "tests-e2e",
+    "category": "tests",
+    "description": "Tests end-to-end avec Playwright/Cypress",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "tests",
+      "e2e",
+      "playwright"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tests-e2e\n---\n# Tests E2E\n\n## Outils\n- Playwright (recommandé)\n- Cypress\n\n## Règles\n- Scénarios critiques uniquement\n- Page Object Model\n- Pas de waits fixes\n- CI avec screenshots"
+  },
+  {
+    "name": "Tests d'intégration",
+    "slug": "tests-integration",
+    "category": "tests",
+    "description": "Stratégie de tests d'intégration pour APIs et services",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "copilot",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "tests",
+      "integration"
+    ],
+    "personas": [
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tests-integration\n---\n# Tests d'intégration\n\n## Règles\n- Base de test isolée\n- Fixtures reproductibles\n- Nettoyage après chaque test\n- Pas de dépendance à l'ordre"
+  },
+  {
+    "name": "Montage vidéo (DaVinci / Premiere / CapCut)",
+    "slug": "montage-video",
+    "category": "vidéo",
+    "description": "Plan de montage, rythme, transitions et export selon la plateforme",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 450,
+    "tags": [
+      "montage",
+      "davinci",
+      "premiere",
+      "capcut"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: montage-video\n---\n# Montage vidéo\n\n## Workflow\n1. Dérushage et sélection\n2. Ours (rough cut)\n3. Rythme : coupe toutes les 2-4 s en short-form\n4. Étalonnage et mixage audio (-14 LUFS web)\n5. Export\n\n## Formats d'export\n- YouTube : 16:9, 1080p/4K, H.264\n- Reels / TikTok / Shorts : 9:16, 1080x1920\n- LinkedIn : 1:1 ou 4:5"
+  },
+  {
+    "name": "Prompts de génération vidéo IA",
+    "slug": "prompts-video-ia",
+    "category": "vidéo",
+    "description": "Rédaction de prompts pour Sora, Veo, Runway, Kling (plans, caméra, style)",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "ia",
+      "génération",
+      "sora",
+      "runway"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: prompts-video-ia\n---\n# Prompts vidéo IA\n\n## Structure d'un prompt\n- Sujet + action\n- Décor et lumière\n- Mouvement de caméra (travelling, plan fixe, drone)\n- Style et ambiance\n- Durée et format\n\n## Règles\n- Un plan par prompt\n- Garder les personnages cohérents d'un plan à l'autre"
+  },
+  {
+    "name": "Script vidéo",
+    "slug": "script-video",
+    "category": "vidéo",
+    "description": "Rédaction de scripts vidéo structurés (hook, développement, appel à l'action)",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 380,
+    "tags": [
+      "vidéo",
+      "script",
+      "storytelling"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: script-video\ndescription: Rédiger un script vidéo\n---\n# Script vidéo\n\n## Structure\n1. Hook (0-3 s) : promesse ou question forte\n2. Contexte : pourquoi regarder\n3. Contenu : 3 points max\n4. Appel à l'action\n\n## Règles\n- Phrases courtes, langage oral\n- Indiquer les plans (A-roll / B-roll)\n- Durée cible précisée en tête"
+  },
+  {
+    "name": "Sous-titres & SRT",
+    "slug": "sous-titres-srt",
+    "category": "vidéo",
+    "description": "Génération et mise en forme de sous-titres (SRT/VTT) lisibles",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "sous-titres",
+      "srt",
+      "accessibilité"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: sous-titres-srt\n---\n# Sous-titres\n\n## Règles\n- 42 caractères max par ligne, 2 lignes max\n- Durée d'affichage 1 à 6 s\n- Format SRT : index, horodatage 00:00:01,000 --> 00:00:03,500, texte\n- Mots-clés en surbrillance pour le short-form\n- Vérifier la synchronisation après transcription"
+  },
+  {
+    "name": "Storyboard & découpage",
+    "slug": "storyboard-decoupage",
+    "category": "vidéo",
+    "description": "Découpage technique plan par plan avant tournage ou génération",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "storyboard",
+      "préproduction"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: storyboard\n---\n# Storyboard\n\n## Tableau de découpage\n| Plan | Durée | Cadrage | Action | Audio |\n\n## Règles\n- Varier les valeurs de plan (large, moyen, gros plan)\n- Noter les transitions\n- Lister le matériel et les rushes nécessaires"
+  },
+  {
+    "name": "Vidéo courte (Reels / Shorts / TikTok)",
+    "slug": "video-courte-short-form",
+    "category": "vidéo",
+    "description": "Conception de vidéos verticales courtes à forte rétention",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 350,
+    "tags": [
+      "reels",
+      "shorts",
+      "tiktok"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: short-form\n---\n# Vidéo courte\n\n## Règles\n- 15 à 60 s, format 9:16\n- Hook visuel + texte dès la 1re seconde\n- Une seule idée par vidéo\n- Boucle de fin pour le revisionnage\n- Texte à l'écran dans les zones sûres"
+  },
+  {
+    "name": "YouTube SEO & miniatures",
+    "slug": "youtube-seo-miniatures",
+    "category": "vidéo",
+    "description": "Titres, descriptions, chapitres, tags et concepts de miniatures",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 400,
+    "tags": [
+      "youtube",
+      "seo",
+      "miniature"
+    ],
+    "personas": [
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: youtube-seo\n---\n# YouTube SEO\n\n## Livrables\n- 5 titres (< 60 caractères, mot-clé en tête)\n- Description : 2 premières lignes accrocheuses + chapitres horodatés\n- 10-15 tags\n- 3 concepts de miniature (visage expressif, 3 mots max, contraste fort)"
+  },
+  {
+    "name": "Entretiens utilisateurs",
+    "slug": "recherche-utilisateur-entretiens",
+    "category": "design",
+    "description": "Mener des entretiens utilisateurs qui révèlent des comportements réels et non des opinions",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "ux",
+      "recherche",
+      "entretien"
+    ],
+    "personas": [
+      "designer",
+      "chercheur",
+      "marketeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: recherche-utilisateur-entretiens\ndescription: Mener des entretiens utilisateurs qui révèlent des comportements réels\n---\n# Entretiens utilisateurs\n\n## Avant\n- Écrire 1 à 3 questions de recherche (ce que l'on veut apprendre), pas une liste de fonctionnalités à valider.\n- Recruter des personnes qui correspondent à la cible réelle, pas des proches. Prévoir 5 à 8 entretiens par segment, puis continuer tant que de nouvelles informations apparaissent.\n- Obtenir le consentement pour l'enregistrement et expliquer l'usage des données.\n\n## Pendant\n- Demander des faits passés : « Racontez-moi la dernière fois que vous avez… » plutôt que « Utiliseriez-vous… ? ».\n- Questions ouvertes, neutres, une à la fois. Ne pas suggérer la réponse ni présenter sa solution.\n- Relancer avec « Pourquoi ? », « Comment avez-vous fait ensuite ? », puis laisser le silence faire son travail.\n- Noter les mots exacts de la personne (verbatims).\n\n## Après\n- Séparer ce qui a été observé de ce qui est interprété.\n- Regrouper les verbatims par thèmes ; compter les personnes concernées, pas les mentions.\n- Présenter les résultats avec leur limite : un petit échantillon montre des tendances, pas des pourcentages."
+  },
+  {
+    "name": "Test d'utilisabilité",
+    "slug": "tests-utilisabilite",
+    "category": "design",
+    "description": "Préparer, conduire et restituer un test d’utilisabilité avec de petits échantillons",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 265,
+    "tags": [
+      "ux",
+      "test",
+      "utilisabilité"
+    ],
+    "personas": [
+      "designer"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tests-utilisabilite\ndescription: Préparer, conduire et restituer un test d'utilisabilité\n---\n# Test d'utilisabilité\n\n## Préparer\n- Définir 3 à 5 tâches réalistes (« Trouvez le tarif de livraison pour Lyon »), formulées sans reprendre les mots de l'interface.\n- Décider à l'avance ce qui compte comme réussite et quelles mesures noter : réussite, temps, erreurs, hésitations.\n\n## Conduire\n- Demander à la personne de penser à voix haute. On teste le produit, pas la personne : le dire.\n- Observer sans aider ni expliquer. Si elle bloque, noter où et pourquoi, puis passer à la tâche suivante.\n- Quelques participants (environ 5) par série suffisent pour repérer les problèmes majeurs : corriger, puis retester plutôt que multiplier les participants.\n\n## Restituer\n- Un problème = ce qui s'est passé + la preuve (extrait, nombre de personnes touchées) + la gravité + une recommandation.\n- Gravité : cosmétique, mineur, majeur, bloquant. Traiter les bloquants d'abord.\n- Garder aussi ce qui fonctionne bien, pour ne pas le casser à la prochaine version."
+  },
+  {
+    "name": "Personas et parcours",
+    "slug": "personas-parcours",
+    "category": "design",
+    "description": "Construire des personas et des parcours à partir de données, pas d’intuitions",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 236,
+    "tags": [
+      "ux",
+      "persona",
+      "parcours"
+    ],
+    "personas": [
+      "designer",
+      "marketeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: personas-parcours\ndescription: Construire des personas et des parcours à partir de données\n---\n# Personas et parcours\n\n## Personas\n- S'appuyer sur des entretiens, des données d'usage ou des retours clients. Un persona inventé sans source est une hypothèse : l'écrire.\n- 2 à 4 personas suffisent. Chacun : contexte, objectifs, freins, comportements, une citation réelle.\n- Éviter les détails décoratifs (âge, loisirs) qui n'influencent aucune décision de conception.\n\n## Parcours\n- Choisir un persona et un objectif précis (par exemple « souscrire un contrat »).\n- Lister les étapes : actions, pensées, émotions, outils ou canaux utilisés.\n- Marquer les points de friction et les moments de vérité, puis en déduire des opportunités concrètes.\n\n## Usage\n- Vérifier chaque décision : « Qu'est-ce que cela change pour ce persona ? ».\n- Revoir les personas quand de nouvelles données arrivent ; indiquer la date de dernière mise à jour."
+  },
+  {
+    "name": "Évaluation heuristique",
+    "slug": "heuristiques-nielsen",
+    "category": "design",
+    "description": "Évaluer une interface avec les 10 heuristiques d’utilisabilité de Jakob Nielsen",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 251,
+    "tags": [
+      "ux",
+      "heuristique",
+      "évaluation"
+    ],
+    "personas": [
+      "designer",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: heuristiques-nielsen\ndescription: Évaluer une interface avec les 10 heuristiques de Nielsen\n---\n# Évaluation heuristique\n\n## Les 10 critères\n1. Visibilité de l'état du système (chargement, étape en cours).\n2. Correspondance entre le système et le monde réel (vocabulaire de l'utilisateur).\n3. Contrôle et liberté (annuler, revenir en arrière).\n4. Cohérence et standards.\n5. Prévention des erreurs.\n6. Reconnaître plutôt que se rappeler.\n7. Flexibilité et efficacité (raccourcis pour les habitués).\n8. Design esthétique et minimaliste.\n9. Aider à reconnaître, diagnostiquer et corriger les erreurs (messages clairs).\n10. Aide et documentation.\n\n## Méthode\n- Parcourir les écrans clés avec 2 ou 3 évaluateurs indépendants, puis fusionner les constats.\n- Pour chaque problème : écran, heuristique concernée, description, gravité de 0 (aucun) à 4 (catastrophique).\n- Prioriser par gravité et fréquence. Une évaluation d'experts complète les tests avec des utilisateurs, elle ne les remplace pas."
+  },
+  {
+    "name": "Hiérarchie visuelle et typographie",
+    "slug": "hierarchie-visuelle-typographie",
+    "category": "design",
+    "description": "Rendre un document ou un écran lisible grâce à la hiérarchie visuelle et à la typographie",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 241,
+    "tags": [
+      "design",
+      "typographie",
+      "mise en page"
+    ],
+    "personas": [
+      "designer",
+      "createur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: hierarchie-visuelle-typographie\ndescription: Rendre un document ou un écran lisible\n---\n# Hiérarchie visuelle et typographie\n\n## Hiérarchie\n- Une idée principale par écran ou par page ; le regard doit savoir où commencer.\n- Hiérarchiser avec la taille, le poids, la couleur et l'espace, pas avec des soulignements ni des majuscules partout.\n- Regrouper ce qui est lié (proximité), séparer le reste par de l'espace plutôt que par des traits.\n\n## Typographie\n- Deux polices au maximum ; une échelle de tailles cohérente (titre, sous-titre, texte, note).\n- Texte courant : interligne de 1,4 à 1,6 et lignes de 45 à 75 caractères.\n- Alignement à gauche pour les textes longs ; éviter le justifié sans coupure de mots.\n\n## Lisibilité\n- Contraste du texte d'au moins 4,5:1 avec le fond (niveau AA des WCAG).\n- Ne jamais transmettre une information par la seule couleur.\n- Tester en réduisant l'image ou en plissant les yeux : la hiérarchie doit rester visible."
+  },
+  {
+    "name": "Choisir un graphique",
+    "slug": "choix-graphiques",
+    "category": "data",
+    "description": "Choisir le bon type de graphique selon la question posée aux données",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 244,
+    "tags": [
+      "graphique",
+      "visualisation",
+      "dataviz"
+    ],
+    "personas": [
+      "data",
+      "marketeur",
+      "chef-projet",
+      "chercheur",
+      "finance",
+      "enseignant"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: choix-graphiques\ndescription: Choisir le bon type de graphique selon la question posée\n---\n# Choisir un graphique\n\n## Selon la question\n- Comparer des catégories : barres (axe démarrant à zéro).\n- Suivre une évolution dans le temps : courbe.\n- Montrer une répartition : barres empilées ; secteurs seulement pour 2 à 4 parts.\n- Relier deux variables : nuage de points.\n- Voir comment des valeurs se répartissent : histogramme ou boîte à moustaches.\n- Quelques chiffres seulement : un tableau ou un grand nombre vaut mieux qu'un graphique.\n\n## Bonnes pratiques\n- Le titre énonce le message (« Les ventes ont doublé au T3 »), pas le sujet (« Ventes »).\n- Étiqueter directement les séries plutôt qu'avec une légende éloignée.\n- Limiter les couleurs ; ne pas coder par rouge et vert seuls (daltonisme).\n- Indiquer unités, période et source.\n\n## À éviter\n- 3D, effets d'ombre, double axe vertical, axe tronqué qui exagère un écart, trop de séries sur un même graphique."
+  },
+  {
+    "name": "Raconter les données",
+    "slug": "storytelling-donnees",
+    "category": "data",
+    "description": "Transformer une analyse en message clair qui mène à une décision",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 234,
+    "tags": [
+      "données",
+      "communication",
+      "présentation"
+    ],
+    "personas": [
+      "data",
+      "marketeur",
+      "chef-projet",
+      "finance"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: storytelling-donnees\ndescription: Transformer une analyse en message clair qui mène à une décision\n---\n# Raconter les données\n\n## Partir du lecteur\n- Qui décide, et que doit-il faire après avoir lu ? Écrire cette phrase avant de créer le moindre graphique.\n- Adapter le niveau de détail : le détail méthodologique va en annexe.\n\n## Structure\n1. Contexte : la question posée et pourquoi elle compte.\n2. Constat : le résultat principal en une phrase, chiffré.\n3. Explication : deux ou trois éléments qui le soutiennent.\n4. Implication et action recommandée.\n\n## Rigueur\n- Toujours comparer : par rapport à quoi (période précédente, objectif, concurrent) ?\n- Un message par visuel ; mettre en valeur la donnée clé par annotation ou couleur.\n- Dire ce qui est incertain : taille de l'échantillon, données manquantes, hypothèses.\n- Ne pas confondre corrélation et cause ; écrire « associé à » tant que la cause n'est pas démontrée."
+  },
+  {
+    "name": "Tests A/B",
+    "slug": "tests-ab-statistiques",
+    "category": "data",
+    "description": "Concevoir et lire un test A/B sans se laisser piéger par le hasard",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 275,
+    "tags": [
+      "ab test",
+      "statistiques",
+      "expérimentation"
+    ],
+    "personas": [
+      "data",
+      "marketeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: tests-ab-statistiques\ndescription: Concevoir et lire un test A/B sans se laisser piéger par le hasard\n---\n# Tests A/B\n\n## Avant de lancer\n- Écrire l'hypothèse, une métrique principale, le seuil de décision et la durée prévue.\n- Calculer la taille d'échantillon nécessaire à partir de l'effet minimal qui vaudrait la peine d'être détecté, du seuil de signification (souvent 5 %) et de la puissance visée (souvent 80 %).\n- Répartir les visiteurs au hasard ; vérifier que le partage observé correspond au partage prévu.\n\n## Pendant\n- Ne pas arrêter le test dès que le résultat paraît significatif : regarder en continu fausse la probabilité d'erreur.\n- Couvrir des semaines entières pour absorber les variations du jour de la semaine.\n- Ne pas modifier la variante en cours de test.\n\n## Lire le résultat\n- Regarder la taille de l'effet et son intervalle de confiance, pas seulement la valeur p.\n- Plusieurs métriques ou variantes testées augmentent le risque de faux positifs : en désigner une principale.\n- Documenter aussi les tests sans effet : ils évitent de refaire la même expérience."
+  },
+  {
+    "name": "Tableur propre",
+    "slug": "nettoyage-tableur",
+    "category": "data",
+    "description": "Structurer un tableur pour qu’il reste fiable, lisible et réutilisable",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 260,
+    "tags": [
+      "tableur",
+      "excel",
+      "qualité des données"
+    ],
+    "personas": [
+      "data",
+      "chef-projet",
+      "autre",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: nettoyage-tableur\ndescription: Structurer un tableur pour qu'il reste fiable et réutilisable\n---\n# Tableur propre\n\n## Structure\n- Une ligne = une observation ; une colonne = une variable ; une seule ligne d'en-tête.\n- Pas de cellules fusionnées, pas de lignes vides, pas de totaux mélangés aux données (les mettre à part ou dans un autre onglet).\n- Un tableau par onglet.\n\n## Contenu\n- Dates au format AAAA-MM-JJ ; unités dans le nom de la colonne (« montant_eur »).\n- Une seule valeur par cellule ; pas de texte dans une colonne de nombres.\n- Valeurs manquantes laissées vides ou notées de façon uniforme, jamais par un zéro.\n- Listes déroulantes ou validations pour limiter les fautes de saisie.\n\n## Fiabilité\n- Conserver une copie brute intacte ; travailler sur une copie.\n- Préférer les formules aux valeurs recopiées, et ne pas écraser une formule par une valeur.\n- Ajouter un onglet « Lisez-moi » : source, date de mise à jour, définition des colonnes, hypothèses.\n- Ne pas faire porter le sens par la seule couleur de fond."
+  },
+  {
+    "name": "Évaluer une source",
+    "slug": "evaluation-sources",
+    "category": "recherche",
+    "description": "Évaluer la fiabilité d’une source et remonter à l’origine d’une information",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 268,
+    "tags": [
+      "sources",
+      "fiabilité",
+      "vérification"
+    ],
+    "personas": [
+      "chercheur",
+      "createur",
+      "data",
+      "autre",
+      "marketeur",
+      "juriste",
+      "enseignant"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: evaluation-sources\ndescription: Évaluer la fiabilité d'une source et remonter à l'origine d'une information\n---\n# Évaluer une source\n\n## Les questions à poser\n- Qui parle ? Compétence, rattachement, intérêt à défendre une position ou financement.\n- Quand ? Date de publication et de mise à jour ; l'information est-elle encore valable ?\n- D'où vient l'information ? Source primaire (étude, texte officiel, données brutes) ou reprise de seconde main.\n- Comment le sait-on ? Méthode, échantillon, données accessibles.\n\n## Méthode\n- Remonter à l'origine d'un chiffre ou d'une citation avant de l'utiliser : beaucoup de reprises déforment l'original.\n- Recouper avec au moins deux sources indépendantes l'une de l'autre.\n- Lecture latérale : quitter la page pour chercher ce que d'autres disent de la source ou de l'auteur.\n- Distinguer clairement fait vérifié, estimation et opinion.\n\n## Traçabilité\n- Noter pour chaque source : titre, auteur, date, lien, date de consultation.\n- Indiquer un niveau de confiance (élevé, moyen, faible) et ce qui reste à vérifier."
+  },
+  {
+    "name": "Revue de littérature",
+    "slug": "revue-litterature",
+    "category": "recherche",
+    "description": "Conduire une revue de littérature structurée et reproductible",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 269,
+    "tags": [
+      "revue de littérature",
+      "méthodologie",
+      "académique"
+    ],
+    "personas": [
+      "chercheur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: revue-litterature\ndescription: Conduire une revue de littérature structurée et reproductible\n---\n# Revue de littérature\n\n## Cadrer\n- Formuler une question précise : sujet, population ou objet étudié, période, type de résultats attendus.\n- Écrire les critères d'inclusion et d'exclusion avant de chercher.\n\n## Chercher\n- Noter la stratégie : bases consultées, mots-clés et synonymes, opérateurs, filtres, date de la recherche.\n- Compléter avec les bibliographies des articles clés et les articles qui les citent.\n\n## Trier et extraire\n- Trier en trois passes : titres, résumés, texte intégral ; garder la trace des motifs d'exclusion.\n- Remplir un tableau d'extraction : référence, méthode, échantillon, résultats, limites.\n- Utiliser un gestionnaire de références dès le début.\n\n## Synthétiser\n- Organiser par thèmes ou par questions, pas article par article.\n- Signaler les désaccords entre études, la qualité des preuves et les angles morts (biais de publication, langues non couvertes).\n- Écrire ce qui reste inconnu : c'est souvent la contribution principale."
+  },
+  {
+    "name": "Note de synthèse",
+    "slug": "note-synthese-executive",
+    "category": "rédaction",
+    "description": "Rédiger une note de synthèse d’une page qui permet de décider",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 224,
+    "tags": [
+      "synthèse",
+      "note",
+      "décision"
+    ],
+    "personas": [
+      "chercheur",
+      "chef-projet",
+      "autre",
+      "marketeur",
+      "juriste",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: note-synthese-executive\ndescription: Rédiger une note de synthèse d'une page qui permet de décider\n---\n# Note de synthèse\n\n## Structure (une page)\n1. Objet et décision attendue, en une phrase.\n2. Conclusion d'abord : la réponse, puis les raisons.\n3. Trois points clés au plus, chacun avec un chiffre ou un fait sourcé.\n4. Options envisagées et recommandation motivée.\n5. Risques principaux et comment les limiter.\n6. Prochaines étapes : action, responsable, date.\n\n## Écriture\n- Phrases courtes, mots du lecteur, une idée par paragraphe.\n- Chiffres précis avec leur source et leur date ; éviter « beaucoup », « rapidement ».\n- Mettre le détail en annexe, jamais dans le corps de la note.\n\n## Contrôle\n- Un lecteur pressé qui ne lit que les trois premières lignes comprend-il l'essentiel ?\n- Supprimer ce qui ne sert pas la décision ; viser une réduction d'un cinquième à la relecture."
+  },
+  {
+    "name": "Prioriser",
+    "slug": "priorisation-rice-moscow",
+    "category": "productivité",
+    "description": "Prioriser un ensemble d’idées ou de tâches avec MoSCoW et RICE",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 262,
+    "tags": [
+      "priorisation",
+      "rice",
+      "moscow"
+    ],
+    "personas": [
+      "chef-projet",
+      "marketeur",
+      "developpeur"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: priorisation-rice-moscow\ndescription: Prioriser avec MoSCoW et RICE\n---\n# Prioriser\n\n## MoSCoW : quand le périmètre doit tenir dans une échéance\n- Must : sans cela, la livraison n'a aucun sens.\n- Should : important, mais contournable à court terme.\n- Could : souhaitable si le temps le permet.\n- Won't (cette fois) : écarté explicitement, pour le dire clairement aux parties prenantes.\n- Limiter la part des « Must » pour garder une marge.\n\n## RICE : quand il faut comparer de nombreuses options\n- Score = (Portée × Impact × Confiance) ÷ Effort.\n- Portée : personnes touchées par période. Impact : échelle simple (0,25 minime à 3 massif). Confiance : 100 %, 80 % ou 50 % selon la solidité des données. Effort : personnes-mois.\n- Chiffrer les hypothèses par écrit et les discuter plutôt que le score final.\n\n## Précautions\n- Un score aide à comparer, il ne décide pas : regarder aussi les dépendances et les risques.\n- Éviter la fausse précision ; recalculer quand les données changent.\n- Garder visible ce qui a été écarté et pourquoi."
+  },
+  {
+    "name": "Gestion des risques",
+    "slug": "gestion-risques-projet",
+    "category": "productivité",
+    "description": "Identifier, évaluer et suivre les risques d’un projet",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 255,
+    "tags": [
+      "risques",
+      "projet",
+      "pilotage"
+    ],
+    "personas": [
+      "chef-projet"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: gestion-risques-projet\ndescription: Identifier, évaluer et suivre les risques d'un projet\n---\n# Gestion des risques\n\n## Identifier\n- Un risque est un événement incertain ; un problème est déjà là. Ne pas les mélanger dans la même liste.\n- Sources : retours d'expérience, dépendances externes, ressources clés, technologies nouvelles, calendrier, budget.\n- Écrire sous la forme « Si [cause], alors [conséquence] ».\n\n## Évaluer\n- Probabilité et impact sur des échelles simples de 1 à 5 ; criticité = probabilité × impact.\n- Traiter d'abord les risques les plus critiques ; ne pas en suivre plus d'une dizaine à la fois.\n\n## Répondre\n- Éviter, réduire, transférer (assurance, sous-traitance) ou accepter en connaissance de cause.\n- Pour chaque risque : un responsable nommé, une action, un signal d'alerte, un plan B si nécessaire.\n\n## Suivre\n- Tenir un registre à jour et le relire à chaque point d'avancement.\n- Clore un risque qui ne peut plus se produire ; le déplacer parmi les problèmes quand il se réalise."
+  },
+  {
+    "name": "Point d'avancement",
+    "slug": "rapport-avancement",
+    "category": "rédaction",
+    "description": "Écrire un point d’avancement bref, honnête et orienté décision",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 233,
+    "tags": [
+      "reporting",
+      "projet",
+      "statut"
+    ],
+    "personas": [
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: rapport-avancement\ndescription: Écrire un point d'avancement bref, honnête et orienté décision\n---\n# Point d'avancement\n\n## Contenu\n- Statut global (vert, orange, rouge) avec la règle qui le définit : par exemple orange = écart rattrapable avec une action en cours, rouge = objectif compromis sans décision.\n- Réalisé depuis le dernier point, prévu d'ici le prochain.\n- Indicateurs : délais, budget, périmètre ; chaque écart est chiffré et expliqué.\n- Les trois principaux risques ou blocages.\n- Décisions ou aides demandées, avec la date limite.\n\n## Écriture\n- Une page, mêmes rubriques à chaque fois pour que les lecteurs s'y retrouvent.\n- Mettre les mauvaises nouvelles en premier, avec les actions déjà engagées.\n- Distinguer le fait (terminé et vérifié) de l'espoir (« devrait être fini »).\n\n## Rythme\n- Régulier et court. Un rapport rouge sans demande précise n'aide personne : dire ce qu'il faut décider et par qui."
+  },
+  {
+    "name": "Rétrospective",
+    "slug": "retrospective-equipe",
+    "category": "productivité",
+    "description": "Animer une rétrospective sans blâme qui débouche sur des actions concrètes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 263,
+    "tags": [
+      "rétrospective",
+      "équipe",
+      "amélioration continue"
+    ],
+    "personas": [
+      "chef-projet",
+      "developpeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: retrospective-equipe\ndescription: Animer une rétrospective sans blâme qui débouche sur des actions\n---\n# Rétrospective\n\n## Cadre\n- Poser la règle : chacun a fait de son mieux avec ce qu'il savait à ce moment. On cherche des causes dans le fonctionnement, pas des coupables.\n- Durée limitée (45 à 90 minutes), lieu calme, tout le monde peut s'exprimer.\n\n## Déroulé\n1. Revenir sur les actions décidées la fois précédente : faites ? utiles ?\n2. Rappeler les faits : chronologie, indicateurs, événements marquants.\n3. Recueillir en silence : ce qui a bien fonctionné, ce qui a freiné, ce qui est à essayer.\n4. Regrouper, puis voter les deux ou trois sujets les plus importants.\n5. Chercher les causes (par exemple en demandant « pourquoi ? » plusieurs fois de suite).\n\n## Sortir avec des actions\n- Une à trois actions au plus, chacune avec un responsable, une échéance et un moyen de vérifier qu'elle est faite.\n- Les afficher et les relire à la prochaine rétrospective. Une rétrospective sans suivi apprend à l'équipe que parler ne sert à rien."
+  },
+  {
+    "name": "Objectifs et résultats clés (OKR)",
+    "slug": "objectifs-okr",
+    "category": "productivité",
+    "description": "Formuler des objectifs et des résultats clés mesurables",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 283,
+    "tags": [
+      "okr",
+      "objectifs",
+      "pilotage"
+    ],
+    "personas": [
+      "chef-projet",
+      "marketeur"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: objectifs-okr\ndescription: Formuler des objectifs et des résultats clés mesurables\n---\n# Objectifs et résultats clés (OKR)\n\n## Principe\n- Objectif : une ambition qualitative qui donne envie, sur un trimestre ou un semestre.\n- Résultats clés : deux à cinq mesures chiffrées qui disent si l'objectif est atteint, avec un point de départ et une cible.\n\n## Écrire un bon résultat clé\n- Il mesure un résultat (« passer le taux de réponse de 12 % à 20 % »), pas une tâche (« envoyer une newsletter »).\n- Il est vérifiable par n'importe qui, avec une source de données connue.\n- Il est ambitieux mais crédible : pour des objectifs d'ambition, atteindre 60 à 70 % est un résultat courant ; pour un engagement ferme, viser 100 %. Dire de quel type il s'agit.\n\n## Faire vivre\n- Point court toutes les une à deux semaines : valeur actuelle, niveau de confiance, obstacles.\n- Aligner avec les objectifs de l'équipe ou de l'organisation, sans multiplier les niveaux.\n- Être prudent en liant les OKR à la rémunération : cela pousse à fixer des cibles trop basses.\n- En fin de période : noter, tirer les enseignements, puis recommencer."
+  },
+  {
+    "name": "Relecture avant envoi",
+    "slug": "relecture-verification",
+    "category": "rédaction",
+    "description": "Relire un texte avant envoi : faits, cohérence, ton et destinataire",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 264,
+    "tags": [
+      "relecture",
+      "qualité",
+      "vérification"
+    ],
+    "personas": [
+      "autre",
+      "createur",
+      "chef-projet",
+      "chercheur",
+      "marketeur",
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: relecture-verification\ndescription: Relire un texte avant envoi\n---\n# Relecture avant envoi\n\n## Dans cet ordre\n1. Le fond : le texte répond-il à l'objectif et à la question du destinataire ? Tout ce qui était demandé y figure-t-il ?\n2. Les faits : noms, titres, dates, montants, pourcentages, liens. Vérifier à la source, pas de mémoire.\n3. La cohérence : mêmes chiffres partout, mêmes termes pour la même chose, pas de contradiction entre paragraphes.\n4. Le ton et le registre : adaptés au destinataire et au contexte.\n5. La forme : structure, longueur, orthographe et ponctuation.\n\n## Techniques\n- Laisser reposer le texte avant de le relire, ou le lire à voix haute.\n- Changer de support (imprimer, agrandir la police) pour voir les fautes que l'œil devine.\n- Faire relire par une personne qui n'a pas suivi le sujet : elle repère ce qui n'est pas clair.\n\n## Avant l'envoi\n- Bon destinataire, bonne pièce jointe, bonne version.\n- Aucune information confidentielle qui n'a pas lieu d'être là, ni dans le texte ni dans les propriétés du fichier."
+  },
+  {
+    "name": "Décision structurée",
+    "slug": "decision-structuree",
+    "category": "productivité",
+    "description": "Prendre une décision importante en comparant des options selon des critères explicites",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 272,
+    "tags": [
+      "décision",
+      "critères",
+      "options"
+    ],
+    "personas": [
+      "autre",
+      "chef-projet",
+      "juriste",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: decision-structuree\ndescription: Prendre une décision importante en comparant des options selon des critères explicites\n---\n# Décision structurée\n\n## Préparer\n- Formuler la décision en une phrase et dire qui décide, pour quelle date.\n- Lister les contraintes non négociables (budget, délai, règles) : elles éliminent des options avant toute comparaison.\n\n## Comparer\n- Chercher au moins trois options, y compris « ne rien faire » et une option intermédiaire.\n- Choisir quatre à six critères, les pondérer par ordre d'importance, puis noter chaque option.\n- Tester la solidité : si l'on change un poids ou une note, le classement change-t-il ? Si oui, discuter ce point précis.\n\n## Réfléchir au risque\n- La décision est-elle facile à défaire (porte à double sens) ou non ? Plus elle est irréversible, plus elle mérite de l'analyse.\n- Pré-mortem : imaginer que le choix a échoué dans un an et écrire pourquoi.\n\n## Consigner\n- Contexte, options, critères, choix retenu et raisons, date de réexamen. Cela évite de rediscuter la même décision et aide à apprendre de ses résultats."
+  },
+  {
+    "name": "Vérifier une réponse d'IA",
+    "slug": "verifier-reponses-ia",
+    "category": "recherche",
+    "description": "Vérifier les réponses d’une IA avant de s’en servir : sources, chiffres, citations",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 289,
+    "tags": [
+      "ia",
+      "vérification",
+      "fiabilité"
+    ],
+    "personas": [
+      "autre",
+      "createur",
+      "chercheur",
+      "chef-projet",
+      "marketeur",
+      "designer",
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: verifier-reponses-ia\ndescription: Vérifier les réponses d'une IA avant de s'en servir\n---\n# Vérifier une réponse d'IA\n\n## Pourquoi\nUne IA peut se tromper avec assurance : inventer un chiffre, une source, une citation ou un article de loi, dans un ton très convaincant.\n\n## À faire systématiquement\n- Demander les sources, puis les ouvrir : vérifier qu'elles existent et qu'elles disent bien cela.\n- Recouper tout chiffre, nom, date et citation avec une source indépendante.\n- Tester sur un cas dont on connaît déjà la réponse pour juger de la fiabilité de l'outil sur ce sujet.\n- Relire en entier : une erreur peut se cacher dans un détail au milieu d'un texte correct.\n\n## Redoubler de prudence\n- Santé, droit, finance, sécurité : la réponse de l'IA n'est qu'un point de départ, à faire valider par un professionnel.\n- Sujets récents ou très locaux : l'outil peut ne pas les connaître.\n- Demander à l'IA son degré de certitude ne remplace pas la vérification.\n\n## Responsabilité\n- La personne qui publie ou envoie le texte en répond, pas l'outil.\n- Garder la question posée et la réponse reçue pour pouvoir retracer l'origine d'une information."
+  },
+  {
+    "name": "Données sensibles et IA",
+    "slug": "donnees-sensibles-ia",
+    "category": "sécurité",
+    "description": "Savoir quelles informations ne jamais confier à un outil d’IA, et comment les protéger",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "ia",
+      "confidentialité",
+      "rgpd"
+    ],
+    "personas": [
+      "autre",
+      "createur",
+      "chercheur",
+      "chef-projet",
+      "marketeur",
+      "designer",
+      "data",
+      "securite",
+      "juriste",
+      "enseignant",
+      "rh",
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: donnees-sensibles-ia\ndescription: Savoir quelles informations ne jamais confier à un outil d'IA\n---\n# Données sensibles et IA\n\n## Ne pas envoyer\n- Mots de passe, clés d'accès, codes, jetons.\n- Données personnelles de tiers (clients, patients, salariés) sans base légale et sans accord de l'organisation.\n- Documents confidentiels, secrets d'affaires, informations couvertes par un contrat ou par le secret professionnel.\n\n## Réduire le risque\n- Anonymiser : remplacer les noms et identifiants par des étiquettes (« Client A ») et retirer ce qui n'est pas nécessaire à la tâche.\n- Ne transmettre que l'extrait utile, pas le dossier complet. Supprimer les métadonnées des fichiers.\n- Lire les conditions du service : conservation des échanges, réutilisation pour entraîner les modèles, option pour la désactiver.\n- Préférer l'outil validé par son organisation ; pour des contenus sensibles, un modèle exécuté en local garde les données sur sa machine.\n\n## En cas d'erreur\n- Prévenir sans attendre la personne responsable de la protection des données ou de la sécurité : une réaction rapide limite les conséquences.\n- Changer immédiatement tout mot de passe ou toute clé envoyée par erreur."
+  },
+  {
+    "name": "Revue de contrat",
+    "slug": "revue-contrat",
+    "category": "juridique",
+    "description": "Passer un contrat en revue avec une grille de contrôle, avant validation par un juriste",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 319,
+    "tags": [
+      "contrat",
+      "juridique",
+      "revue"
+    ],
+    "personas": [
+      "juriste"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: revue-contrat\ndescription: Passer un contrat en revue avec une grille de contrôle\n---\n# Revue de contrat\n\nCette grille aide à relire. Elle ne remplace pas l'avis d'un juriste ou d'un avocat pour un engagement important.\n\n## Cadrer\n- Qui sont les parties exactes (dénomination, forme, représentant) ? Qui a le pouvoir d'engager ?\n- Quel est l'objet précis : prestations, livrables, prix, délais, critères de réception ?\n- Quel est l'enjeu financier et quelle est la position de négociation de chacun ?\n\n## Points à contrôler\n- Durée, renouvellement tacite, préavis et conditions de sortie.\n- Prix, révision, pénalités de retard, modalités de paiement.\n- Responsabilité : plafonds, exclusions, assurances.\n- Propriété intellectuelle et confidentialité : ce qui est cédé ou concédé, pour quel périmètre et combien de temps.\n- Données personnelles : rôle de chacun, sous-traitants, transferts hors Union européenne.\n- Droit applicable, juridiction ou arbitrage, langue.\n- Annexes : sont-elles complètes et cohérentes avec le corps du contrat ?\n\n## Restituer\n- Tableau : clause, risque, gravité, proposition de modification.\n- Signaler les clauses silencieuses (ce qui manque) autant que celles qui gênent.\n- Indiquer ce qui reste à faire valider par un professionnel."
+  },
+  {
+    "name": "Note juridique",
+    "slug": "note-juridique-methode",
+    "category": "juridique",
+    "description": "Structurer une note juridique : faits, question, règle, application, conclusion",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 296,
+    "tags": [
+      "note juridique",
+      "raisonnement",
+      "jurisprudence"
+    ],
+    "personas": [
+      "juriste"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: note-juridique-methode\ndescription: Structurer une note juridique de façon rigoureuse\n---\n# Note juridique\n\nUne note rédigée avec l'aide d'une IA doit être vérifiée texte par texte : une IA peut inventer une jurisprudence ou un article de loi.\n\n## Structure\n1. Faits utiles, datés et neutres ; ne retenir que ceux qui comptent pour la question.\n2. Question posée, formulée précisément.\n3. Règle applicable : textes, puis jurisprudence, puis doctrine, classés par hiérarchie des normes.\n4. Application : qualifier les faits au regard de la règle, en discutant les arguments contraires.\n5. Conclusion : réponse nette, niveau d'incertitude, risques, recommandation.\n\n## Rigueur\n- Citer précisément chaque source (texte, article, juridiction, date, numéro) et la consulter dans une base officielle ou reconnue.\n- Vérifier que le texte est en vigueur à la date des faits et qu'une décision plus récente ne l'a pas remis en cause.\n- Distinguer ce qui est certain de ce qui est discuté.\n- Indiquer les pièces qui manquent pour trancher.\n\n## Forme\n- Un raisonnement par paragraphe, titres explicites, phrases courtes ; vocabulaire technique défini s'il s'adresse à un non-juriste."
+  },
+  {
+    "name": "Veille juridique",
+    "slug": "veille-juridique",
+    "category": "juridique",
+    "description": "Organiser une veille juridique fiable avec des sources officielles et des fiches datées",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 285,
+    "tags": [
+      "veille",
+      "réglementation",
+      "sources officielles"
+    ],
+    "personas": [
+      "juriste"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: veille-juridique\ndescription: Organiser une veille juridique fiable\n---\n# Veille juridique\n\n## Définir le périmètre\n- Domaines suivis, juridictions, secteurs d'activité, mots-clés et niveau de détail utile à chaque destinataire.\n- Fréquence adaptée : alerte immédiate pour ce qui change une obligation, synthèse mensuelle pour le reste.\n\n## Sources\n- Privilégier les sources officielles : journaux officiels, sites des juridictions, autorités de régulation, textes européens.\n- Utiliser la presse spécialisée comme aide à la lecture, jamais comme preuve : remonter au texte.\n- Configurer des alertes sur les mots-clés et les autorités concernées.\n\n## Fiche de veille\n- Référence exacte et lien, date de publication, date d'entrée en vigueur, date d'application effective.\n- Résumé en deux ou trois phrases ; ce qui change concrètement ; qui est concerné.\n- Actions à mener, responsable, échéance.\n- Niveau de confiance et points à clarifier.\n\n## Suivi\n- Tenir un registre des textes applicables à l'organisation et le mettre à jour.\n- Conserver l'historique : on doit pouvoir savoir quelle règle s'appliquait à une date donnée."
+  },
+  {
+    "name": "Rédiger des clauses claires",
+    "slug": "redaction-clauses-claires",
+    "category": "juridique",
+    "description": "Rédiger des clauses précises, cohérentes et sans ambiguïté",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 300,
+    "tags": [
+      "rédaction",
+      "clauses",
+      "contrat"
+    ],
+    "personas": [
+      "juriste"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: redaction-clauses-claires\ndescription: Rédiger des clauses précises, cohérentes et sans ambiguïté\n---\n# Rédiger des clauses claires\n\n## Principes\n- Une clause, une idée. Phrases courtes, sujet et verbe proches.\n- Un mot, un sens : définir les termes importants une fois, dans un article de définitions, et ne plus en changer.\n- Distinguer l'obligation (« doit »), la faculté (« peut ») et l'interdiction (« ne peut pas »).\n- Nommer qui fait quoi, à quelle date ou dans quel délai, et avec quelle conséquence.\n\n## Ambiguïtés fréquentes\n- « Et/ou », « notamment », « dans les meilleurs délais » : remplacer par un critère vérifiable ou une durée chiffrée.\n- Renvois imprécis (« ci-dessus », « le présent article ») : citer le numéro de l'article.\n- Dates et durées : préciser jours calendaires ou ouvrés, et le point de départ.\n- Montants : devise, hors taxes ou toutes taxes comprises.\n\n## Contrôle\n- Relire en jouant l'avocat adverse : comment cette phrase pourrait-elle être comprise autrement ?\n- Vérifier la cohérence avec les annexes, les définitions et le reste du contrat.\n- Faire valider les clauses sensibles (responsabilité, propriété intellectuelle, résiliation) par un juriste."
+  },
+  {
+    "name": "Concevoir une séquence",
+    "slug": "conception-sequence-pedagogique",
+    "category": "enseignement",
+    "description": "Concevoir une séquence en alignant objectifs, activités et évaluation",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 310,
+    "tags": [
+      "pédagogie",
+      "séquence",
+      "objectifs"
+    ],
+    "personas": [
+      "enseignant"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: conception-sequence-pedagogique\ndescription: Concevoir une séquence en alignant objectifs, activités et évaluation\n---\n# Concevoir une séquence\n\n## Partir de ce que les élèves sauront faire\n- Écrire 2 à 4 objectifs d'apprentissage observables, avec un verbe d'action : expliquer, comparer, résoudre, produire.\n- Décrire le public : prérequis, effectif, durée disponible, contraintes matérielles.\n\n## Aligner\n- Pour chaque objectif : comment saura-t-on qu'il est atteint (évaluation) et quelle activité y prépare ?\n- Si une activité ne sert aucun objectif, la retirer ; si un objectif n'est jamais évalué, l'abandonner ou l'évaluer.\n\n## Construire la progression\n- Activer les connaissances préalables, introduire peu de notions nouvelles à la fois, faire pratiquer avec soutien, puis en autonomie.\n- Varier les modalités : exposé court, manipulation, discussion, travail en groupe, production.\n- Prévoir des temps de vérification de la compréhension en cours de séance (questions courtes, exercices rapides).\n\n## Anticiper\n- Idées reçues et erreurs fréquentes sur la notion.\n- Prolongement pour ceux qui avancent vite, aide pour ceux qui ont besoin d'un appui.\n- Après la séance : noter ce qui a marché et ce qu'il faut changer."
+  },
+  {
+    "name": "Évaluer avec des critères",
+    "slug": "evaluation-grille-criteres",
+    "category": "enseignement",
+    "description": "Construire une grille critériée et donner un retour utile aux élèves",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 312,
+    "tags": [
+      "évaluation",
+      "grille",
+      "feedback"
+    ],
+    "personas": [
+      "enseignant"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: evaluation-grille-criteres\ndescription: Construire une grille critériée et donner un retour utile\n---\n# Évaluer avec des critères\n\n## Formative ou sommative\n- Formative : aider à progresser pendant l'apprentissage, sans enjeu de note.\n- Sommative : faire le bilan à la fin ; ce qui est évalué doit avoir été enseigné et travaillé.\n\n## Grille critériée\n- Partir des objectifs : un critère par compétence visée, formulé de façon observable.\n- Décrire chaque niveau de réussite en mots (« structure l'argumentation avec des exemples précis »), pas seulement par des chiffres.\n- Donner la grille aux élèves avant le travail : ils savent ce qui est attendu.\n- Peu de critères (3 à 6) plutôt qu'une liste interminable.\n\n## Le retour\n- Préciser ce qui est réussi, ce qui reste à travailler, et un prochain pas concret.\n- Décrire le travail plutôt que juger la personne.\n- Laisser du temps pour s'en servir : refaire, corriger, reformuler.\n\n## Équité\n- Corriger les copies anonymisées quand c'est possible, question par question plutôt que copie par copie.\n- Relire quelques copies de début après avoir terminé pour vérifier la constance.\n- Se méfier d'un outil d'IA pour noter seul : l'utiliser comme second regard, la décision reste humaine."
+  },
+  {
+    "name": "Questions et QCM de qualité",
+    "slug": "questions-quiz-qualite",
+    "category": "enseignement",
+    "description": "Rédiger des questions et des QCM qui mesurent vraiment la compréhension",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 288,
+    "tags": [
+      "quiz",
+      "qcm",
+      "questions"
+    ],
+    "personas": [
+      "enseignant"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: questions-quiz-qualite\ndescription: Rédiger des questions et des QCM qui mesurent la compréhension\n---\n# Questions et QCM de qualité\n\n## Choisir ce que l'on mesure\n- Associer chaque question à un objectif et à un niveau : se souvenir, comprendre, appliquer, analyser, créer.\n- Ne pas se limiter à la restitution ; ajouter des situations à résoudre ou à expliquer.\n\n## Rédiger l'énoncé\n- Une seule idée par question, formulation positive, vocabulaire connu des élèves.\n- Pas de piège de langue ni de double négation.\n- Que la question soit compréhensible sans lire les réponses.\n\n## Rédiger les réponses\n- Une seule bonne réponse clairement correcte, 3 à 4 propositions au total.\n- Les mauvaises réponses sont plausibles et reprennent des erreurs réelles ; elles ne sont pas absurdes.\n- Longueurs et styles comparables : la réponse la plus longue ne doit pas être la bonne.\n- Éviter « toutes les réponses ci-dessus » et « aucune des réponses ».\n\n## Après\n- Tester sur quelques élèves ou collègues ; repérer les questions que tout le monde réussit ou rate.\n- Prévoir une explication de la bonne réponse : le quiz devient un moyen d'apprendre."
+  },
+  {
+    "name": "Différencier et inclure",
+    "slug": "differenciation-inclusion",
+    "category": "enseignement",
+    "description": "Adapter un cours à la diversité des élèves avec les principes de conception universelle",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 320,
+    "tags": [
+      "inclusion",
+      "différenciation",
+      "accessibilité"
+    ],
+    "personas": [
+      "enseignant"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: differenciation-inclusion\ndescription: Adapter un cours à la diversité des élèves\n---\n# Différencier et inclure\n\n## Principe\nPlutôt que d'adapter après coup pour quelques élèves, concevoir dès le départ des parcours souples : la conception universelle de l'apprentissage propose de varier les moyens d'engagement, de représentation et d'expression.\n\n## Varier\n- Représentation : présenter l'information sous plusieurs formes (texte, schéma, exemple, démonstration) et définir le vocabulaire clé.\n- Action et expression : permettre plusieurs façons de montrer ce que l'on sait (écrit, oral, schéma, production).\n- Engagement : donner du sens, proposer des choix, fixer des étapes atteignables.\n\n## Mesures concrètes\n- Consignes courtes, étapes numérotées, exemples résolus.\n- Documents lisibles : police sans empattement de taille suffisante, espacement, contraste, pas d'information portée par la seule couleur.\n- Temps supplémentaire ou outils d'aide quand cela est prévu pour l'élève.\n- Regroupements flexibles plutôt que des groupes figés.\n\n## Vigilance\n- Garder les mêmes exigences d'apprentissage : on change les moyens, pas l'objectif visé.\n- Respecter les aménagements définis avec la famille et l'équipe, et la confidentialité des informations sur les élèves."
+  },
+  {
+    "name": "Fiche de poste et annonce",
+    "slug": "fiche-poste-annonce",
+    "category": "rh",
+    "description": "Rédiger une fiche de poste et une annonce claires, précises et non discriminantes",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 335,
+    "tags": [
+      "recrutement",
+      "annonce",
+      "fiche de poste"
+    ],
+    "personas": [
+      "rh"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: fiche-poste-annonce\ndescription: Rédiger une fiche de poste et une annonce claires et non discriminantes\n---\n# Fiche de poste et annonce\n\n## Fiche de poste\n- Mission principale en une phrase, puis 5 à 8 responsabilités concrètes avec leur finalité.\n- Rattachement hiérarchique, interlocuteurs, lieu, modalités de travail.\n- Compétences indispensables et compétences appréciées, séparées : une liste trop longue décourage des candidats qualifiés.\n- Critères de réussite à 6 et 12 mois.\n\n## Annonce\n- Un intitulé clair, tel que le marché le comprend, sans jargon interne.\n- Début centré sur ce que fera la personne et ce qu'elle apprendra ; ensuite le profil recherché.\n- Rémunération ou fourchette, type de contrat et avantages quand c'est possible : la transparence augmente la qualité des candidatures.\n- Étapes du processus et délais de réponse.\n\n## Non-discrimination\n- Aucun critère fondé sur l'âge, le sexe, l'origine, la situation familiale, l'état de santé ou un autre motif interdit par la loi.\n- Intitulé et formulations inclusifs (« les candidatures sont ouvertes à toute personne… »).\n- Exiger un diplôme ou un nombre d'années uniquement si c'est réellement nécessaire au poste.\n\n## Contrôle\n- Faire relire par un opérationnel (le contenu est-il vrai ?) et par une personne qui ne connaît pas le poste (est-ce clair ?)."
+  },
+  {
+    "name": "Entretien de recrutement structuré",
+    "slug": "entretien-recrutement-structure",
+    "category": "rh",
+    "description": "Mener des entretiens de recrutement structurés, comparables et équitables",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 353,
+    "tags": [
+      "recrutement",
+      "entretien",
+      "évaluation"
+    ],
+    "personas": [
+      "rh"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: entretien-recrutement-structure\ndescription: Mener des entretiens de recrutement structurés et équitables\n---\n# Entretien de recrutement structuré\n\n## Préparer\n- Définir 4 à 6 compétences clés à partir de la fiche de poste.\n- Pour chacune, préparer des questions identiques pour tous les candidats, et une échelle de notation décrite par des exemples de réponses.\n- Prévoir un temps pour que le candidat pose ses questions.\n\n## Poser les bonnes questions\n- Questions de comportement passé : « Racontez une situation où… ; que s'est-il passé, qu'avez-vous fait, quel a été le résultat ? »\n- Quelques mises en situation en lien avec le poste.\n- Relancer pour obtenir des faits précis plutôt que des généralités.\n- Les questions doivent avoir un lien direct avec l'aptitude à occuper l'emploi ; ne pas aborder la vie privée, la santé, les projets familiaux, les opinions.\n\n## Évaluer\n- Noter chaque critère pendant ou juste après l'entretien, avant d'en discuter avec les autres évaluateurs.\n- Comparer les candidats critère par critère plutôt que sur une impression générale.\n- Se méfier des biais : première impression, ressemblance avec soi-même, effet de halo.\n\n## Décider\n- Une décision d'embauche reste humaine : ne pas la déléguer à un outil automatique, même pour un tri.\n- Conserver les notes de manière sécurisée, pour une durée limitée, et informer les candidats de l'usage de leurs données."
+  },
+  {
+    "name": "Entretien annuel et feedback",
+    "slug": "feedback-entretien-annuel",
+    "category": "rh",
+    "description": "Préparer un entretien annuel et formuler un retour factuel et utile",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 335,
+    "tags": [
+      "feedback",
+      "entretien annuel",
+      "management"
+    ],
+    "personas": [
+      "rh",
+      "chef-projet"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: feedback-entretien-annuel\ndescription: Préparer un entretien annuel et formuler un retour factuel\n---\n# Entretien annuel et feedback\n\n## Préparer\n- Relire les objectifs de l'année, les réalisations, les retours reçus ; rassembler des faits datés.\n- Demander à la personne de préparer son propre bilan et ses souhaits d'évolution.\n- Réserver un temps sans interruption, dans un lieu adapté.\n\n## Formuler un feedback : situation, comportement, impact\n- Situation : où et quand ? (« lors de la présentation de mars »).\n- Comportement : ce qui a été observé, sans interprétation (« les chiffres du deuxième tableau n'étaient pas sourcés »).\n- Impact : l'effet produit (« le client a demandé de refaire l'analyse »).\n- Finir par une question ou une demande précise : que ferait-on différemment ?\n\n## Conduire l'entretien\n- Écouter davantage que parler ; commencer par le bilan de la personne.\n- Équilibrer les points forts et les axes de progrès, avec la même précision.\n- Fixer 2 à 4 objectifs clairs pour la période suivante et un plan de développement concret (formations, missions, accompagnement).\n\n## Après\n- Rédiger un compte rendu partagé avec la personne ; suivre les engagements pris, de part et d'autre.\n- Les retours difficiles se disent dans l'année, pas seulement à l'entretien annuel : rien ne doit être une surprise."
+  },
+  {
+    "name": "Intégration d'un nouvel arrivant",
+    "slug": "integration-nouvel-arrivant",
+    "category": "rh",
+    "description": "Préparer l’arrivée d’un nouveau collaborateur et structurer ses trois premiers mois",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 325,
+    "tags": [
+      "onboarding",
+      "intégration",
+      "recrutement"
+    ],
+    "personas": [
+      "rh",
+      "chef-projet"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire"
+    ],
+    "content": "---\nname: integration-nouvel-arrivant\ndescription: Préparer l'arrivée d'un nouveau collaborateur et ses trois premiers mois\n---\n# Intégration d'un nouvel arrivant\n\n## Avant l'arrivée\n- Matériel, accès et comptes prêts le premier jour ; démarches administratives anticipées.\n- Message de bienvenue avec l'horaire, le lieu, la personne à contacter et le programme de la première semaine.\n- Prévenir l'équipe de l'arrivée.\n\n## Première semaine\n- Accueil par le manager, présentation de l'équipe et des interlocuteurs clés.\n- Désigner un référent pour les questions du quotidien.\n- Présenter l'organisation, les outils, les règles de sécurité et les valeurs, sans tout dire le premier jour.\n\n## Plan sur trois mois\n- 30 jours : comprendre le contexte, rencontrer les personnes, apprendre les outils.\n- 60 jours : prendre en charge de premières tâches avec appui.\n- 90 jours : être autonome sur un périmètre défini.\n- Fixer des objectifs précis pour chaque étape et un point de suivi régulier avec le manager.\n\n## Évaluer l'intégration\n- Recueillir le ressenti de la personne à 1 semaine, 1 mois et 3 mois : ce qui a aidé, ce qui a manqué.\n- Utiliser ces retours pour améliorer le parcours suivant.\n- Les données personnelles collectées servent uniquement à l'intégration et à la gestion administrative."
+  },
+  {
+    "name": "Analyse des écarts budgétaires",
+    "slug": "analyse-ecarts-budgetaires",
+    "category": "finance",
+    "description": "Comparer budget et réalisé, expliquer les écarts et décider des actions",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 326,
+    "tags": [
+      "budget",
+      "écarts",
+      "contrôle de gestion"
+    ],
+    "personas": [
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: analyse-ecarts-budgetaires\ndescription: Comparer budget et réalisé, expliquer les écarts et décider des actions\n---\n# Analyse des écarts budgétaires\n\nLes éléments ci-dessous sont une méthode de travail, pas un conseil financier ou comptable.\n\n## Préparer\n- Comparer des périodes et des périmètres identiques ; vérifier que les données du réalisé sont arrêtées et rapprochées de la comptabilité.\n- Définir un seuil de signification : en dessous, ne pas commenter.\n\n## Calculer\n- Écart = réalisé − budget, en valeur et en pourcentage ; préciser s'il est favorable ou défavorable selon le poste (une dépense plus basse est favorable, un chiffre d'affaires plus bas ne l'est pas).\n- Décomposer quand c'est possible : écart de volume (quantités) et écart de prix (taux ou coûts unitaires).\n\n## Expliquer\n- Pour chaque écart important : cause identifiée, caractère ponctuel ou durable, impact sur l'année.\n- Distinguer l'écart de calendrier (décalage d'une dépense) de l'écart définitif.\n- Demander l'explication au responsable du poste avant de conclure.\n\n## Agir\n- Réestimer l'atterrissage de fin d'année avec les informations connues.\n- Proposer des actions chiffrées, un responsable et une échéance.\n- Présenter en une page : synthèse, trois écarts principaux, atterrissage, décisions demandées."
+  },
+  {
+    "name": "Tableau de bord financier",
+    "slug": "indicateurs-financiers-tableau-bord",
+    "category": "finance",
+    "description": "Construire un tableau de bord financier avec des définitions claires et comparables",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 324,
+    "tags": [
+      "indicateurs",
+      "tableau de bord",
+      "marge"
+    ],
+    "personas": [
+      "finance",
+      "chef-projet"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: indicateurs-financiers-tableau-bord\ndescription: Construire un tableau de bord financier avec des définitions claires\n---\n# Tableau de bord financier\n\nCe qui suit est une méthode de présentation. Les règles comptables et fiscales applicables restent à confirmer auprès d'un professionnel.\n\n## Choisir peu d'indicateurs\n- Cinq à dix, reliés aux décisions à prendre : chiffre d'affaires, marge, charges, résultat, trésorerie, besoin en fonds de roulement, délai moyen de paiement.\n- Pour chacun : définition écrite, formule, source des données, fréquence de mise à jour, responsable.\n\n## Éviter les confusions\n- Résultat et trésorerie sont deux choses : une entreprise rentable peut manquer de trésorerie, notamment quand les clients paient tard.\n- Distinguer marge brute, résultat d'exploitation et résultat net.\n- Préciser hors taxes ou toutes taxes comprises, cumulé ou mensuel.\n\n## Présenter\n- Toujours comparer : au budget, à la période précédente, à l'an dernier.\n- Une tendance sur plusieurs périodes vaut mieux qu'un chiffre isolé.\n- Mettre en évidence ce qui sort de la norme avec des seuils définis à l'avance.\n- Indiquer la date d'arrêté des données et les éléments estimés.\n\n## Fiabilité\n- Rapprocher les chiffres du tableau de bord de la comptabilité ; expliquer tout écart."
+  },
+  {
+    "name": "Prévision de trésorerie",
+    "slug": "previsions-tresorerie",
+    "category": "finance",
+    "description": "Construire un plan de trésorerie glissant avec plusieurs scénarios",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 327,
+    "tags": [
+      "trésorerie",
+      "prévision",
+      "cash"
+    ],
+    "personas": [
+      "finance"
+    ],
+    "levels": [
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: previsions-tresorerie\ndescription: Construire un plan de trésorerie glissant avec plusieurs scénarios\n---\n# Prévision de trésorerie\n\nMéthode de travail ; les décisions de financement et de placement relèvent d'un professionnel qualifié.\n\n## Structure\n- Horizon glissant (par exemple 13 semaines) mis à jour chaque semaine, puis une vue annuelle plus grossière.\n- Solde de départ rapproché du relevé bancaire, puis encaissements et décaissements prévus période par période.\n\n## Encaissements et décaissements\n- Partir des dates réelles de paiement, pas des dates de facture : appliquer les délais de paiement constatés des clients.\n- Lister les échéances fixes : salaires, loyers, emprunts, impôts et cotisations, assurances.\n- Prévoir les dépenses exceptionnelles et les investissements.\n\n## Scénarios\n- Scénario central, scénario prudent (retards de paiement, ventes en baisse) et scénario favorable.\n- Identifier le niveau minimal de trésorerie à ne pas franchir et la date à laquelle il serait atteint.\n- Préparer à l'avance les leviers : relances, négociation des délais, report de dépenses, financement.\n\n## Suivi\n- Comparer chaque semaine prévu et réalisé, comprendre les écarts et corriger les hypothèses.\n- Documenter les hypothèses pour que quelqu'un d'autre puisse reprendre le modèle."
+  },
+  {
+    "name": "Contrôles et rapprochements",
+    "slug": "controle-rapprochement",
+    "category": "finance",
+    "description": "Mettre en place des contrôles simples : rapprochements, justificatifs et séparation des tâches",
+    "environments": [
+      "claude-code",
+      "cursor",
+      "windsurf",
+      "copilot",
+      "aider",
+      "continue",
+      "cline",
+      "opencode"
+    ],
+    "tokenEstimate": 317,
+    "tags": [
+      "contrôle interne",
+      "rapprochement",
+      "justificatifs"
+    ],
+    "personas": [
+      "finance"
+    ],
+    "levels": [
+      "debutant",
+      "intermediaire",
+      "expert"
+    ],
+    "content": "---\nname: controle-rapprochement\ndescription: Mettre en place des contrôles simples : rapprochements, justificatifs et séparation des tâches\n---\n# Contrôles et rapprochements\n\n## Principes\n- Séparation des tâches : la personne qui saisit ou prépare un paiement n'est pas celle qui le valide.\n- Chaque écriture ou paiement s'appuie sur un justificatif conservé et retrouvable.\n- Traçabilité : qui a fait quoi, quand, avec quelle approbation.\n\n## Rapprochement bancaire\n- Comparer régulièrement les écritures de la comptabilité et le relevé de la banque.\n- Lister les écarts : opérations en cours, erreurs, opérations inconnues ; chacun a une explication et une date de résolution.\n- Signer et dater le rapprochement ; le faire relire par une autre personne.\n\n## Autres contrôles utiles\n- Rapprocher les comptes clients et fournisseurs avec leurs relevés.\n- Vérifier les doublons de factures et les changements de coordonnées bancaires d'un fournisseur par un second canal.\n- Contrôler les notes de frais par rapport à la politique en vigueur.\n\n## Garde-fous\n- Ne pas confier à un outil d'IA des données bancaires ou des identifiants : anonymiser avant tout usage.\n- Escalader immédiatement toute anomalie inexpliquée ou soupçon de fraude vers la personne responsable."
+  }
+]

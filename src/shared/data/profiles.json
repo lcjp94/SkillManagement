@@ -1,0 +1,234 @@
+{
+  "_aide": "Source de vérité du moteur de recommandation (lib/recommend.ts). Lue par le web, le bureau et la CLI : toute modification doit rester compatible avec tests/recommend.test.ts.",
+  "natures": [
+    {
+      "id": "developpeur",
+      "name": "Développeur / ingénieur",
+      "icon": "💻",
+      "description": "Code, tests, déploiement",
+      "categories": [
+        "développement",
+        "tests",
+        "devops",
+        "sécurité"
+      ],
+      "objectives": [
+        "developpement"
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data / analyste",
+      "icon": "📊",
+      "description": "Données, statistiques, visualisation",
+      "categories": [
+        "data",
+        "recherche",
+        "rédaction"
+      ],
+      "objectives": [
+        "data"
+      ]
+    },
+    {
+      "id": "createur",
+      "name": "Créateur de contenu",
+      "icon": "🎬",
+      "description": "Articles, vidéos, réseaux sociaux",
+      "categories": [
+        "rédaction",
+        "vidéo",
+        "réseaux sociaux",
+        "design"
+      ],
+      "objectives": [
+        "redaction",
+        "video",
+        "reseaux-sociaux"
+      ]
+    },
+    {
+      "id": "marketeur",
+      "name": "Marketing / communication",
+      "icon": "📈",
+      "description": "SEO, campagnes, analytics",
+      "categories": [
+        "marketing",
+        "réseaux sociaux",
+        "rédaction",
+        "data"
+      ],
+      "objectives": [
+        "marketing"
+      ]
+    },
+    {
+      "id": "designer",
+      "name": "Designer / UX",
+      "icon": "🎨",
+      "description": "Interfaces, accessibilité, systèmes de design",
+      "categories": [
+        "design",
+        "rédaction",
+        "développement"
+      ],
+      "objectives": [
+        "design"
+      ]
+    },
+    {
+      "id": "chercheur",
+      "name": "Chercheur / veilleur",
+      "icon": "🔍",
+      "description": "Recherche, synthèse, analyse",
+      "categories": [
+        "recherche",
+        "rédaction",
+        "data"
+      ],
+      "objectives": [
+        "recherche"
+      ]
+    },
+    {
+      "id": "chef-projet",
+      "name": "Chef de projet / manager",
+      "icon": "🧭",
+      "description": "Pilotage, organisation, communication",
+      "categories": [
+        "productivité",
+        "rédaction",
+        "recherche"
+      ],
+      "objectives": []
+    },
+    {
+      "id": "securite",
+      "name": "Sécurité / conformité",
+      "icon": "🛡️",
+      "description": "Audit, RGPD, gestion des risques",
+      "categories": [
+        "sécurité",
+        "devops",
+        "développement"
+      ],
+      "objectives": [
+        "securite"
+      ]
+    },
+    {
+      "id": "juriste",
+      "name": "Juridique / droit",
+      "icon": "⚖️",
+      "description": "Contrats, veille, notes juridiques",
+      "categories": [
+        "juridique",
+        "rédaction",
+        "recherche"
+      ],
+      "objectives": [
+        "juridique"
+      ]
+    },
+    {
+      "id": "enseignant",
+      "name": "Enseignement / formation",
+      "icon": "🎓",
+      "description": "Cours, évaluations, pédagogie",
+      "categories": [
+        "enseignement",
+        "rédaction",
+        "recherche"
+      ],
+      "objectives": [
+        "enseignement"
+      ]
+    },
+    {
+      "id": "rh",
+      "name": "Ressources humaines",
+      "icon": "🤝",
+      "description": "Recrutement, entretiens, intégration",
+      "categories": [
+        "rh",
+        "rédaction",
+        "productivité"
+      ],
+      "objectives": [
+        "rh"
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance / comptabilité",
+      "icon": "💶",
+      "description": "Budgets, trésorerie, indicateurs",
+      "categories": [
+        "finance",
+        "data",
+        "rédaction"
+      ],
+      "objectives": [
+        "finance"
+      ]
+    },
+    {
+      "id": "autre",
+      "name": "Autre métier",
+      "icon": "✨",
+      "description": "Je précise mes objectifs moi-même",
+      "categories": [
+        "productivité",
+        "rédaction"
+      ],
+      "objectives": []
+    }
+  ],
+  "objectiveCategories": {
+    "developpement": "développement",
+    "devops": "devops",
+    "data": "data",
+    "redaction": "rédaction",
+    "design": "design",
+    "marketing": "marketing",
+    "recherche": "recherche",
+    "securite": "sécurité",
+    "video": "vidéo",
+    "reseaux-sociaux": "réseaux sociaux",
+    "juridique": "juridique",
+    "enseignement": "enseignement",
+    "rh": "rh",
+    "finance": "finance"
+  },
+  "levels": {
+    "debutant": {
+      "maxSkills": 6,
+      "tokenBudget": 2500,
+      "maxPerCategory": 2,
+      "minScore": 40
+    },
+    "intermediaire": {
+      "maxSkills": 12,
+      "tokenBudget": 5000,
+      "maxPerCategory": 4,
+      "minScore": 35
+    },
+    "expert": {
+      "maxSkills": 20,
+      "tokenBudget": 9000,
+      "maxPerCategory": 5,
+      "minScore": 30
+    }
+  },
+  "weights": {
+    "objectiveCategory": 40,
+    "natureCategoryFirst": 30,
+    "natureCategory": 20,
+    "persona": 25,
+    "level": 10,
+    "environment": 10,
+    "customKeyword": 15,
+    "customKeywordMax": 30,
+    "personaMismatch": -15
+  }
+}

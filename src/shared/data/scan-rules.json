@@ -1,0 +1,92 @@
+{
+  "_aide": "Source de vérité des règles de pré-analyse (lib/skill-scan.ts, public/skillforge-cli.py, rust/skillforge-core). Motifs insensibles à la casse, sans assertion lookahead/lookbehind ni référence arrière (compatibles JavaScript, Python et les moteurs à temps linéaire). « unless » : un résultat qui correspond aussi à ce motif est ignoré. Après modification : npm run cli:sync.",
+  "normalize": "NFKC",
+  "stripPattern": "[\\u00AD\\u200B-\\u200F\\u2060\\uFEFF]",
+  "rules": [
+    {
+      "id": "remote-exec",
+      "severity": "high",
+      "category": "exécution distante",
+      "message": "Télécharge et exécute un script distant (curl | sh)",
+      "pattern": "(curl|wget|iwr|irm|invoke-webrequest|invoke-restmethod)[^\\n]*\\|\\s*(sudo\\s+)?((ba|z|da|k)?sh\\b|python\\d?\\b|node\\b|perl\\b|ruby\\b|pwsh\\b|powershell\\b|iex\\b|invoke-expression\\b)"
+    },
+    {
+      "id": "destruction",
+      "severity": "high",
+      "category": "destruction",
+      "message": "Commande de suppression récursive dangereuse",
+      "pattern": "\\brm\\s+(?:-\\S+\\s+)*-\\S*r\\S*\\s+(?:-\\S+\\s+)*(\\/|~|\\$HOME|\\*)|remove-item[^\\n]*-recurse[^\\n]*-force"
+    },
+    {
+      "id": "prompt-injection",
+      "severity": "high",
+      "category": "injection de prompt",
+      "message": "Tentative de contournement des instructions",
+      "pattern": "(ignore|disregard|forget|override|oublie\\w*)[^\\n]{0,40}(previous|prior|above|earlier|system|précédentes?|antérieures?)[^\\n]{0,30}(instructions?|consignes?|rules?|règles?|prompt)"
+    },
+    {
+      "id": "secrets",
+      "severity": "high",
+      "category": "secrets",
+      "message": "Accès à des fichiers de secrets ou d'identifiants",
+      "pattern": "(\\.ssh\\/id_|\\.aws\\/credentials|keychain|\\/etc\\/(passwd|shadow))|\\b(cat|type|less|more|source|cp|scp|upload|send|read|print|echo|lire|ouvr\\w*|envoy\\w*)\\s+[^\\n]{0,40}\\.env\\b"
+    },
+    {
+      "id": "plaintext-secret",
+      "severity": "high",
+      "category": "secret en clair",
+      "message": "Identifiant ou clé d'API écrit en clair",
+      "pattern": "(AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|sk-[A-Za-z0-9]{32,})"
+    },
+    {
+      "id": "exfiltration",
+      "severity": "high",
+      "category": "exfiltration",
+      "message": "Envoi possible de secrets vers l'extérieur",
+      "pattern": "(api[_-]?key|token|password|secret)[^\\n]{0,60}(send|post|upload|envoie|transmet|exfiltr)"
+    },
+    {
+      "id": "obfuscation",
+      "severity": "medium",
+      "category": "obfuscation",
+      "message": "Code évalué dynamiquement ou décodé (base64/eval)",
+      "pattern": "base64\\s+(-d|--decode)|eval\\s*\\(|exec\\s*\\(|new Function\\("
+    },
+    {
+      "id": "privileges",
+      "severity": "medium",
+      "category": "privilèges",
+      "message": "Demande d'élévation de privilèges (sudo)",
+      "pattern": "sudo\\s+"
+    },
+    {
+      "id": "permissions",
+      "severity": "low",
+      "category": "permissions",
+      "message": "Modification de permissions de fichiers",
+      "pattern": "chmod\\s+(\\+x|777)"
+    },
+    {
+      "id": "bypass",
+      "severity": "medium",
+      "category": "contournement",
+      "message": "Désactive des garde-fous de l'agent",
+      "pattern": "(dangerously|--no-verify|bypass[_ -]?permissions|skip[_ -]?permissions)"
+    },
+    {
+      "id": "network",
+      "severity": "low",
+      "category": "réseau",
+      "message": "Accès réseau vers un domaine externe",
+      "pattern": "https?:\\/\\/[^\\s)\"'>]+",
+      "unless": "^https?:\\/\\/(?:(?:github\\.com|raw\\.githubusercontent\\.com|www\\.w3\\.org)(?:[\\/:?#]|$)|docs\\.)"
+    },
+    {
+      "id": "dependencies",
+      "severity": "low",
+      "category": "dépendances",
+      "message": "Installe des dépendances logicielles",
+      "pattern": "(npm|pip|yarn|brew|apt(-get)?)\\s+install"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { _electron as electron, expect, test } from '@playwright/test'
-import { mkdtempSync } from 'node:fs'
+import { mkdtempSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -24,6 +24,10 @@ test('l\'application démarre, l\'IPC répond et l\'interface est isolée', asyn
     // La CSP stricte est bien présente dans la version compilée
     const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content')
     expect(csp).toContain("default-src 'self'")
+
+    // Le fichier d'état a été créé au démarrage, dans le dossier de données jetable
+    const etat = JSON.parse(readFileSync(join(userData, 'state.json'), 'utf8'))
+    expect(etat).toEqual({ version: 1, profile: null, projects: [], userSkills: [] })
   } finally {
     await app.close()
   }

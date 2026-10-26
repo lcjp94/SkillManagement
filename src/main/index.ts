@@ -1,9 +1,21 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
+import log from 'electron-log/main'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { IPC } from '@shared/channels'
+import { getCatalogue } from '@shared/data'
 import { appInfoHandler } from './ipc/app'
 import { isTrustedSender, wrapHandler } from './ipc/guard'
+import type { Logger } from './log'
+import { VersionFutureError } from './store/json-store'
+import { creerStoreEtat } from './store/state-store'
+
+log.initialize()
+const journal: Logger = {
+  info: (message, meta) => (meta ? log.info(message, meta) : log.info(message)),
+  warn: (message, meta) => (meta ? log.warn(message, meta) : log.warn(message)),
+  error: (message, meta) => (meta ? log.error(message, meta) : log.error(message))
+}
 
 const rendererFile = pathToFileURL(join(__dirname, '../renderer/index.html')).href
 const devOrigin = process.env['ELECTRON_RENDERER_URL']
@@ -58,7 +70,22 @@ if (!app.requestSingleInstanceLock()) {
       fenetre.focus()
     }
   })
-  void app.whenReady().then(() => {
+  void app.whenReady().then(async () => {
+    try {
+      getCatalogue() // échoue au démarrage si une donnée embarquée est invalide
+      const { avis } = await creerStoreEtat(app.getPath('userData'), journal).load()
+      if (avis) journal.info('Chargement des données', { avis })
+    } catch (erreur) {
+      journal.error('Démarrage impossible', { type: erreur instanceof Error ? erreur.name : 'inconnu' })
+      dialog.showErrorBox(
+        'SkillManagement',
+        erreur instanceof VersionFutureError
+          ? erreur.message
+          : "Les données de l'application n'ont pas pu être ouvertes. Fermez l'application puis relancez-la ; si le problème continue, joignez le fichier journal à votre demande d'aide."
+      )
+      app.quit()
+      return
+    }
     enregistrerIpc()
     creerFenetre()
     app.on('activate', () => {
