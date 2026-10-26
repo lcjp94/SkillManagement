@@ -1,34 +1,42 @@
-import { _electron as electron, expect, test } from '@playwright/test'
-import { mkdtempSync, readFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { expect, test } from '@playwright/test'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { lancer } from './aide'
 
 // Lance l'application compilée avec un dossier de données jetable,
 // pour ne jamais toucher à une instance ouverte par la personne.
 test('l\'application démarre, l\'IPC répond et l\'interface est isolée', async () => {
-  const userData = mkdtempSync(join(tmpdir(), 'skillmanagement-e2e-'))
-  const app = await electron.launch({ args: ['.', `--user-data-dir=${userData}`] })
+  const s = await lancer()
   try {
-    const page = await app.firstWindow()
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('SkillManagement')
-    await expect(page.getByRole('status')).toHaveText(/Version \d+\.\d+\.\d+/)
+    const { page } = s
+    // Sans profil, la porte d'entrée est le parcours de démarrage
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Quels assistants IA utilisez-vous ?')
 
-    // L'interface n'a aucun accès Node
+    // L'interface n'a aucun accès Node ; sa seule surface est un appel restreint aux canaux du contrat
     const acces = await page.evaluate(() => ({
       require: typeof (globalThis as { require?: unknown }).require,
       process: typeof (globalThis as { process?: unknown }).process,
-      api: typeof window.skillmanagement.app.info
+      api: typeof (window as unknown as { skillmanagement: { invoke: unknown } }).skillmanagement.invoke
     }))
     expect(acces).toEqual({ require: 'undefined', process: 'undefined', api: 'function' })
+
+    // Un canal qui n'est pas dans le contrat est refusé dès le preload
+    const refus = await page.evaluate(() =>
+      (window as unknown as { skillmanagement: { invoke(c: string): Promise<unknown> } }).skillmanagement.invoke('fs.readFile').then(
+        () => 'accepté',
+        (e: Error) => e.message
+      )
+    )
+    expect(refus).toBe('Canal inconnu.')
 
     // La CSP stricte est bien présente dans la version compilée
     const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content')
     expect(csp).toContain("default-src 'self'")
 
     // Le fichier d'état a été créé au démarrage, dans le dossier de données jetable
-    const etat = JSON.parse(readFileSync(join(userData, 'state.json'), 'utf8'))
+    const etat = JSON.parse(readFileSync(join(s.donnees, 'state.json'), 'utf8'))
     expect(etat).toEqual({ version: 1, profile: null, projects: [], userSkills: [] })
   } finally {
-    await app.close()
+    await s.fermer()
   }
 })

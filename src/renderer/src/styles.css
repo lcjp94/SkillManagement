@@ -1,14 +1,344 @@
 @import 'tailwindcss';
 
-/* Polices système : SF sur macOS, Segoe UI sur Windows, repli sans-serif ailleurs */
+/*
+ * Thème « Apple » : polices système, un seul bleu d'accentuation, clair par défaut et sombre selon le système.
+ * Chaque couleur est donnée en light-dark(clair, sombre) : tests/contraste.test.ts relit ce fichier et vérifie les
+ * contrastes (4,5:1 pour le texte, 3:1 pour les bordures de champs et le focus).
+ */
 :root {
-  --accent: #0071e3;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
   color-scheme: light dark;
+  --fond: light-dark(#f5f5f7, #1c1c1e);
+  --surface: light-dark(#ffffff, #2c2c2e);
+  --surface-2: light-dark(#ececf0, #3a3a3c);
+  --texte: light-dark(#1d1d1f, #f5f5f7);
+  --doux: light-dark(#636366, #aeaeb2);
+  --separateur: light-dark(#d2d2d7, #48484a);
+  --bord-champ: light-dark(#76767b, #98989d);
+  --accent: light-dark(#0066cc, #2997ff);
+  --bouton: #0071e3;
+  --bouton-texte: #ffffff;
+  --danger: light-dark(#b3261e, #ff8a80);
+  --bouton-danger: #b3261e;
+  --ok-fond: light-dark(#e3f4e8, #1e3a28);
+  --ok-texte: light-dark(#17692f, #8be8a8);
+  --attention-fond: light-dark(#fff0d6, #4a3510);
+  --attention-texte: light-dark(#7a4300, #ffc766);
+  --erreur-fond: light-dark(#fde4e4, #4a1b1b);
+  --erreur-texte: light-dark(#a3231b, #ff9d94);
+  --neutre-fond: light-dark(#e8e8ed, #3a3a3c);
+  --neutre-texte: light-dark(#3c3c43, #d1d1d6);
+  --info-fond: light-dark(#e3effc, #14304f);
+  --info-texte: light-dark(#0b4f9e, #9fcbff);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+}
+:root[data-theme='clair'] {
+  color-scheme: light;
+}
+:root[data-theme='sombre'] {
+  color-scheme: dark;
 }
 
-body {
-  margin: 0;
-  background: light-dark(#f5f5f7, #1c1c1e);
-  color: light-dark(#1d1d1f, #f5f5f7);
+@theme inline {
+  --color-fond: var(--fond);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-texte: var(--texte);
+  --color-doux: var(--doux);
+  --color-separateur: var(--separateur);
+  --color-champ: var(--bord-champ);
+  --color-accent: var(--accent);
+  --color-bouton: var(--bouton);
+  --color-danger: var(--danger);
+}
+
+/* Règles sur les éléments nus dans la couche « base » : les classes utilitaires gardent la priorité */
+@layer base {
+  body {
+    margin: 0;
+    background: var(--fond);
+    color: var(--texte);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  /* Le focus se voit toujours : anneau bleu, 3:1 contre le fond dans les deux thèmes */
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+.sr-only-sm {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Composants ---------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid transparent;
+  background: var(--surface-2);
+  color: var(--texte);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-primaire {
+  background: var(--bouton);
+  color: var(--bouton-texte);
+}
+.btn-danger {
+  background: var(--bouton-danger);
+  color: #fff;
+}
+.btn-discret {
+  background: transparent;
+  color: var(--accent);
+  padding-inline: 0.6rem;
+}
+.btn-petit {
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.carte {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 0 0 1px var(--separateur);
+}
+
+.champ {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.65rem;
+  border: 1.5px solid var(--bord-champ);
+  background: var(--surface);
+  color: var(--texte);
+  font: inherit;
+}
+.champ::placeholder {
+  color: var(--doux);
+}
+
+.pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--neutre-fond);
+  color: var(--neutre-texte);
+  white-space: nowrap;
+}
+.pastille-ok {
+  background: var(--ok-fond);
+  color: var(--ok-texte);
+}
+.pastille-attention {
+  background: var(--attention-fond);
+  color: var(--attention-texte);
+}
+.pastille-erreur {
+  background: var(--erreur-fond);
+  color: var(--erreur-texte);
+}
+.pastille-info {
+  background: var(--info-fond);
+  color: var(--info-texte);
+}
+
+.alerte {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  background: var(--info-fond);
+  color: var(--info-texte);
+}
+.alerte-attention {
+  background: var(--attention-fond);
+  color: var(--attention-texte);
+}
+.alerte-erreur {
+  background: var(--erreur-fond);
+  color: var(--erreur-texte);
+}
+.alerte-ok {
+  background: var(--ok-fond);
+  color: var(--ok-texte);
+}
+
+/* Carte à cocher : la case native reste dans le DOM (clavier et lecteur d'écran), seule la carte se voit */
+/* La vraie case reste accessible mais sort de la carte : c'est l'étiquette entière qui reçoit le clic */
+.case-carte > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+.case-carte {
+  cursor: pointer;
+}
+.case-carte {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1.5px var(--bord-champ);
+}
+.case-carte:has(input:checked) {
+  box-shadow: inset 0 0 0 2.5px var(--accent);
+  background: var(--info-fond);
+}
+.case-carte:has(input:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.case-carte .repere {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.1rem;
+  border-radius: 0.35rem;
+  box-shadow: inset 0 0 0 1.5px var(--bord-champ);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  color: var(--bouton-texte);
+}
+.case-carte:has(input[type='radio']) .repere {
+  border-radius: 999px;
+}
+.case-carte:has(input:checked) .repere {
+  background: var(--bouton);
+  box-shadow: none;
+}
+
+dialog {
+  /* La remise à zéro des marges de Tailwind ferait coller la fenêtre en haut à gauche */
+  margin: auto;
+  color: var(--texte);
+  background: var(--surface);
+  border: none;
+  border-radius: 1.2rem;
+  padding: 0;
+  max-width: min(46rem, calc(100vw - 2rem));
+  width: 100%;
+  max-height: calc(100vh - 3rem);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.35);
+}
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(6px);
+}
+
+details > summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+pre.texte-brut {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 0.8rem;
+  background: var(--fond);
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  max-height: 16rem;
+  overflow: auto;
+}
+
+/* Animations légères, coupées si la personne demande de les réduire */
+@media (prefers-reduced-motion: no-preference) {
+  .btn,
+  .case-carte {
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease,
+      filter 120ms ease;
+  }
+  dialog[open] {
+    animation: apparition 160ms ease-out;
+  }
+  @keyframes apparition {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.99);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Barre latérale réduite en barre du haut sur les fenêtres étroites */
+.coque {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  min-height: 100vh;
+}
+@media (max-width: 720px) {
+  .coque {
+    grid-template-columns: 1fr;
+  }
+  .coque > nav {
+    flex-direction: row !important;
+    align-items: center;
+    overflow-x: auto;
+  }
 }

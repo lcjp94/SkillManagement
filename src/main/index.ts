@@ -1,13 +1,20 @@
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import log from 'electron-log/main'
+import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { IPC } from '@shared/channels'
+import { z } from 'zod'
+import { CANAUX } from '@shared/channels'
 import { getCatalogue } from '@shared/data'
-import { appInfoHandler } from './ipc/app'
-import { isTrustedSender, wrapHandler } from './ipc/guard'
+import { creerScanner } from './core/scan'
+import { creerDialogues } from './dialogues'
+import { environnementReel } from './fs/perimetre'
+import { reprendreInterrompus } from './fs/retrait'
+import { isTrustedSender } from './ipc/guard'
 import type { Logger } from './log'
-import { VersionFutureError } from './store/json-store'
+import { identifiant, type ReglagesStockes, type Services } from './services/contexte'
+import { MARQUE_MESSAGE, appeler } from './services/registre'
+import { VersionFutureError, JsonStore } from './store/json-store'
 import { creerStoreEtat } from './store/state-store'
 
 log.initialize()
@@ -50,13 +57,14 @@ function creerFenetre(): void {
   else void fenetre.loadFile(join(__dirname, '../renderer/index.html'))
 }
 
-function enregistrerIpc(): void {
+function enregistrerIpc(services: Services): void {
   const trusted = (url: string): boolean => isTrustedSender(url, { devOrigin, rendererFile })
-  const info = wrapHandler(
-    appInfoHandler({ nom: app.getName(), version: app.getVersion(), plateforme: process.platform }),
-    trusted
-  )
-  ipcMain.handle(IPC.appInfo, (event, raw) => info(event.senderFrame?.url ?? '', raw))
+  for (const canal of CANAUX) {
+    ipcMain.handle(canal, (event, raw) => {
+      if (!trusted(event.senderFrame?.url ?? '')) throw new Error(`${MARQUE_MESSAGE}Appel refusé.`)
+      return appeler(services, canal, raw)
+    })
+  }
 }
 
 // Instance unique : une seconde ouverture remet la fenêtre existante au premier plan
@@ -70,11 +78,42 @@ if (!app.requestSingleInstanceLock()) {
       fenetre.focus()
     }
   })
+  let services: Services
   void app.whenReady().then(async () => {
     try {
-      getCatalogue() // échoue au démarrage si une donnée embarquée est invalide
-      const { avis } = await creerStoreEtat(app.getPath('userData'), journal).load()
+      const catalogue = getCatalogue() // échoue au démarrage si une donnée embarquée est invalide
+      const dossierDonnees = app.getPath('userData')
+      const etat = creerStoreEtat(dossierDonnees, journal)
+      const { avis } = await etat.load()
       if (avis) journal.info('Chargement des données', { avis })
+      const reglages = new JsonStore<ReglagesStockes>({
+        fichier: join(dossierDonnees, 'settings.json'),
+        versionCourante: 1,
+        schema: z.object({ version: z.literal(1), theme: z.enum(['auto', 'clair', 'sombre']) }),
+        creer: () => ({ version: 1 as const, theme: 'auto' as const }),
+        journal,
+        mode: 0o600
+      })
+      await reglages.load()
+      const ctx = {
+        dossierDonnees,
+        env: environnementReel(homedir(), dossierDonnees),
+        scanner: creerScanner(catalogue.scanRules),
+        journal
+      }
+      // Une installation coupée par un arrêt brutal est remise en ordre avant d'ouvrir la fenêtre
+      const reprises = (await reprendreInterrompus(ctx)).length
+      services = {
+        etat,
+        reglages,
+        ctx,
+        catalogue,
+        info: { nom: app.getName(), version: app.getVersion(), plateforme: process.platform, reprises },
+        dialogues: creerDialogues(),
+        nouvelId: identifiant,
+        maintenant: () => new Date(),
+        imports: new Map()
+      }
     } catch (erreur) {
       journal.error('Démarrage impossible', { type: erreur instanceof Error ? erreur.name : 'inconnu' })
       dialog.showErrorBox(
@@ -86,7 +125,7 @@ if (!app.requestSingleInstanceLock()) {
       app.quit()
       return
     }
-    enregistrerIpc()
+    enregistrerIpc(services)
     creerFenetre()
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) creerFenetre()

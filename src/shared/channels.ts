@@ -1,5 +1,39 @@
 // Noms des canaux IPC. Fichier sans dépendance : le preload en bac à sable
 // ne peut charger que le module electron, donc rien d'autre ne doit y entrer.
-export const IPC = {
-  appInfo: 'app.info'
-} as const
+// Un test vérifie que cette liste est exactement celle de CONTRAT (src/shared/contrat.ts).
+export const CANAUX = [
+  'app.info',
+  'referentiels.get',
+  'reglages.get',
+  'reglages.set',
+  'profil.get',
+  'profil.set',
+  'onboarding.conseil',
+  'onboarding.terminer',
+  'catalogue.liste',
+  'catalogue.detail',
+  'projets.liste',
+  'projets.fiche',
+  'projets.proposition',
+  'projets.creer',
+  'projets.modifier',
+  'projets.skills',
+  'projets.propositionChangements',
+  'projets.accepterChangements',
+  'projets.dupliquer',
+  'projets.archiver',
+  'projets.supprimer',
+  'projets.exporter',
+  'projets.importer.choisir',
+  'projets.importer.confirmer',
+  'dossier.choisir',
+  'dossier.ouvrir',
+  'deploiement.apercu',
+  'deploiement.appliquer',
+  'deploiement.desinstaller',
+  'deploiement.annuler',
+  'deploiement.historique',
+  'arborescence.apercu',
+  'arborescence.appliquer',
+  'arborescence.retirer'
+] as const

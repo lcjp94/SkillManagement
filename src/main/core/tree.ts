@@ -40,6 +40,24 @@ export const DOSSIERS_BESOIN: Record<string, string[]> = {
   finance: ['finance/budgets', 'finance/previsions']
 }
 
+const GABARIT_DU_METIER: Record<string, string> = {
+  developpeur: 'developpement',
+  securite: 'developpement',
+  data: 'recherche',
+  chercheur: 'recherche',
+  juriste: 'juridique',
+  enseignant: 'enseignement',
+  rh: 'rh',
+  finance: 'finance',
+  marketeur: 'marketing',
+  createur: 'marketing'
+}
+
+/** Gabarit proposé d'après le métier ; « documents » convient à tous les autres. */
+export function gabaritPourMetier(metier: string | undefined): string {
+  return metier && Object.hasOwn(GABARIT_DU_METIER, metier) ? GABARIT_DU_METIER[metier]! : 'documents'
+}
+
 export interface DemandeArborescence {
   gabarit: string
   extras: string[]
