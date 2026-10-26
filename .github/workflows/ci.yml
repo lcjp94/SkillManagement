@@ -33,14 +33,23 @@ jobs:
         run: npm run build
 
       - name: Parcours de bout en bout (application compilée)
-        run: npx playwright test
+        run: npx playwright test --reporter=github,list
 
       # Installeur NSIS non signé : aucun certificat n'est requis (voir docs/DISTRIBUTION.md)
       - name: Installeur Windows
         run: npm run package
 
       - name: Application empaquetée, installation et désinstallation silencieuses, mise à jour
-        run: npm run test:installeur
+        run: npm run test:installeur -- --reporter=github,list
+
+      # Les détails d'un échec (captures, contexte) restent consultables
+      - name: Conserver les résultats des tests en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultats-tests
+          path: test-results/
+          if-no-files-found: ignore
 
       - name: Conserver l'installeur
         uses: actions/upload-artifact@v4
