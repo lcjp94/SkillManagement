@@ -259,7 +259,17 @@ test('mise à jour : vérifiée, téléchargée et installée seulement sur dema
     // L'installation silencieuse remplace l'application puis la relance ; on attend la nouvelle version sur le disque
     await expect.poll(() => versionDuFichier(exe), { timeout: 180_000, intervals: [2000] }).toBe('0.1.1')
     // Le relancement automatique est vérifié (il peut être lent sur un poste chargé), puis on arrête ce processus
-    await expect.poll(() => processusLances(dossier), { timeout: 60_000, intervals: [1000] }).toBeGreaterThan(0)
+    try {
+      await expect.poll(() => processusLances(dossier), { timeout: 60_000, intervals: [1000] }).toBeGreaterThan(0)
+    } catch (e) {
+      // Sans relancement, dire ce qu'on voit : l'application a-t-elle démarré (dossier de données créé) puis quitté, ou jamais démarré ?
+      const journal = join(donneesParDefaut, 'logs', 'main.log')
+      const { stdout } = await lancerCommande('powershell.exe', ['-NoProfile', '-Command', 'Get-Process | Where-Object { $_.ProcessName -like "SkillManagement*" } | Measure-Object | Select-Object -ExpandProperty Count']).catch(() => ({ stdout: '?' }))
+      throw new Error(
+        `Aucun relancement après la mise à jour. Dossier de données par défaut créé : ${existsSync(donneesParDefaut)} ; journal : ${existsSync(journal) ? readFileSync(journal, 'utf8').split('\n').slice(-12).join(' / ') : 'absent'} ; processus « SkillManagement* » : ${stdout.trim()} ; session interactive : ${process.env['SESSIONNAME'] ?? 'inconnue'}`,
+        { cause: e }
+      )
+    }
     await arreterProcessus(dossier)
 
     // La nouvelle version démarre et retrouve les données de la personne
