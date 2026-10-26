@@ -14,13 +14,19 @@ export interface SkillAEcrire {
   content: string
 }
 
+/** Vérification d'un fichier de réglage déjà là : il n'est jamais modifié, mais la personne est prévenue s'il ne sert pas. */
+export interface ControleExistant {
+  motif: RegExp
+  message: string
+}
+
 export type FichierPlanifie =
   /** Fichier entier, créé ou remplacé (l'ancien est sauvegardé). */
   | { chemin: string; mode: 'fichier'; contenu: string; slug: string }
   /** Fichier partagé : un bloc balisé par skill, le reste du fichier est conservé. */
   | { chemin: string; mode: 'blocs'; entete: string; blocs: Bloc[] }
   /** Fichier de réglage créé seulement s'il n'existe pas ; un fichier existant n'est jamais modifié. */
-  | { chemin: string; mode: 'creer-si-absent'; contenu: string }
+  | { chemin: string; mode: 'creer-si-absent'; contenu: string; controle?: ControleExistant }
 
 export interface SkillRefuse {
   slug: string
@@ -172,7 +178,16 @@ export const DISPOSITIONS: Record<AssistantId, Disposition> = {
       return {
         fichiers: [
           { chemin: 'CONVENTIONS.md', mode: 'blocs', entete: '# Conventions\n', blocs: prets.map((s) => ({ id: s.slug, texte: s.corps })) },
-          { chemin: '.aider.conf.yml', mode: 'creer-si-absent', contenu: 'read: CONVENTIONS.md\n' }
+          {
+            chemin: '.aider.conf.yml',
+            mode: 'creer-si-absent',
+            contenu: 'read: CONVENTIONS.md\n',
+            controle: {
+              motif: /^\s*read\s*:.*CONVENTIONS\.md|^\s*-\s*CONVENTIONS\.md/m,
+              message:
+                'Votre fichier .aider.conf.yml existe déjà sans la ligne « read: CONVENTIONS.md » : Aider ne chargera pas les skills. Ajoutez cette ligne vous-même ; l’application ne modifie pas ce fichier.'
+            }
+          }
         ],
         refus
       }

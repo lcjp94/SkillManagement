@@ -34,7 +34,7 @@ confirmer par un essai réel dans l'outil avant de passer `verified: true` dans 
 - **Continue** : `alwaysApply: false` ajouté. La première version l'omettait, ce qui, d'après la documentation, rend la règle toujours incluse.
 - **Cursor** : `alwaysApply: false` et `description` (règle proposée selon sa description).
 - **Cline** : texte seul ; la règle est toujours active (documenté), c'est dit dans la description affichée.
-- **Aider** : `.aider.conf.yml` reste créé seulement s'il n'existe pas ; la prise en compte d'un fichier existant sans `read:` est à traiter dans l'aperçu (M4).
+- **Aider** : `.aider.conf.yml` reste créé seulement s'il n'existe pas ; un fichier existant sans `read: CONVENTIONS.md` n'est jamais modifié, mais l'aperçu le signale (M4, voir `docs/ECRITURE.md`).
 - **Copilot** : fichier unique à blocs balisés conservé (le fichier par skill `.instructions.md` n'a pas été retenu : sa prise en charge hors agent de code n'est pas établie par les pages lues).
 - **OpenCode / Claude Code** : `chevauchements()` signale le cas des deux choisis pour le même dossier.
 - Un skill dont le texte contient une balise réservée (`skillforge:begin|end`), vide, ou sans description est refusé par toutes les dispositions.

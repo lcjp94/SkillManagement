@@ -38,6 +38,19 @@ export function listerBlocs(contenu: string): string[] {
   return ids
 }
 
+/** Le bloc complet (balises comprises) tel qu'il figure dans le fichier, ou null s'il est absent. */
+export function extraireBloc(contenu: string, id: string): string | null {
+  const place = localiser(contenu, id)
+  return place ? contenu.slice(place.debut, place.fin) : null
+}
+
+/** Remplace un bloc par un autre déjà enveloppé de ses balises (restauration d'une version précédente). */
+export function remplacerBloc(contenu: string, id: string, enveloppe: string): string {
+  const place = localiser(contenu, id)
+  if (!place) return contenu
+  return contenu.slice(0, place.debut) + enveloppe + contenu.slice(place.fin)
+}
+
 /** Un texte qui contiendrait une balise pourrait fermer son propre bloc, ou celui d'un autre skill. */
 export const contientBalise = (texte: string): boolean => /<!--\s*skillforge:(?:begin|end)\b/i.test(texte)
 
