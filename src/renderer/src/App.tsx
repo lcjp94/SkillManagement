@@ -139,7 +139,7 @@ export function App() {
             {route.nom === 'projets' && <Projets />}
             {route.nom === 'nouveau-projet' && <CreerProjet />}
             {route.nom === 'projet' && <FicheProjetEcran key={route.id} id={route.id} onglet={route.onglet} installer={route.installer} />}
-            {route.nom === 'bibliotheque' && <Bibliotheque />}
+            {route.nom === 'bibliotheque' && <Bibliotheque key={route.enLigne ?? ''} enLigne={route.enLigne} />}
             {route.nom === 'reglages' && <Reglages />}
           </Coque>
         )}

@@ -1,7 +1,12 @@
 // Services complets sur un dossier temporaire, avec de faux écrans natifs : pour tester le contrat sans Electron.
-import { z } from 'zod'
+import { join } from 'node:path'
+import { CoffreCles, type Chiffrement } from '../../src/main/ai/coffre'
+import { Redactions } from '../../src/main/ai/redactions'
+import { SkillSpector, type Lancer } from '../../src/main/securite/skillspector'
+import { Sources, type ConfigSources } from '../../src/main/sources/github'
 import { getCatalogue } from '../../src/shared/data'
-import type { Dialogues, ReglagesStockes, Services } from '../../src/main/services/contexte'
+import { ReglagesStockesSchema, type ReglagesStockes } from '../../src/shared/schemas/reglages'
+import type { Dialogues, Services } from '../../src/main/services/contexte'
 import { JsonStore } from '../../src/main/store/json-store'
 import { creerStoreEtat } from '../../src/main/store/state-store'
 import { creerBanc, type Banc } from './disque'
@@ -12,7 +17,21 @@ export interface BancServices extends Banc {
   ecrans: { dossiers: (string | null)[]; fichiersProjet: (string | null)[]; exports: { nom: string; contenu: string }[]; ouverts: string[] }
 }
 
-export async function creerBancServices(): Promise<BancServices> {
+/** Chiffrement de test : brouille le texte (jamais lisible tel quel dans le fichier), sans dépendre du système. */
+export const chiffrementDeTest: Chiffrement = {
+  disponible: () => true,
+  chiffrer: (t) => Buffer.from(`enc:${[...t].reverse().join('')}`),
+  dechiffrer: (b) => [...b.toString().replace(/^enc:/, '')].reverse().join('')
+}
+
+export interface OptionsBanc {
+  /** Faux lanceur pour l'analyse approfondie ; sans lui, l'outil est absent. */
+  lancerApprofondie?: Lancer
+  sources?: Partial<ConfigSources>
+  chiffrement?: Chiffrement
+}
+
+export async function creerBancServices(options: OptionsBanc = {}): Promise<BancServices> {
   const banc = await creerBanc()
   const ecrans: BancServices['ecrans'] = { dossiers: [], fichiersProjet: [], exports: [], ouverts: [] }
   const dialogues: Dialogues = {
@@ -27,12 +46,14 @@ export async function creerBancServices(): Promise<BancServices> {
   const etat = creerStoreEtat(banc.donnees)
   await etat.load()
   const reglages = new JsonStore<ReglagesStockes>({
-    fichier: `${banc.donnees}/settings.json`,
+    fichier: join(banc.donnees, 'settings.json'),
     versionCourante: 1,
-    schema: z.object({ version: z.literal(1), theme: z.enum(['auto', 'clair', 'sombre']) }),
+    schema: ReglagesStockesSchema,
     creer: () => ({ version: 1 as const, theme: 'auto' as const })
   })
   await reglages.load()
+  const chiffrement = options.chiffrement ?? chiffrementDeTest
+  const skillspector = new SkillSpector(options.lancerApprofondie ? { executable: 'skillspector-de-test', lancer: options.lancerApprofondie } : { executable: null })
   let n = 0
   let minute = 0
   const s: Services = {
@@ -40,11 +61,18 @@ export async function creerBancServices(): Promise<BancServices> {
     reglages,
     ctx: banc.ctx,
     catalogue: getCatalogue(),
-    info: { nom: 'SkillManagement', version: '0.1.0', plateforme: 'win32', reprises: 0 },
+    info: { nom: 'SkillManagement', version: '0.1.0', plateforme: 'win32', reprises: 0, analyseApprofondie: await skillspector.info() },
     dialogues,
     nouvelId: () => `id-${String(++n).padStart(6, '0')}`,
     maintenant: () => new Date(Date.UTC(2026, 9, 26, 12, ++minute)),
-    imports: new Map()
+    imports: new Map(),
+    coffre: new CoffreCles(join(banc.donnees, 'secrets.bin'), chiffrement),
+    coffreDisponible: chiffrement.disponible(),
+    redactions: new Redactions(),
+    // Les faux serveurs sont en « localhost » ; les noms réels se résolvent vers une adresse publique fixe
+    reseau: { resolveur: async (hote) => (hote === 'localhost' ? ['127.0.0.1'] : ['93.184.216.34']) },
+    skillspector,
+    sources: new Sources({ apiBase: 'http://localhost:1/api', rawBase: 'http://localhost:1/raw', ...options.sources })
   }
   return { ...banc, s, ecrans }
 }

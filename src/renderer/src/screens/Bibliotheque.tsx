@@ -1,9 +1,12 @@
+import { Sparkles, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { BibliothequeSkill } from '@shared/contrat'
 import { appeler, messageErreur, useDonnees } from '../api'
 import { useApp } from '../appContexte'
 import { aller, lien } from '../routes'
-import { Alerte, Analyse, Btn, Chargement, Dialogue, Donnee, Pastille, Poids, pluriel, useNotifs } from '../ui'
+import { Alerte, Analyse, Btn, Chargement, Dialogue, Donnee, Onglets, Pastille, Poids, pluriel, useNotifs } from '../ui'
+import { EnLigne } from './EnLigne'
+import { DialogueRediger } from './Ia'
 
 function Detail({ slug }: { slug: string }) {
   const { donnees } = useDonnees('catalogue.detail', { slug })
@@ -18,7 +21,9 @@ function Detail({ slug }: { slug: string }) {
   )
 }
 
-function LigneSkill({ skill, onAjouter }: { skill: BibliothequeSkill; onAjouter: (s: BibliothequeSkill) => void }) {
+const ORIGINE = { integre: null, genere: 'Rédigé avec une IA', importe: 'Importé de GitHub' } as const
+
+function LigneSkill({ skill, onAjouter, onSupprimer }: { skill: BibliothequeSkill; onAjouter: (s: BibliothequeSkill) => void; onSupprimer: (s: BibliothequeSkill) => void }) {
   const [detail, setDetail] = useState(false)
   return (
     <li className="carte flex flex-col gap-2">
@@ -27,6 +32,7 @@ function LigneSkill({ skill, onAjouter }: { skill: BibliothequeSkill; onAjouter:
           <Donnee>{skill.name}</Donnee>
         </h2>
         <div className="flex flex-wrap items-center gap-1.5">
+          {ORIGINE[skill.source] && <Pastille ton="info">{ORIGINE[skill.source]}</Pastille>}
           {skill.installe && <Pastille ton="ok">Installé</Pastille>}
           {skill.selectionneDans.length > 0 && <Pastille ton="info">Sélectionné</Pastille>}
           <Analyse statut={skill.analyse} />
@@ -59,20 +65,29 @@ function LigneSkill({ skill, onAjouter }: { skill: BibliothequeSkill; onAjouter:
         <Btn petit ton="discret" aria-expanded={detail} onClick={() => setDetail(!detail)}>
           {detail ? 'Masquer le détail' : 'Voir le détail'}
         </Btn>
+        {skill.source !== 'integre' && (
+          <Btn petit ton="discret" onClick={() => onSupprimer(skill)}>
+            <Trash2 size={14} aria-hidden="true" />
+            Supprimer
+          </Btn>
+        )}
       </div>
       {detail && <Detail slug={skill.slug} />}
     </li>
   )
 }
 
-export function Bibliotheque() {
+export function Bibliotheque({ enLigne }: { enLigne: string | null }) {
   const { ref } = useApp()
   const { toast } = useNotifs()
-  const { donnees, erreur, chargement } = useDonnees('catalogue.liste')
+  const { donnees, erreur, chargement, recharger } = useDonnees('catalogue.liste')
   const projets = useDonnees('projets.liste', {})
+  const ia = useDonnees('ia.etat')
+  const [onglet, setOnglet] = useState<'catalogue' | 'en-ligne'>(enLigne !== null ? 'en-ligne' : 'catalogue')
   const [recherche, setRecherche] = useState('')
   const [categorie, setCategorie] = useState('')
   const [ajout, setAjout] = useState<BibliothequeSkill | null>(null)
+  const [rediger, setRediger] = useState(false)
 
   const resultats = useMemo(() => {
     const q = recherche.trim().toLowerCase()
@@ -92,49 +107,99 @@ export function Bibliotheque() {
     }
   }
 
+  const supprimer = async (s: BibliothequeSkill) => {
+    try {
+      await appeler('skills.supprimer', { slug: s.slug })
+      toast(`« ${s.name} » est supprimé de vos skills.`)
+      recharger()
+    } catch (e) {
+      toast(messageErreur(e))
+    }
+  }
+
+  const apresCreation = () => {
+    recharger()
+    toast('Le skill est enregistré dans votre bibliothèque.')
+  }
+
   return (
     <div className="flex flex-col gap-5">
-      <header>
-        <h1>Bibliothèque</h1>
-        <p className="mt-1 text-doux">Tous les skills disponibles. « Sélectionné » veut dire retenu dans un projet ; « Installé » veut dire écrit sur votre disque.</p>
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1>Bibliothèque</h1>
+          <p className="mt-1 text-doux">Tous les skills disponibles. « Sélectionné » veut dire retenu dans un projet ; « Installé » veut dire écrit sur votre disque.</p>
+        </div>
+        {ia.donnees?.configure && (
+          <Btn onClick={() => setRediger(true)}>
+            <Sparkles size={16} aria-hidden="true" />
+            Rédiger un skill avec une IA
+          </Btn>
+        )}
       </header>
-      <div className="grid gap-3 sm:grid-cols-[1fr_14rem]">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="recherche" className="font-semibold">
-            Rechercher un skill
-          </label>
-          <input id="recherche" type="search" className="champ" value={recherche} onChange={(e) => setRecherche(e.target.value)} />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="categorie" className="font-semibold">
-            Catégorie
-          </label>
-          <select id="categorie" className="champ" value={categorie} onChange={(e) => setCategorie(e.target.value)}>
-            <option value="">Toutes</option>
-            {ref.categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      {erreur && (
-        <Alerte ton="erreur" annonce>
-          {erreur}
-        </Alerte>
-      )}
-      {chargement && !donnees && <Chargement />}
-      {donnees && (
-        <p aria-live="polite" className="text-sm text-doux">
-          {pluriel(resultats.length, 'skill', 'skills')}
-        </p>
-      )}
-      <ul className="grid gap-3 md:grid-cols-2">
-        {resultats.map((s) => (
-          <LigneSkill key={s.slug} skill={s} onAjouter={setAjout} />
-        ))}
-      </ul>
+
+      <Onglets
+        libelle="Origine des skills"
+        actif={onglet}
+        onChoisir={setOnglet}
+        onglets={[
+          { id: 'catalogue', libelle: 'Mes skills et le catalogue' },
+          { id: 'en-ligne', libelle: 'Chercher en ligne' }
+        ]}
+      >
+        {onglet === 'en-ligne' ? (
+          <EnLigne
+            requeteInitiale={enLigne ?? ''}
+            onImporte={() => {
+              recharger()
+              toast('Le skill est importé dans votre bibliothèque.')
+            }}
+          />
+        ) : (
+          <div className="flex flex-col gap-5">
+            <div className="grid gap-3 sm:grid-cols-[1fr_14rem]">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="recherche" className="font-semibold">
+                  Rechercher un skill
+                </label>
+                <input id="recherche" type="search" className="champ" value={recherche} onChange={(e) => setRecherche(e.target.value)} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="categorie" className="font-semibold">
+                  Catégorie
+                </label>
+                <select id="categorie" className="champ" value={categorie} onChange={(e) => setCategorie(e.target.value)}>
+                  <option value="">Toutes</option>
+                  {ref.categories.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                  {(donnees ?? []).some((s) => s.source !== 'integre') && <option value="importé">importé</option>}
+                  {(donnees ?? []).some((s) => s.category === 'rédigé avec une IA') && <option value="rédigé avec une IA">rédigé avec une IA</option>}
+                </select>
+              </div>
+            </div>
+            {erreur && (
+              <Alerte ton="erreur" annonce>
+                {erreur}
+              </Alerte>
+            )}
+            {chargement && !donnees && <Chargement />}
+            {donnees && (
+              <p aria-live="polite" className="text-sm text-doux">
+                {pluriel(resultats.length, 'skill', 'skills')}
+              </p>
+            )}
+            <ul className="grid gap-3 md:grid-cols-2">
+              {resultats.map((s) => (
+                <LigneSkill key={s.slug} skill={s} onAjouter={setAjout} onSupprimer={supprimer} />
+              ))}
+            </ul>
+          </div>
+        )}
+      </Onglets>
+
+      <DialogueRediger ouvert={rediger} onFermer={() => setRediger(false)} onCree={() => (setRediger(false), apresCreation())} />
 
       <Dialogue ouvert={ajout !== null} titre="Ajouter à un projet" onFermer={() => setAjout(null)} pied={<Btn onClick={() => setAjout(null)}>Annuler</Btn>}>
         {ajout && (

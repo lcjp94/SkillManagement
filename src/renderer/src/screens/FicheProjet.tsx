@@ -5,7 +5,7 @@ import type { AssistantId } from '@shared/schemas/catalog'
 import { appeler, messageErreur, useDonnees } from '../api'
 import { useApp } from '../appContexte'
 import { aller, lien, type Onglet } from '../routes'
-import { Alerte, Btn, CaseCarte, Champ, Chargement, Dialogue, Donnee, Onglets, PanneauOnglet, Pastille, useNotifs } from '../ui'
+import { Alerte, Btn, CaseCarte, Champ, Chargement, Dialogue, Donnee, Onglets, Pastille, useNotifs } from '../ui'
 import { OngletArborescence } from './OngletArborescence'
 import { OngletDeploiements } from './OngletDeploiements'
 import { OngletHistorique } from './OngletHistorique'
@@ -236,13 +236,12 @@ export function FicheProjetEcran({ id, onglet, installer }: { id: string; onglet
           { id: 'deploiements', libelle: 'Déploiements' },
           { id: 'historique', libelle: 'Historique' }
         ]}
-      />
-      <PanneauOnglet actif={onglet}>
+      >
         {onglet === 'skills' && <OngletSkills fiche={fiche} onChange={recharger} onSuggestions={() => setSuggestions(true)} />}
         {onglet === 'arborescence' && <OngletArborescence fiche={fiche} onChange={recharger} />}
         {onglet === 'deploiements' && <OngletDeploiements fiche={fiche} onChange={recharger} ouvrirAuto={installer} />}
         {onglet === 'historique' && <OngletHistorique projetId={projet.id} />}
-      </PanneauOnglet>
+      </Onglets>
 
       <DialogueModifier
         key={`${projet.modifieLe}-${modifier}`}

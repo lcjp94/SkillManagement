@@ -35,5 +35,21 @@ export const CANAUX = [
   'deploiement.historique',
   'arborescence.apercu',
   'arborescence.appliquer',
-  'arborescence.retirer'
+  'arborescence.retirer',
+  'ia.etat',
+  'ia.enregistrer',
+  'ia.tester',
+  'ia.rediger',
+  'ia.lire',
+  'ia.annuler',
+  'skills.analyser',
+  'skills.creer',
+  'skills.supprimer',
+  'sources.liste',
+  'sources.ajouter',
+  'sources.retirer',
+  'sources.adresse',
+  'sources.rechercher',
+  'sources.apercu',
+  'sources.importer'
 ] as const

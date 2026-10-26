@@ -4,6 +4,7 @@ import type { AssistantId, LevelId } from '@shared/schemas/catalog'
 import { appeler, messageErreur, useDonnees } from '../api'
 import { useApp } from '../appContexte'
 import { Alerte, Btn, CaseCarte, Champ, useNotifs } from '../ui'
+import { SectionIa } from './Ia'
 
 const THEMES: { id: ReglagesVue['theme']; libelle: string }[] = [
   { id: 'auto', libelle: 'Automatique (comme votre ordinateur)' },
@@ -126,16 +127,35 @@ export function Reglages() {
       </header>
       <Profil />
       <Apparence />
-      <section aria-labelledby="titre-redaction" className="carte flex flex-col gap-2">
+      <section aria-labelledby="titre-redaction" className="carte flex flex-col gap-3">
         <h2 id="titre-redaction">Rédaction de skills avec une IA</h2>
-        <p className="text-doux">Cette fonction facultative n’est pas encore disponible dans cette version. Tout le reste fonctionne sans compte, sans clé et sans connexion internet.</p>
+        <SectionIa />
+      </section>
+      <section aria-labelledby="titre-approfondie" className="carte flex flex-col gap-2">
+        <h2 id="titre-approfondie">Analyse approfondie</h2>
+        {info.analyseApprofondie.disponible ? (
+          <p>Une analyse approfondie est disponible sur cet ordinateur : elle complète l’analyse de sécurité habituelle, et vous pouvez la lancer avant chaque installation. Elle fonctionne sans internet et n’envoie rien.</p>
+        ) : (
+          <p className="text-doux">L’analyse de sécurité habituelle est toujours active. Une analyse approfondie facultative devient disponible si l’outil qui la fait est installé sur cet ordinateur.</p>
+        )}
+        <details>
+          <summary>Voir le détail</summary>
+          <p className="mt-1 text-sm text-doux">
+            {info.analyseApprofondie.disponible
+              ? `Outil détecté : SkillSpector${info.analyseApprofondie.version ? ` (${info.analyseApprofondie.version})` : ''}. Il est lancé sans service d'IA distant (option --no-llm), dans un dossier temporaire supprimé ensuite.`
+              : "Outil non détecté : SkillSpector (NVIDIA), à installer par vous-même."}{' '}
+            <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" rel="noopener noreferrer">
+              Page du projet
+            </a>
+          </p>
+        </details>
       </section>
       <section aria-labelledby="titre-apropos" className="carte flex flex-col gap-2">
         <h2 id="titre-apropos">À propos</h2>
         <p>
           {info.nom} version {info.version}. Licence MIT.
         </p>
-        <p className="text-doux">Vos projets, votre profil et vos réglages restent sur cet ordinateur : l’application n’envoie rien sur internet.</p>
+        <p className="text-doux">Vos projets, votre profil et vos réglages restent sur cet ordinateur. L’application ne se connecte à internet que si vous le demandez : pour une rédaction avec le service d’IA que vous avez choisi, ou pour chercher des skills sur GitHub.</p>
       </section>
     </div>
   )

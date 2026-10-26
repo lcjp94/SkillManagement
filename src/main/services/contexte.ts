@@ -8,7 +8,13 @@ import { GABARITS } from '../core/tree'
 import type { ContexteDisque } from '../fs/contexte'
 import type { JsonStore } from '../store/json-store'
 import type { Catalogue } from '@shared/data'
-import type { Reglages, Referentiels, SkillVue, AppInfo } from '@shared/contrat'
+import type { Referentiels, SkillVue, AppInfo } from '@shared/contrat'
+import type { ReglagesStockes } from '@shared/schemas/reglages'
+import type { CoffreCles } from '../ai/coffre'
+import type { OptionsRequete } from '../ai/http'
+import type { Redactions } from '../ai/redactions'
+import type { SkillSpector } from '../securite/skillspector'
+import type { Sources } from '../sources/github'
 import type { AssistantId, Skill } from '@shared/schemas/catalog'
 import type { State } from '@shared/schemas/state'
 
@@ -22,9 +28,7 @@ export interface Dialogues {
   enregistrerFichierProjet(nomSuggere: string, contenu: string): Promise<boolean>
 }
 
-export interface ReglagesStockes extends Reglages {
-  version: 1
-}
+export type { ReglagesStockes }
 
 export interface Services {
   etat: JsonStore<State>
@@ -37,6 +41,14 @@ export interface Services {
   maintenant: () => Date
   /** Analyses d'import en attente de confirmation, gardées côté principal : l'interface ne voit qu'un jeton. */
   imports: Map<string, AnalyseImport>
+  coffre: CoffreCles
+  /** Le stockage sécurisé du système est-il disponible ? Sans lui, aucune clé n'est enregistrée. */
+  coffreDisponible: boolean
+  redactions: Redactions
+  /** Réglages réseau des appels vers les services d'IA (remplacés dans les tests). */
+  reseau: OptionsRequete
+  skillspector: SkillSpector
+  sources: Sources
 }
 
 export const identifiant = (): string => randomUUID()

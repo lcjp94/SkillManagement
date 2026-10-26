@@ -19,13 +19,13 @@ Conventions d'interface : tout le texte est en français, vouvoiement neutre. Le
 
 | # | Défaut | Preuve | État |
 |---|---|---|---|
-| 1 | Réglage IA par fichier JSON | Aucun champ de texte libre ni mention de fichier dans les Réglages (`#1 #10`) ; l'IA elle-même arrive en M6 | **Partiel** |
+| 1 | Réglage IA par fichier JSON | Aucun fichier à éditer : l'IA se règle par formulaire (service, adresse, modèle, clé, « Vérifier »), la clé est chiffrée et ne revient jamais (`ia-sources.spec.ts`, M6) | Traité |
 | 2 | « X installés » sans écriture | Fin du parcours : « sélectionnés », jamais « N skills installés » ; « installés » seulement après écriture, lu sur le disque (`#2…`) | Traité |
 | 3 | Pas de dossier ni d'aperçu par assistant | Dossier demandé, aperçu sans écriture (contenu du dossier vérifié vide), chemins propres à Cursor (`#3`) | Traité |
 | 4 | Clé demandée en premier | Aucun champ mot de passe ni libellé « clé/API » au démarrage | Traité |
 | 5 | Dossier non mémorisé | Après l'aperçu puis rechargement de la fenêtre, assistant et dossier sont repris | Traité |
 | 6 | Sélection impossible à installer | Message « … est sélectionné dans … » avec bouton « Installer » menant à l'aperçu, puis écriture vérifiée (`#6`) | Traité |
-| 7 | Gemini et Abacus.AI absents | Les 10 fournisseurs relèvent de M6 | **Non fait (M6)** |
+| 7 | Gemini et Abacus.AI absents | Les 10 services sont proposés dans la liste du formulaire (test de bout en bout) ; **aucun n'a été essayé avec une vraie clé** (M6) | Traité (liste), non vérifié (vraies clés) |
 | 8 | Écrans périmés | Un fichier supprimé sur le disque est vu au retour sur la fenêtre (« 1 skill à installer »), sans action | Traité (événement de focus simulé) |
 | 9 | « Installer 15 skills » | 12 installés + 3 nouveaux → « Installer 3 nouveaux skills », les 12 décochés « Déjà installés » ; en cocher un → « Installer 4 skills » | Traité |
 | 10 | « 210 skills jamais utilisés » | Aucun écran visité ne contient de terme d'usage (expression régulière sur le texte visible) | Traité |
@@ -51,6 +51,6 @@ Conventions d'interface : tout le texte est en français, vouvoiement neutre. Le
 - **Jargon** : le test parcourt les écrans principaux et l'aperçu d'installation ; les dialogues de désinstallation, d'annulation et de suppression ne sont pas tous passés au test.
 - Mise en page vérifiée sur captures à 1080 px (clair et sombre) ; la barre du haut des fenêtres étroites n'est pas vérifiée visuellement.
 - **Non exposé** : la portée « tous mes projets » de Claude Code (dossier personnel) existe côté services mais n'a pas d'écran.
-- **Absent (M6)** : réglages de l'IA et des 10 fournisseurs, création d'un skill, recherche dans des bibliothèques en ligne, SkillSpector. L'interface le dit (« pas encore disponible ») au lieu de montrer des champs inertes.
+- M6 a ajouté la rédaction avec une IA, la recherche en ligne et l'analyse approfondie : voir `docs/IA-ET-SOURCES.md`. L'audit axe couvre maintenant aussi les quatre onglets de la fiche projet (un défaut réel trouvé : `aria-controls` d'un onglet pointait vers un panneau inexistant).
 - Le rechargement au retour sur la fenêtre est testé par un événement `focus` simulé, pas par un vrai changement de fenêtre.
 - La CI (Windows) lance désormais ces parcours (environ 1 minute 10 en local) ; elle n'a toujours jamais tourné.

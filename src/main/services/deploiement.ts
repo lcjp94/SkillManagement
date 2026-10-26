@@ -1,15 +1,19 @@
 // Services d'installation : l'interface désigne un projet et un assistant, jamais un chemin à écrire ni un contenu.
-import type { ApercuVue, Entree, HistoriqueVue, RapportRetraitVue, Sortie } from '@shared/contrat'
+import type { ApercuVue, ApprofondieVue, Entree, HistoriqueVue, RapportRetraitVue, Sortie } from '@shared/contrat'
 import type { AssistantId } from '@shared/schemas/catalog'
 import type { Project } from '@shared/schemas/state'
 import { choisirSkills } from '../core/deploiement'
+import { corpsDuSkill } from '../core/frontmatter'
 import { chevauchements, getDisposition, type SkillAEcrire } from '../core/layouts'
 import { selectionnes, remplacerProjet, trouverProjet } from '../core/projets'
 import { planArborescence } from '../core/tree'
 import { appliquer, apercu, type Apercu, type DemandeDeploiement } from '../fs/deploiement'
 import { lireManifestes } from '../fs/manifestes'
 import { annulerDerniere, desinstaller, listerInstalles, retirerArborescence } from '../fs/retrait'
+import { markdownDuSkill } from './analyse'
 import { ErreurUtilisateur, libelleAssistant, tousLesSkills, type Services } from './contexte'
+
+const versApercuVue = (a: Apercu): ApercuVue => a
 
 const PAS_DE_DOSSIER = 'Choisissez d’abord le dossier où installer les skills de ce projet.'
 
@@ -44,11 +48,44 @@ async function preparer(s: Services, e: Entree<'deploiement.apercu'>) {
   const parSlug = new Map(tousLesSkills(s, etat).map((k) => [k.slug, k]))
   const retenus = selectionnes(projet).filter((slug) => parSlug.has(slug))
   const presents = (await listerInstalles(s.ctx, { racine, portee: 'projet', cible: e.assistant })).map((i) => i.slug)
-  const choix = choisirSkills(retenus, presents, { reinstaller: e.reinstaller, tout: e.tout })
-  const skills: SkillAEcrire[] = choix.aEcrire.map((slug) => {
+  const options = { reinstaller: e.reinstaller, tout: e.tout }
+  let choix = choisirSkills(retenus, presents, options)
+  let skills: SkillAEcrire[] = choix.aEcrire.map((slug) => {
     const k = parSlug.get(slug)!
     return { slug, name: k.name, description: k.description, content: k.content }
   })
+
+  // Analyse approfondie (facultative) : elle ne peut que retirer des skills de ce qui sera écrit
+  const approfondie: ApprofondieVue = { disponible: s.info.analyseApprofondie.disponible, executee: false, erreurs: [] }
+  const refusApprofondi: Apercu['refus'] = []
+  const aConfirmerApprofondi: Apercu['aConfirmer'] = []
+  if (e.analyseApprofondie && approfondie.disponible && skills.length > 0) {
+    const lots = await s.skillspector.analyser(skills.map((k) => ({ slug: k.slug, markdown: markdownDuSkill(k.slug, k.description, corpsDuSkill(k.content)) })))
+    approfondie.executee = true
+    const confirmes = new Set(e.avertissementsConfirmes ?? [])
+    const exclus = new Set<string>()
+    for (const k of skills) {
+      const lot = lots.get(k.slug)
+      if (!lot) continue
+      if (!lot.ok) {
+        approfondie.erreurs.push(k.slug)
+        continue
+      }
+      if (lot.resultat.statut === 'danger') {
+        refusApprofondi.push({ slug: k.slug, raison: 'L’analyse approfondie recommande de ne pas installer ce skill.', problemes: lot.resultat.problemes })
+        exclus.add(k.slug)
+      } else if (lot.resultat.statut === 'warning' && !confirmes.has(k.slug)) {
+        aConfirmerApprofondi.push({ slug: k.slug, problemes: lot.resultat.problemes })
+        exclus.add(k.slug)
+      }
+    }
+    if (exclus.size > 0) {
+      skills = skills.filter((k) => !exclus.has(k.slug))
+      // Le libellé du bouton suit ce qui sera réellement écrit
+      choix = choisirSkills(retenus.filter((slug) => !exclus.has(slug)), presents, options)
+    }
+  }
+
   const demande: DemandeDeploiement = {
     cible: e.assistant,
     racine,
@@ -58,30 +95,30 @@ async function preparer(s: Services, e: Entree<'deploiement.apercu'>) {
     avertissementsConfirmes: e.avertissementsConfirmes,
     ecrasementsConfirmes: e.ecrasementsConfirmes
   }
-  return { projet, racine, choix, demande }
+  const completer = (a: Apercu): ApercuVue => ({ ...a, refus: [...a.refus, ...refusApprofondi], aConfirmer: [...a.aConfirmer, ...aConfirmerApprofondi] })
+  return { projet, racine, choix, demande, approfondie, completer }
 }
 
-const versApercuVue = (a: Apercu): ApercuVue => a
-
 export async function apercuDeploiement(s: Services, e: Entree<'deploiement.apercu'>): Promise<Sortie<'deploiement.apercu'>> {
-  const { projet, racine, choix, demande } = await preparer(s, e)
+  const { projet, racine, choix, demande, approfondie, completer } = await preparer(s, e)
   const a = await apercu(s.ctx, demande)
   // Le choix de dossier et d'assistant est mémorisé dès l'aperçu : on le retrouve en revenant sur l'écran
   await memoriser(s, projet.id, e.assistant, racine)
-  return { choix, apercu: versApercuVue(a), chevauchements: chevauchements(projet.assistants).map((c) => c.message), dossier: a.racine }
+  return { choix, apercu: completer(a), chevauchements: chevauchements(projet.assistants).map((c) => c.message), dossier: a.racine, approfondie }
 }
 
 export async function appliquerDeploiement(s: Services, e: Entree<'deploiement.appliquer'>): Promise<Sortie<'deploiement.appliquer'>> {
-  const { projet, racine, choix, demande } = await preparer(s, e)
+  const { projet, racine, choix, demande, approfondie, completer } = await preparer(s, e)
   const r = await appliquer(s.ctx, demande)
   await memoriser(s, projet.id, e.assistant, racine)
   return {
     statut: r.statut,
     ...(r.statut === 'applique' ? { id: r.id } : {}),
     choix,
-    apercu: versApercuVue(r.apercu),
+    apercu: completer(r.apercu),
     chevauchements: chevauchements(projet.assistants).map((c) => c.message),
-    dossier: r.apercu.racine
+    dossier: r.apercu.racine,
+    approfondie
   }
 }
 

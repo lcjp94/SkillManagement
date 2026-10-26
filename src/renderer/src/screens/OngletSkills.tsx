@@ -3,7 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import type { ChangementsVue, FicheProjet, SkillProjetVue } from '@shared/contrat'
 import { appeler, messageErreur, useDonnees } from '../api'
 import { useApp } from '../appContexte'
+import { lien } from '../routes'
 import { Alerte, Analyse, Btn, CaseCarte, Chargement, Dialogue, Donnee, Pastille, Poids, pluriel, useNotifs } from '../ui'
+import { DialogueRediger } from './Ia'
 
 function pourquoi(skill: SkillProjetVue, libelleBesoin: (id: string) => string): string {
   if (skill.introuvable) return 'Ce skill n’est plus dans le catalogue.'
@@ -17,6 +19,8 @@ export function OngletSkills({ fiche, onChange, onSuggestions }: { fiche: FicheP
   const { ref } = useApp()
   const { toast } = useNotifs()
   const [ajouter, setAjouter] = useState(false)
+  const ia = useDonnees('ia.etat')
+  const [redaction, setRedaction] = useState<{ sujet: string; besoin: string } | null>(null)
   // La case change tout de suite ; la relecture du projet confirme ensuite
   const [optimiste, setOptimiste] = useState<Record<string, boolean>>({})
   // Une relecture qui n'a pas encore rattrapé le changement ne doit pas le défaire : on n'efface que ce que le projet confirme
@@ -55,11 +59,24 @@ export function OngletSkills({ fiche, onChange, onSuggestions }: { fiche: FicheP
                     {c.libelle} : {pluriel(c.retenus.length, 'skill', 'skills')}
                   </p>
                   {c.lacune && (
-                    <p className="text-sm">
-                      {c.disponibles.length > 0
-                        ? `${pluriel(c.disponibles.length, 'autre skill du catalogue y répond', 'autres skills du catalogue y répondent')} : ajoutez-les ci-dessous.`
-                        : 'Aucun autre skill du catalogue n’y répond. La recherche en ligne et la rédaction assistée arriveront dans une prochaine version.'}
-                    </p>
+                    <div className="flex flex-col gap-2">
+                      <p className="text-sm">
+                        {c.disponibles.length > 0
+                          ? `${pluriel(c.disponibles.length, 'autre skill du catalogue y répond', 'autres skills du catalogue y répondent')} : ajoutez-les ci-dessous.`
+                          : 'Aucun autre skill du catalogue n’y répond.'}
+                      </p>
+                      {/* D'abord les bibliothèques existantes, ensuite seulement la rédaction par une IA */}
+                      <div className="flex flex-wrap gap-2">
+                        <a href={lien.enLigne(c.libelle)} className="btn btn-petit">
+                          Chercher en ligne
+                        </a>
+                        {ia.donnees?.configure && (
+                          <Btn petit onClick={() => setRedaction({ sujet: c.libelle, besoin: c.libelle })}>
+                            Rédiger avec une IA
+                          </Btn>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </Alerte>
               </li>
@@ -125,6 +142,22 @@ export function OngletSkills({ fiche, onChange, onSuggestions }: { fiche: FicheP
         </ul>
       </section>
 
+      <DialogueRediger
+        ouvert={redaction !== null}
+        sujetInitial={redaction?.sujet}
+        besoin={redaction?.besoin}
+        onFermer={() => setRedaction(null)}
+        onCree={async (slug) => {
+          setRedaction(null)
+          try {
+            await appeler('projets.skills', { id, retenir: [slug], ecarter: [] })
+            toast('Le skill est rédigé et sélectionné dans ce projet.')
+            onChange()
+          } catch (e) {
+            toast(messageErreur(e))
+          }
+        }}
+      />
       <DialogueAjouter fiche={fiche} ouvert={ajouter} onFermer={() => setAjouter(false)} onChange={onChange} />
     </div>
   )

@@ -14,7 +14,9 @@ export interface Session {
   fermer: () => Promise<void>
 }
 
-export async function lancer(options: { dossiers?: number; donnees?: string; importFichier?: string; exportFichier?: string } = {}): Promise<Session> {
+export async function lancer(
+  options: { dossiers?: number; donnees?: string; importFichier?: string; exportFichier?: string; github?: string; analyseApprofondie?: boolean } = {}
+): Promise<Session> {
   const donnees = options.donnees ?? mkdtempSync(join(tmpdir(), 'sm-e2e-donnees-'))
   const dossiers = Array.from({ length: options.dossiers ?? 2 }, () => mkdtempSync(join(tmpdir(), 'sm-e2e-projet-')))
   const app = await electron.launch({
@@ -24,7 +26,10 @@ export async function lancer(options: { dossiers?: number; donnees?: string; imp
       // Crochets de test, lus seulement par l'application non empaquetée
       SKILLMANAGEMENT_TEST_DOSSIERS: dossiers.join('|'),
       ...(options.importFichier ? { SKILLMANAGEMENT_TEST_IMPORT: options.importFichier } : {}),
-      ...(options.exportFichier ? { SKILLMANAGEMENT_TEST_EXPORT: options.exportFichier } : {})
+      ...(options.exportFichier ? { SKILLMANAGEMENT_TEST_EXPORT: options.exportFichier } : {}),
+      ...(options.github ? { SKILLMANAGEMENT_TEST_GITHUB: options.github } : {}),
+      // Par défaut l'outil d'analyse approfondie est ignoré : les parcours ne dépendent pas de la machine
+      ...(options.analyseApprofondie ? {} : { SKILLMANAGEMENT_TEST_SKILLSPECTOR: 'aucun' })
     }
   })
   const page = await app.firstWindow()

@@ -1,18 +1,22 @@
-import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, safeStorage, shell } from 'electron'
 import log from 'electron-log/main'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { z } from 'zod'
 import { CANAUX } from '@shared/channels'
 import { getCatalogue } from '@shared/data'
+import { CoffreCles } from './ai/coffre'
+import { Redactions } from './ai/redactions'
 import { creerScanner } from './core/scan'
 import { creerDialogues } from './dialogues'
 import { environnementReel } from './fs/perimetre'
 import { reprendreInterrompus } from './fs/retrait'
 import { isTrustedSender } from './ipc/guard'
 import type { Logger } from './log'
-import { identifiant, type ReglagesStockes, type Services } from './services/contexte'
+import { ReglagesStockesSchema, type ReglagesStockes } from '@shared/schemas/reglages'
+import { SkillSpector } from './securite/skillspector'
+import { CONFIG_PAR_DEFAUT, Sources } from './sources/github'
+import { identifiant, type Services } from './services/contexte'
 import { MARQUE_MESSAGE, appeler } from './services/registre'
 import { VersionFutureError, JsonStore } from './store/json-store'
 import { creerStoreEtat } from './store/state-store'
@@ -89,7 +93,7 @@ if (!app.requestSingleInstanceLock()) {
       const reglages = new JsonStore<ReglagesStockes>({
         fichier: join(dossierDonnees, 'settings.json'),
         versionCourante: 1,
-        schema: z.object({ version: z.literal(1), theme: z.enum(['auto', 'clair', 'sombre']) }),
+        schema: ReglagesStockesSchema,
         creer: () => ({ version: 1 as const, theme: 'auto' as const }),
         journal,
         mode: 0o600
@@ -103,16 +107,33 @@ if (!app.requestSingleInstanceLock()) {
       }
       // Une installation coupée par un arrêt brutal est remise en ordre avant d'ouvrir la fenêtre
       const reprises = (await reprendreInterrompus(ctx)).length
+      // Les clés d'API sont chiffrées par le système (DPAPI sous Windows) ; sans lui, aucune clé n'est enregistrée
+      const coffre = new CoffreCles(join(dossierDonnees, 'secrets.bin'), {
+        disponible: () => safeStorage.isEncryptionAvailable(),
+        chiffrer: (texte) => safeStorage.encryptString(texte),
+        dechiffrer: (octets) => safeStorage.decryptString(octets)
+      })
+      // Crochets de test, lus seulement par une application non empaquetée
+      const testBase = app.isPackaged ? undefined : process.env['SKILLMANAGEMENT_TEST_GITHUB']
+      const sansOutil = !app.isPackaged && process.env['SKILLMANAGEMENT_TEST_SKILLSPECTOR'] === 'aucun'
+      const skillspector = new SkillSpector(sansOutil ? { executable: null } : {})
+      const analyseApprofondie = await skillspector.info()
       services = {
         etat,
         reglages,
         ctx,
         catalogue,
-        info: { nom: app.getName(), version: app.getVersion(), plateforme: process.platform, reprises },
+        info: { nom: app.getName(), version: app.getVersion(), plateforme: process.platform, reprises, analyseApprofondie },
         dialogues: creerDialogues(),
         nouvelId: identifiant,
         maintenant: () => new Date(),
-        imports: new Map()
+        imports: new Map(),
+        coffre,
+        coffreDisponible: safeStorage.isEncryptionAvailable(),
+        redactions: new Redactions(),
+        reseau: {},
+        skillspector,
+        sources: new Sources(testBase ? { apiBase: `${testBase}/api`, rawBase: `${testBase}/raw` } : CONFIG_PAR_DEFAUT)
       }
     } catch (erreur) {
       journal.error('Démarrage impossible', { type: erreur instanceof Error ? erreur.name : 'inconnu' })

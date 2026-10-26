@@ -1,0 +1,30 @@
+// Les services d'IA proposés : tous exposent une API compatible OpenAI (/models, /chat/completions).
+// AUCUN n'a été essayé avec une vraie clé dans ce projet : les tests passent contre un faux serveur local.
+
+export interface Fournisseur {
+  id: string
+  libelle: string
+  /** Adresse de base ; vide pour « autre service » (saisie libre). */
+  adresse: string
+  modele: string
+  cle: 'oui' | 'non' | 'selon'
+  /** Page où la personne trouve sa clé (ou où installer le service local). */
+  lien: string
+  /** Service qui tourne sur cet ordinateur : l'adresse « http » locale est acceptée. */
+  local: boolean
+}
+
+export const FOURNISSEURS: Fournisseur[] = [
+  { id: 'openai', libelle: 'ChatGPT (OpenAI)', adresse: 'https://api.openai.com/v1', modele: 'gpt-4o-mini', cle: 'oui', lien: 'https://platform.openai.com/api-keys', local: false },
+  { id: 'anthropic', libelle: 'Claude (Anthropic)', adresse: 'https://api.anthropic.com/v1', modele: 'claude-sonnet-5-5', cle: 'oui', lien: 'https://platform.claude.com/settings/keys', local: false },
+  { id: 'gemini', libelle: 'Gemini (Google)', adresse: 'https://generativelanguage.googleapis.com/v1beta/openai', modele: 'gemini-2.5-flash', cle: 'oui', lien: 'https://aistudio.google.com/apikey', local: false },
+  { id: 'abacus', libelle: 'Abacus.AI (RouteLLM)', adresse: 'https://routellm.abacus.ai/v1', modele: 'route-llm', cle: 'oui', lien: 'https://abacus.ai', local: false },
+  { id: 'mistral', libelle: 'Mistral', adresse: 'https://api.mistral.ai/v1', modele: 'mistral-small-latest', cle: 'oui', lien: 'https://console.mistral.ai/api-keys', local: false },
+  { id: 'openrouter', libelle: 'OpenRouter', adresse: 'https://openrouter.ai/api/v1', modele: 'openai/gpt-4o-mini', cle: 'oui', lien: 'https://openrouter.ai/keys', local: false },
+  { id: 'groq', libelle: 'Groq', adresse: 'https://api.groq.com/openai/v1', modele: 'llama-3.3-70b-versatile', cle: 'oui', lien: 'https://console.groq.com/keys', local: false },
+  { id: 'ollama', libelle: 'Ollama (sur cet ordinateur)', adresse: 'http://localhost:11434/v1', modele: 'llama3.1', cle: 'non', lien: 'https://ollama.com/download', local: true },
+  { id: 'lmstudio', libelle: 'LM Studio (sur cet ordinateur)', adresse: 'http://localhost:1234/v1', modele: '', cle: 'non', lien: 'https://lmstudio.ai', local: true },
+  { id: 'autre', libelle: 'Autre service compatible', adresse: '', modele: '', cle: 'selon', lien: '', local: false }
+]
+
+export const trouverFournisseur = (id: string): Fournisseur | undefined => FOURNISSEURS.find((f) => f.id === id)

@@ -51,6 +51,7 @@ test('#2 #3 #4 #5 #8 #11 : de la sélection à l\'installation vérifiée sur le
     expect(carte!.etat.type).toBe('jamais')
     await expect(page.getByText('Jamais appliqué')).toBeVisible()
     await verifierEcran(page, 'Fiche projet – déploiements')
+    await auditerAccessibilite(page, 'Fiche projet – déploiements')
 
     // --- #3 : le dossier est demandé ; l'aperçu n'écrit rien
     await expect(page.getByText('Aucun dossier choisi').first()).toBeVisible()
@@ -265,6 +266,7 @@ test('#3 : créer un projet en 4 étapes, l\'aperçu change selon l\'assistant, 
     // Arborescence : aperçu, création, retrait
     await page.getByRole('tab', { name: 'Arborescence' }).click()
     await verifierEcran(page, 'Fiche projet – arborescence')
+    await auditerAccessibilite(page, 'Fiche projet – arborescence')
     await page.getByRole('button', { name: 'Aperçu et création' }).click()
     const arbo = page.getByRole('dialog', { name: 'Créer l’arborescence' })
     await expect(arbo).toBeVisible()
@@ -281,6 +283,10 @@ test('#3 : créer un projet en 4 étapes, l\'aperçu change selon l\'assistant, 
     await page.getByRole('tab', { name: 'Historique' }).click()
     await expect(page.getByText(/Cursor · /)).toBeVisible()
     await verifierEcran(page, 'Fiche projet – historique')
+    await auditerAccessibilite(page, 'Fiche projet – historique')
+    await page.getByRole('tab', { name: 'Skills' }).click()
+    await verifierEcran(page, 'Fiche projet – skills')
+    await auditerAccessibilite(page, 'Fiche projet – skills')
   } finally {
     await s.fermer()
   }

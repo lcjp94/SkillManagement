@@ -149,7 +149,7 @@ export function Dialogue({ ouvert, titre, onFermer, children, pied }: DialoguePr
 
 // --- Onglets (modèle ARIA : flèches, Début, Fin) ------------------------------------------------------
 
-export function Onglets<T extends string>({ onglets, actif, onChoisir, libelle }: { onglets: { id: T; libelle: string }[]; actif: T; onChoisir: (id: T) => void; libelle: string }) {
+export function Onglets<T extends string>({ onglets, actif, onChoisir, libelle, children }: { onglets: { id: T; libelle: string }[]; actif: T; onChoisir: (id: T) => void; libelle: string; children: ReactNode }) {
   const refs = useRef<Record<string, HTMLButtonElement | null>>({})
   const base = useId()
   const surTouche = (e: React.KeyboardEvent, index: number) => {
@@ -162,6 +162,7 @@ export function Onglets<T extends string>({ onglets, actif, onChoisir, libelle }
     refs.current[suivant.id]?.focus()
   }
   return (
+    <>
     <div role="tablist" aria-label={libelle} className="flex flex-wrap gap-1 border-b border-separateur">
       {onglets.map((o, i) => (
         <button
@@ -182,14 +183,10 @@ export function Onglets<T extends string>({ onglets, actif, onChoisir, libelle }
         </button>
       ))}
     </div>
-  )
-}
-
-export function PanneauOnglet({ idOnglets, actif, children }: { idOnglets?: string; actif: string; children: ReactNode }) {
-  return (
-    <div role="tabpanel" tabIndex={0} aria-label={idOnglets ?? actif} className="pt-5 outline-offset-4">
+    <div role="tabpanel" id={`${base}-panneau`} aria-labelledby={`${base}-${actif}`} tabIndex={0} className="pt-5 outline-offset-4">
       {children}
     </div>
+    </>
   )
 }
 

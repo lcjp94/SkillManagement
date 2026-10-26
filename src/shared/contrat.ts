@@ -10,7 +10,9 @@ export const AppInfoSchema = z.object({
   version: z.string(),
   plateforme: z.string(),
   /** Installations coupées par un arrêt brutal, remises en ordre au démarrage. */
-  reprises: z.number().int().nonnegative()
+  reprises: z.number().int().nonnegative(),
+  /** Analyse approfondie facultative (outil externe), présente seulement s'il est installé sur l'ordinateur. */
+  analyseApprofondie: z.object({ disponible: z.boolean(), version: z.string().optional() })
 })
 export type AppInfo = z.infer<typeof AppInfoSchema>
 
@@ -174,15 +176,26 @@ export const DemandeDeploiementSchema = z.object({
   reinstaller: Slugs.optional(),
   tout: z.boolean().optional(),
   avertissementsConfirmes: Slugs.optional(),
-  ecrasementsConfirmes: z.array(z.string().max(400)).max(1000).optional()
+  ecrasementsConfirmes: z.array(z.string().max(400)).max(1000).optional(),
+  /** Lance l'analyse approfondie (si disponible) sur les skills à écrire. */
+  analyseApprofondie: z.boolean().optional()
 })
 export type DemandeDeploiementVue = z.infer<typeof DemandeDeploiementSchema>
+
+export const ApprofondieVueSchema = z.object({
+  disponible: z.boolean(),
+  executee: z.boolean(),
+  /** Skills pour lesquels l'analyse n'a pas pu se terminer (elle n'est jamais bloquante). */
+  erreurs: z.array(z.string())
+})
+export type ApprofondieVue = z.infer<typeof ApprofondieVueSchema>
 
 export const ApercuDeploiementSchema = z.object({
   choix: ChoixSkillsSchema,
   apercu: ApercuSchema,
   chevauchements: z.array(z.string()),
-  dossier: z.string()
+  dossier: z.string(),
+  approfondie: ApprofondieVueSchema
 })
 
 export const ResultatApplicationSchema = ApercuDeploiementSchema.extend({
@@ -247,6 +260,82 @@ export type AnalyseImportVue = z.infer<typeof AnalyseImportVueSchema>
 export const ReglagesSchema = z.object({ theme: z.enum(['auto', 'clair', 'sombre']) })
 export type Reglages = z.infer<typeof ReglagesSchema>
 
+// --- IA facultative ------------------------------------------------------------------------------
+
+export const FournisseurVueSchema = z.object({
+  id: z.string(),
+  libelle: z.string(),
+  adresse: z.string(),
+  modele: z.string(),
+  cle: z.enum(['oui', 'non', 'selon']),
+  lien: z.string(),
+  local: z.boolean()
+})
+export type FournisseurVue = z.infer<typeof FournisseurVueSchema>
+
+export const IaEtatSchema = z.object({
+  fournisseurs: z.array(FournisseurVueSchema),
+  /** Le choix enregistré. La clé n'est jamais renvoyée : seulement le fait qu'elle existe. */
+  choix: z.object({ fournisseur: z.string(), adresse: z.string(), modele: z.string(), cleEnregistree: z.boolean() }).nullable(),
+  /** Vrai si une rédaction est possible : un service choisi et, s'il en demande une, une clé enregistrée. */
+  configure: z.boolean(),
+  stockageSecurise: z.boolean()
+})
+export type IaEtat = z.infer<typeof IaEtatSchema>
+
+export const IaReglageSchema = z.object({
+  fournisseur: z.string().max(32),
+  adresse: z.string().max(300).optional(),
+  modele: z.string().max(200),
+  cle: z.string().max(4096).optional()
+})
+
+export const RedactionVueSchema = z.object({
+  etat: z.enum(['en-cours', 'termine', 'erreur', 'annule']),
+  texte: z.string(),
+  erreur: z.string().optional(),
+  skill: z.object({ slug: SlugSchema, name: z.string(), description: z.string(), corps: z.string() }).optional()
+})
+export type RedactionVue = z.infer<typeof RedactionVueSchema>
+
+export const AnalyseSkillVueSchema = z.object({
+  analyse: Analyse,
+  problemes: z.array(ProblemeSchema),
+  approfondie: z.object({
+    disponible: z.boolean(),
+    executee: z.boolean(),
+    statut: Analyse.optional(),
+    problemes: z.array(ProblemeSchema),
+    erreur: z.string().optional()
+  })
+})
+export type AnalyseSkillVue = z.infer<typeof AnalyseSkillVueSchema>
+
+export const NouveauSkillSchema = z.object({
+  slug: SlugSchema.optional(),
+  name: z.string().trim().min(1).max(120),
+  description: z.string().trim().min(1).max(1024),
+  content: z.string().min(1).max(100_000)
+})
+
+// --- Sources en ligne ----------------------------------------------------------------------------
+
+export const ReferenceSkillSchema = z.object({ repo: z.string().max(200), path: z.string().max(300) })
+
+export const SkillDistantVueSchema = ReferenceSkillSchema.extend({ name: z.string(), description: z.string(), url: z.string() })
+
+export const ApercuImportVueSchema = z.object({
+  name: z.string(),
+  slug: SlugSchema,
+  description: z.string(),
+  extrait: z.string(),
+  url: z.string(),
+  licence: z.string().nullable(),
+  analyse: AnalyseSkillVueSchema,
+  dejaImporte: z.object({ slug: SlugSchema, identique: z.boolean() }).nullable()
+})
+export type ApercuImportVue = z.infer<typeof ApercuImportVueSchema>
+
 // --- Les canaux ----------------------------------------------------------------------------------
 
 export const CONTRAT = {
@@ -306,7 +395,26 @@ export const CONTRAT = {
   'deploiement.historique': { entree: z.object({ projetId: Id }), sortie: HistoriqueSchema },
   'arborescence.apercu': { entree: DemandeArborescenceSchema, sortie: ApercuArborescenceSchema },
   'arborescence.appliquer': { entree: DemandeArborescenceSchema, sortie: z.object({ statut: z.enum(['applique', 'rien-a-faire']), apercu: ApercuSchema }) },
-  'arborescence.retirer': { entree: z.object({ projetId: Id }), sortie: RapportRetraitSchema }
+  'arborescence.retirer': { entree: z.object({ projetId: Id }), sortie: RapportRetraitSchema },
+  'ia.etat': { entree: Vide, sortie: IaEtatSchema },
+  'ia.enregistrer': { entree: IaReglageSchema.extend({ supprimerCle: z.boolean().optional() }), sortie: IaEtatSchema },
+  'ia.tester': { entree: IaReglageSchema, sortie: z.object({ ok: z.boolean(), message: z.string(), modeles: z.array(z.string()) }) },
+  'ia.rediger': { entree: z.object({ sujet: z.string().trim().min(3).max(500), besoin: z.string().max(200).optional() }), sortie: z.object({ id: z.string() }) },
+  'ia.lire': { entree: z.object({ id: z.string().max(80) }), sortie: RedactionVueSchema },
+  'ia.annuler': { entree: z.object({ id: z.string().max(80) }), sortie: Rien },
+  'skills.analyser': { entree: NouveauSkillSchema, sortie: AnalyseSkillVueSchema },
+  'skills.creer': { entree: NouveauSkillSchema.extend({ confirme: z.boolean().optional() }), sortie: z.object({ slug: SlugSchema }) },
+  'skills.supprimer': { entree: z.object({ slug: SlugSchema }), sortie: Rien },
+  'sources.liste': { entree: Vide, sortie: z.object({ defaut: z.array(z.object({ repo: z.string(), libelle: z.string() })), perso: z.array(z.string()) }) },
+  'sources.ajouter': { entree: z.object({ repo: z.string().max(200) }), sortie: z.object({ perso: z.array(z.string()) }) },
+  'sources.retirer': { entree: z.object({ repo: z.string().max(200) }), sortie: z.object({ perso: z.array(z.string()) }) },
+  'sources.adresse': { entree: z.object({ adresse: z.string().max(600) }), sortie: ReferenceSkillSchema.nullable() },
+  'sources.rechercher': {
+    entree: z.object({ requete: z.string().max(200), repos: z.array(z.string().max(200)).max(12) }),
+    sortie: z.object({ resultats: z.array(SkillDistantVueSchema), total: z.number(), erreurs: z.array(z.object({ repo: z.string(), message: z.string() })) })
+  },
+  'sources.apercu': { entree: ReferenceSkillSchema, sortie: ApercuImportVueSchema },
+  'sources.importer': { entree: ReferenceSkillSchema.extend({ confirme: z.boolean().optional(), remplacer: z.boolean().optional() }), sortie: z.object({ slug: SlugSchema }) }
 } as const satisfies Record<string, { entree: z.ZodType; sortie: z.ZodType }>
 
 export type Canal = keyof typeof CONTRAT

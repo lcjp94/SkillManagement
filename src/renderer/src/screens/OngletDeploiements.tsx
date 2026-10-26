@@ -2,6 +2,7 @@ import { FolderOpen, FolderSearch, Trash2, Undo2 } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { DeploiementVue, FicheProjet, RapportRetraitVue, Sortie } from '@shared/contrat'
 import { appeler, messageErreur } from '../api'
+import { useApp } from '../appContexte'
 import { Alerte, Btn, CaseCarte, Chargement, Dialogue, Donnee, Pastille, dateCourte, formaterOctets, pluriel, useNotifs } from '../ui'
 
 const ACTIONS = { create: 'Créé', modify: 'Modifié', unchanged: 'Inchangé' } as const
@@ -126,6 +127,10 @@ type Apercu = Sortie<'deploiement.apercu'>
 
 function DialogueApercu({ fiche, d, racineInitiale, onFermer, onChange }: { fiche: FicheProjet; d: DeploiementVue; racineInitiale?: string; onFermer: () => void; onChange: () => void }) {
   const { toast } = useNotifs()
+  const { info } = useApp()
+  const outil = info.analyseApprofondie.disponible
+  // Les skills venus d'ailleurs sont les plus risqués : l'analyse approfondie est proposée d'office quand il y en a
+  const [approfondie, setApprofondie] = useState(outil && fiche.skills.some((k) => !k.ecarte && k.source !== 'integre'))
   const [racine, setRacine] = useState(racineInitiale)
   const [reinstaller, setReinstaller] = useState<string[]>([])
   const [avertissements, setAvertissements] = useState<string[]>([])
@@ -137,7 +142,7 @@ function DialogueApercu({ fiche, d, racineInitiale, onFermer, onChange }: { fich
 
   useEffect(() => {
     let courant = true
-    appeler('deploiement.apercu', { projetId: fiche.projet.id, assistant: d.assistant, racine, reinstaller, avertissementsConfirmes: avertissements, ecrasementsConfirmes: ecrasements }).then(
+    appeler('deploiement.apercu', { projetId: fiche.projet.id, assistant: d.assistant, racine, reinstaller, avertissementsConfirmes: avertissements, ecrasementsConfirmes: ecrasements, analyseApprofondie: approfondie }).then(
       (a) => {
         if (!courant) return
         setApercu(a)
@@ -148,7 +153,7 @@ function DialogueApercu({ fiche, d, racineInitiale, onFermer, onChange }: { fich
     return () => {
       courant = false
     }
-  }, [fiche.projet.id, d.assistant, racine, reinstaller, avertissements, ecrasements])
+  }, [fiche.projet.id, d.assistant, racine, reinstaller, avertissements, ecrasements, approfondie])
 
   const changerDossier = async () => {
     try {
@@ -163,7 +168,7 @@ function DialogueApercu({ fiche, d, racineInitiale, onFermer, onChange }: { fich
     if (!apercu) return
     setOccupe(true)
     try {
-      const r = await appeler('deploiement.appliquer', { projetId: fiche.projet.id, assistant: d.assistant, racine, reinstaller, avertissementsConfirmes: avertissements, ecrasementsConfirmes: ecrasements })
+      const r = await appeler('deploiement.appliquer', { projetId: fiche.projet.id, assistant: d.assistant, racine, reinstaller, avertissementsConfirmes: avertissements, ecrasementsConfirmes: ecrasements, analyseApprofondie: approfondie })
       if (r.statut === 'applique') {
         toast(`${pluriel(r.apercu.nombreSkills, 'skill installé', 'skills installés')} dans ${d.libelle}. Vérifié sur votre disque.`)
         onChange()
@@ -217,6 +222,19 @@ function DialogueApercu({ fiche, d, racineInitiale, onFermer, onChange }: { fich
             <p aria-live="polite">
               {pluriel(apercu.apercu.nombreSkills, 'skill sera écrit', 'skills seront écrits')} · espace nécessaire : {formaterOctets(apercu.apercu.octets)}.
             </p>
+
+            {outil && (
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="size-4" checked={approfondie} onChange={(e) => setApprofondie(e.target.checked)} />
+                  Lancer l’analyse approfondie avant d’installer (quelques secondes par skill)
+                </label>
+                {apercu.approfondie.executee && apercu.approfondie.erreurs.length === 0 && <p className="text-sm text-doux">Analyse approfondie terminée : rien de plus n’a été trouvé.</p>}
+                {apercu.approfondie.erreurs.length > 0 && (
+                  <Alerte ton="attention">L’analyse approfondie n’a pas pu se terminer pour : {apercu.approfondie.erreurs.map((slug) => nom(slug)).join(', ')}. L’analyse de sécurité habituelle a bien eu lieu.</Alerte>
+                )}
+              </div>
+            )}
 
             {apercu.chevauchements.map((m) => (
               <Alerte key={m} ton="attention">

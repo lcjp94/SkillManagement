@@ -7,6 +7,12 @@ import { DeploiementError } from '../fs/deploiement'
 import { ProjetError } from '../core/projets'
 import { BlocIncompletError } from '../core/blocks'
 import { VersionFutureError } from '../store/json-store'
+import { CoffreError } from '../ai/coffre'
+import { AdresseRefuseeError } from '../ai/garde-adresse'
+import { ReseauError } from '../ai/http'
+import { analyserNouveau, creerSkill, supprimerSkill } from './skills'
+import { apercu as apercuImport, ajouterSource, importer, lireAdresse, listeSources, rechercher, retirerSource } from './enligne'
+import * as ia from './ia'
 import {
   apercuArborescence,
   apercuDeploiement,
@@ -40,7 +46,7 @@ import { bibliotheque } from './catalogue'
 /** Préfixe des messages destinés à la personne : le reste des erreurs ne traverse jamais l'IPC. */
 export const MARQUE_MESSAGE = 'SM|'
 
-const MESSAGES_UTILISATEUR = [ErreurUtilisateur, ProjetError, PerimetreError, DeploiementError, RetraitError, FichierIllisibleError, BlocIncompletError, VersionFutureError]
+const MESSAGES_UTILISATEUR = [ErreurUtilisateur, ProjetError, PerimetreError, DeploiementError, RetraitError, FichierIllisibleError, BlocIncompletError, VersionFutureError, CoffreError, AdresseRefuseeError, ReseauError]
 export const estMessageUtilisateur = (e: unknown): e is Error => MESSAGES_UTILISATEUR.some((classe) => e instanceof classe)
 
 type Implementation<C extends Canal> = (s: Services, entree: Entree<C>) => Sortie<C> | Promise<Sortie<C>>
@@ -90,7 +96,23 @@ export const REGISTRE: Registre = {
   'deploiement.historique': (s, e) => historique(s, e.projetId),
   'arborescence.apercu': (s, e) => apercuArborescence(s, e),
   'arborescence.appliquer': (s, e) => appliquerArborescence(s, e),
-  'arborescence.retirer': (s, e) => retirerArborescenceProjet(s, e.projetId)
+  'arborescence.retirer': (s, e) => retirerArborescenceProjet(s, e.projetId),
+  'ia.etat': (s) => ia.etat(s),
+  'ia.enregistrer': (s, e) => ia.enregistrer(s, e),
+  'ia.tester': (s, e) => ia.verifier(s, e),
+  'ia.rediger': (s, e) => ia.rediger(s, e),
+  'ia.lire': (s, e) => ia.lire(s, e.id),
+  'ia.annuler': (s, e) => s.redactions.annuler(e.id),
+  'skills.analyser': (s, e) => analyserNouveau(s, e),
+  'skills.creer': (s, e) => creerSkill(s, e),
+  'skills.supprimer': (s, e) => supprimerSkill(s, e.slug),
+  'sources.liste': (s) => listeSources(s),
+  'sources.ajouter': (s, e) => ajouterSource(s, e.repo),
+  'sources.retirer': (s, e) => retirerSource(s, e.repo),
+  'sources.adresse': (_s, e) => lireAdresse(e.adresse),
+  'sources.rechercher': (s, e) => rechercher(s, e),
+  'sources.apercu': (s, e) => apercuImport(s, e),
+  'sources.importer': (s, e) => importer(s, e)
 }
 
 /**

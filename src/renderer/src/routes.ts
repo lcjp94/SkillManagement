@@ -9,7 +9,7 @@ export type Route =
   | { nom: 'projets' }
   | { nom: 'nouveau-projet' }
   | { nom: 'projet'; id: string; onglet: Onglet; installer: boolean }
-  | { nom: 'bibliotheque' }
+  | { nom: 'bibliotheque'; enLigne: string | null }
   | { nom: 'reglages' }
 
 export function lireRoute(hash: string): Route {
@@ -20,7 +20,7 @@ export function lireRoute(hash: string): Route {
     case 'demarrage':
       return { nom: 'demarrage' }
     case 'bibliotheque':
-      return { nom: 'bibliotheque' }
+      return { nom: 'bibliotheque', enLigne: parametres.get('en-ligne') }
     case 'reglages':
       return { nom: 'reglages' }
     case 'projets': {
@@ -40,6 +40,8 @@ export const lien = {
   projets: '#/projets',
   nouveau: '#/projets/nouveau',
   bibliotheque: '#/bibliotheque',
+  /** La bibliothèque, ouverte sur la recherche en ligne avec une requête déjà saisie. */
+  enLigne: (requete: string): string => `#/bibliotheque?en-ligne=${encodeURIComponent(requete)}`,
   reglages: '#/reglages',
   demarrage: '#/demarrage',
   projet: (id: string, onglet: Onglet = 'skills', installer = false): string =>
