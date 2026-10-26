@@ -8,7 +8,7 @@
       "severity": "high",
       "category": "exécution distante",
       "message": "Télécharge et exécute un script distant (curl | sh)",
-      "pattern": "(curl|wget|iwr|irm|invoke-webrequest|invoke-restmethod)[^\\n]*\\|\\s*(sudo\\s+)?((ba|z|da|k)?sh\\b|python\\d?\\b|node\\b|perl\\b|ruby\\b|pwsh\\b|powershell\\b|iex\\b|invoke-expression\\b)"
+      "pattern": "(curl|wget|iwr|irm|invoke-webrequest|invoke-restmethod)[^\\n]{0,3000}\\|\\s*(sudo\\s+)?((ba|z|da|k)?sh\\b|python\\d?\\b|node\\b|perl\\b|ruby\\b|pwsh\\b|powershell\\b|iex\\b|invoke-expression\\b)"
     },
     {
       "id": "destruction",

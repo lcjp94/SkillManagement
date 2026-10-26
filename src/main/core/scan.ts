@@ -23,6 +23,12 @@ export interface ResultatScan {
 // (le plus long du catalogue : 1,4 Ko). Au-delà de cette taille, on refuse plutôt que d'analyser à moitié.
 export const TAILLE_MAX_ANALYSE = 100_000
 
+// Le motif d'exécution distante (curl … | sh) reste quadratique sur une ligne démesurée : mesuré à 2,3 s pour 100 Ko
+// de « curl | » sur une seule ligne. Une ligne de skill dépasse rarement quelques centaines de caractères (la plus
+// longue du catalogue : 223). Au-delà, on refuse plutôt que d'analyser à moitié ; et le motif est borné à la même
+// longueur, donc un « curl » suivi d'un « | sh » 2 500 caractères plus loin est encore vu.
+export const LIGNE_MAX_ANALYSE = 3000
+
 // Lettres cyrilliques et grecques qui ressemblent à des lettres latines : « сurl » (с cyrillique) échappe
 // sinon à toutes les règles. Liste des cas courants, pas un référentiel exhaustif d'homoglyphes.
 const HOMOGLYPHES: Record<string, string> = {
@@ -80,6 +86,13 @@ export function creerScanner(regles: ScanRules): (contenu: string) => ResultatSc
       .replace(invisibles, '')
       .replace(INVISIBLES_SUPPLEMENTAIRES, '')
       .replace(RE_HOMOGLYPHES, (lettre) => HOMOGLYPHES[lettre] ?? lettre)
+
+    if (texte.split('\n').some((ligne) => ligne.length > LIGNE_MAX_ANALYSE)) {
+      return recapituler(
+        [...issues, { severity: 'high', category: 'taille', message: `Une ligne dépasse ${LIGNE_MAX_ANALYSE.toLocaleString('fr-FR')} caractères : elle ne peut pas être analysée sérieusement` }],
+        total
+      )
+    }
 
     for (const regle of compilees) {
       let trouve: string | null = null

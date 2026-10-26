@@ -10,6 +10,7 @@ Résultats de référence : `tests/fixtures/golden.json` (132 cas de la premièr
 | Règle `prompt-injection` : l'ordre « verbe … consignes … précédentes » est reconnu | « Oublie les consignes précédentes » était jugé *clean* dans la référence : faille de détection. C'est le seul cas de la référence dont le résultat change (`injection-fr` : clean → danger) |
 | Homoglyphes cyrilliques et grecs ramenés au latin avant analyse | « сurl » (с cyrillique) échappait à toutes les règles. Liste des cas courants, pas un référentiel exhaustif |
 | Caractères cachés refusés (plage « tags » U+E0000–E007F, surcharges de sens de lecture) | Texte invisible lisible par un modèle ; aucun usage légitime dans un skill. Catégorie `caractères cachés`, gravité haute |
+| Ligne de plus de 3 000 caractères refusée (`taille`, gravité haute), et motif `remote-exec` borné à 3 000 caractères entre `curl` et `|` | **Trouvé par la première exécution de la CI** : le test de temps a dépassé 5 s sur le poste GitHub. Mesuré ensuite à 2,3 s en local pour 100 Ko de « curl | » sur une seule ligne. Après correction : 92 ms au pire. Le bornage à la même longueur que la limite de ligne évite le contournement par remplissage (un `| sh` jusqu'à 2 500 caractères plus loin est encore vu ; test) |
 | Contenu de plus de 100 000 caractères refusé (`taille`, gravité haute) | Le moteur de motifs de JavaScript rétro-pointe : mesuré à 2,3 s pour 200 Ko de « curl curl … » avec la règle d'exécution distante (quadratique). Le plus long skill intégré fait 1,4 Ko |
 
 ## Limites connues
