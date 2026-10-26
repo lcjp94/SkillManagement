@@ -61,6 +61,15 @@ describe('contrat', () => {
   })
 })
 
+describe('mises à jour', () => {
+  it('hors application installée, l’état le dit ; vérifier ne fait rien partir', async () => {
+    expect(await appel('maj.etat')).toEqual({ statut: 'inactive' })
+    expect(await appel('maj.verifier')).toEqual({ statut: 'inactive' })
+    await expect(appel('maj.telecharger')).resolves.toBeUndefined()
+    await expect(appel('maj.installer')).resolves.toBeUndefined()
+  })
+})
+
 describe('référentiels', () => {
   it('donnent les 8 assistants, les métiers, 3 niveaux, les objectifs avec leur libellé, les besoins et les gabarits', async () => {
     const r = await appel('referentiels.get')

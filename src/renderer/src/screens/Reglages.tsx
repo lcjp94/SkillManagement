@@ -5,6 +5,7 @@ import { appeler, messageErreur, useDonnees } from '../api'
 import { useApp } from '../appContexte'
 import { Alerte, Btn, CaseCarte, Champ, useNotifs } from '../ui'
 import { SectionIa } from './Ia'
+import { SectionMiseAJour } from './MiseAJour'
 
 const THEMES: { id: ReglagesVue['theme']; libelle: string }[] = [
   { id: 'auto', libelle: 'Automatique (comme votre ordinateur)' },
@@ -149,6 +150,10 @@ export function Reglages() {
             </a>
           </p>
         </details>
+      </section>
+      <section aria-labelledby="titre-maj" className="carte flex flex-col gap-2">
+        <h2 id="titre-maj">Mises à jour</h2>
+        <SectionMiseAJour />
       </section>
       <section aria-labelledby="titre-apropos" className="carte flex flex-col gap-2">
         <h2 id="titre-apropos">À propos</h2>

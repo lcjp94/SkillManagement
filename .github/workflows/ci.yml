@@ -32,5 +32,21 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Test de fumée de l'application compilée
+      - name: Parcours de bout en bout (application compilée)
         run: npx playwright test
+
+      # Installeur NSIS non signé : aucun certificat n'est requis (voir docs/DISTRIBUTION.md)
+      - name: Installeur Windows
+        run: npm run package
+
+      - name: Application empaquetée, installation et désinstallation silencieuses, mise à jour
+        run: npm run test:installeur
+
+      - name: Conserver l'installeur
+        uses: actions/upload-artifact@v4
+        with:
+          name: installeur-windows
+          path: |
+            release/SkillManagement-Setup-*.exe
+            release/SkillManagement-Setup-*.exe.blockmap
+          if-no-files-found: error

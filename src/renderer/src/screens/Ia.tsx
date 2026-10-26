@@ -35,7 +35,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
   const [erreur, setErreur] = useState<string | null>(null)
   const [occupe, setOccupe] = useState<'test' | 'enregistrer' | null>(null)
   const f = etat.fournisseurs.find((x) => x.id === fournisseur)
-  const adresseLibre = Boolean(f && (f.local || f.id === 'autre'))
+  const adresseLibre = Boolean(f && (f.local || f.id === 'autre' || f.id === 'abacus'))
 
   const choisir = (id: string) => {
     const suivant = etat.fournisseurs.find((x) => x.id === id)
@@ -100,6 +100,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
       </Champ>
       {f && (
         <>
+          {f.note && <Alerte>{f.note}</Alerte>}
           {NON_ESSAYES.has(f.id) && <Alerte ton="attention">Ce service n’a pas encore été essayé avec une vraie clé. Si « Vérifier » échoue alors que votre clé est bonne, dites-le-nous.</Alerte>}
           {f.cle !== 'non' && (
             <div className="flex flex-col gap-1.5">

@@ -19,9 +19,9 @@ export interface BancServices extends Banc {
 
 /** Chiffrement de test : brouille le texte (jamais lisible tel quel dans le fichier), sans dépendre du système. */
 export const chiffrementDeTest: Chiffrement = {
-  disponible: () => true,
-  chiffrer: (t) => Buffer.from(`enc:${[...t].reverse().join('')}`),
-  dechiffrer: (b) => [...b.toString().replace(/^enc:/, '')].reverse().join('')
+  disponible: async () => true,
+  chiffrer: async (t) => Buffer.from(`enc:${[...t].reverse().join('')}`),
+  dechiffrer: async (b) => [...b.toString().replace(/^enc:/, '')].reverse().join('')
 }
 
 export interface OptionsBanc {
@@ -29,6 +29,7 @@ export interface OptionsBanc {
   lancerApprofondie?: Lancer
   sources?: Partial<ConfigSources>
   chiffrement?: Chiffrement
+  miseAJour?: Services['miseAJour']
 }
 
 export async function creerBancServices(options: OptionsBanc = {}): Promise<BancServices> {
@@ -67,11 +68,12 @@ export async function creerBancServices(options: OptionsBanc = {}): Promise<Banc
     maintenant: () => new Date(Date.UTC(2026, 9, 26, 12, ++minute)),
     imports: new Map(),
     coffre: new CoffreCles(join(banc.donnees, 'secrets.bin'), chiffrement),
-    coffreDisponible: chiffrement.disponible(),
+    coffreDisponible: await chiffrement.disponible(),
     redactions: new Redactions(),
     // Les faux serveurs sont en « localhost » ; les noms réels se résolvent vers une adresse publique fixe
     reseau: { resolveur: async (hote) => (hote === 'localhost' ? ['127.0.0.1'] : ['93.184.216.34']) },
     skillspector,
+    miseAJour: options.miseAJour ?? { etat: () => ({ statut: 'inactive' }), verifier: async () => ({ statut: 'inactive' }), telecharger: async () => undefined, installer: async () => undefined },
     sources: new Sources({ apiBase: 'http://localhost:1/api', rawBase: 'http://localhost:1/raw', ...options.sources })
   }
   return { ...banc, s, ecrans }

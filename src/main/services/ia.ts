@@ -1,13 +1,12 @@
 // IA facultative : réglage, test de connexion, rédaction en flux. La clé reste dans le processus principal.
 import type { Entree, IaEtat, RedactionVue, Sortie } from '@shared/contrat'
 import { generer, tester, type Connexion } from '../ai/client'
-import { FOURNISSEURS, trouverFournisseur, type Fournisseur } from '../ai/fournisseurs'
+import { FOURNISSEURS, adresseModifiable, trouverFournisseur, type Fournisseur } from '../ai/fournisseurs'
 import { verifierAdresse } from '../ai/garde-adresse'
 import { construireMessages, extraireSkill } from '../ai/prompt'
 import { ErreurUtilisateur, type Services } from './contexte'
 
-/** Services dont l'adresse peut être changée : ceux qui tournent sur cet ordinateur, et « autre ». */
-const adresseLibre = (f: Fournisseur): boolean => f.local || f.id === 'autre'
+const adresseLibre = (f: Fournisseur): boolean => adresseModifiable(f)
 
 async function construireConnexion(s: Services, d: { fournisseur: string; adresse?: string; modele: string; cle?: string }): Promise<{ connexion: Connexion; fournisseur: Fournisseur }> {
   const fournisseur = trouverFournisseur(d.fournisseur)

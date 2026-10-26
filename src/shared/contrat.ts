@@ -269,6 +269,7 @@ export const FournisseurVueSchema = z.object({
   modele: z.string(),
   cle: z.enum(['oui', 'non', 'selon']),
   lien: z.string(),
+  note: z.string().optional(),
   local: z.boolean()
 })
 export type FournisseurVue = z.infer<typeof FournisseurVueSchema>
@@ -335,6 +336,16 @@ export const ApercuImportVueSchema = z.object({
   dejaImporte: z.object({ slug: SlugSchema, identique: z.boolean() }).nullable()
 })
 export type ApercuImportVue = z.infer<typeof ApercuImportVueSchema>
+
+// --- Mises à jour de l'application ----------------------------------------------------------------
+
+export const MiseAJourVueSchema = z.object({
+  statut: z.enum(['inactive', 'aucune-source', 'a-verifier', 'a-jour', 'disponible', 'telechargement', 'pret', 'erreur']),
+  version: z.string().optional(),
+  progression: z.number().min(0).max(100).optional(),
+  message: z.string().optional()
+})
+export type MiseAJourVue = z.infer<typeof MiseAJourVueSchema>
 
 // --- Les canaux ----------------------------------------------------------------------------------
 
@@ -414,6 +425,10 @@ export const CONTRAT = {
     sortie: z.object({ resultats: z.array(SkillDistantVueSchema), total: z.number(), erreurs: z.array(z.object({ repo: z.string(), message: z.string() })) })
   },
   'sources.apercu': { entree: ReferenceSkillSchema, sortie: ApercuImportVueSchema },
+  'maj.etat': { entree: Vide, sortie: MiseAJourVueSchema },
+  'maj.verifier': { entree: Vide, sortie: MiseAJourVueSchema },
+  'maj.telecharger': { entree: Vide, sortie: Rien },
+  'maj.installer': { entree: Vide, sortie: Rien },
   'sources.importer': { entree: ReferenceSkillSchema.extend({ confirme: z.boolean().optional(), remplacer: z.boolean().optional() }), sortie: z.object({ slug: SlugSchema }) }
 } as const satisfies Record<string, { entree: z.ZodType; sortie: z.ZodType }>
 

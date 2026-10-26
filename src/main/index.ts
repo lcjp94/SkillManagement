@@ -9,6 +9,7 @@ import { CoffreCles } from './ai/coffre'
 import { Redactions } from './ai/redactions'
 import { creerScanner } from './core/scan'
 import { creerDialogues } from './dialogues'
+import { creerMiseAJour } from './mises-a-jour'
 import { environnementReel } from './fs/perimetre'
 import { reprendreInterrompus } from './fs/retrait'
 import { isTrustedSender } from './ipc/guard'
@@ -109,9 +110,9 @@ if (!app.requestSingleInstanceLock()) {
       const reprises = (await reprendreInterrompus(ctx)).length
       // Les clés d'API sont chiffrées par le système (DPAPI sous Windows) ; sans lui, aucune clé n'est enregistrée
       const coffre = new CoffreCles(join(dossierDonnees, 'secrets.bin'), {
-        disponible: () => safeStorage.isEncryptionAvailable(),
-        chiffrer: (texte) => safeStorage.encryptString(texte),
-        dechiffrer: (octets) => safeStorage.decryptString(octets)
+        disponible: () => safeStorage.isAsyncEncryptionAvailable(),
+        chiffrer: (texte) => safeStorage.encryptStringAsync(texte),
+        dechiffrer: async (octets) => (await safeStorage.decryptStringAsync(octets)).result
       })
       // Crochets de test, lus seulement par une application non empaquetée
       const testBase = app.isPackaged ? undefined : process.env['SKILLMANAGEMENT_TEST_GITHUB']
@@ -129,10 +130,11 @@ if (!app.requestSingleInstanceLock()) {
         maintenant: () => new Date(),
         imports: new Map(),
         coffre,
-        coffreDisponible: safeStorage.isEncryptionAvailable(),
+        coffreDisponible: await safeStorage.isAsyncEncryptionAvailable(),
         redactions: new Redactions(),
         reseau: {},
         skillspector,
+        miseAJour: creerMiseAJour(journal),
         sources: new Sources(testBase ? { apiBase: `${testBase}/api`, rawBase: `${testBase}/raw` } : CONFIG_PAR_DEFAUT)
       }
     } catch (erreur) {

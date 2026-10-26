@@ -6,9 +6,9 @@ import { ecrireAtomique } from '../fs/atomic'
 import { exclusif } from '../fs/verrou'
 
 export interface Chiffrement {
-  disponible(): boolean
-  chiffrer(texte: string): Buffer
-  dechiffrer(octets: Buffer): string
+  disponible(): Promise<boolean>
+  chiffrer(texte: string): Promise<Buffer>
+  dechiffrer(octets: Buffer): Promise<string>
 }
 
 export class CoffreError extends Error {
@@ -58,7 +58,7 @@ export class CoffreCles {
     const octets = (await this.lire())[id]
     if (!octets) return null
     try {
-      return this.chiffrement.dechiffrer(Buffer.from(octets, 'base64'))
+      return await this.chiffrement.dechiffrer(Buffer.from(octets, 'base64'))
     } catch {
       return null // enregistrée par un autre compte ou illisible : la personne la saisira de nouveau
     }
@@ -68,10 +68,10 @@ export class CoffreCles {
     this.verifierId(id)
     const propre = cle.trim()
     if (propre === '' || propre.length > CLE_MAX || /[\u0000-\u001f\u007f]/.test(propre)) throw new CoffreError('Cette clé n’est pas valide : collez-la telle que le service vous l’a donnée.')
-    if (!this.chiffrement.disponible()) throw new CoffreError('Le stockage sécurisé de votre ordinateur n’est pas disponible : la clé ne peut pas être enregistrée.')
+    if (!(await this.chiffrement.disponible())) throw new CoffreError('Le stockage sécurisé de votre ordinateur n’est pas disponible : la clé ne peut pas être enregistrée.')
     await exclusif(async () => {
       const cles = await this.lire()
-      cles[id] = this.chiffrement.chiffrer(propre).toString('base64')
+      cles[id] = (await this.chiffrement.chiffrer(propre)).toString('base64')
       await ecrireAtomique(this.fichier, JSON.stringify({ version: 1, cles }), { mode: 0o600 })
     })
   }

@@ -47,6 +47,17 @@ describe('services proposés', () => {
     expect(FOURNISSEURS.find((f) => f.id === 'gemini')!.adresse).toBe('https://generativelanguage.googleapis.com/v1beta/openai')
   })
 
+  it('Abacus.AI : RouteLLM, abonnement ChatLLM, et adresse modifiable pour un espace d’entreprise', async () => {
+    const abacus = FOURNISSEURS.find((f) => f.id === 'abacus')!
+    expect(abacus).toMatchObject({ adresse: 'https://routellm.abacus.ai/v1', modele: 'route-llm', cle: 'oui', lien: 'https://abacus.ai/help/route-llm/' })
+    expect(abacus.note).toMatch(/ChatLLM/)
+    // L'adresse de l'espace d'entreprise est acceptée et mémorisée ; une adresse interdite reste refusée
+    ia = await demarrerServeurIa({ cle: SECRET })
+    const etat = await appel('ia.enregistrer', { fournisseur: 'abacus', adresse: ia.url, modele: 'route-llm', cle: SECRET })
+    expect(etat.choix).toMatchObject({ fournisseur: 'abacus', adresse: ia.url, modele: 'route-llm' })
+    expect(await message(appel('ia.tester', { fournisseur: 'abacus', adresse: 'http://169.254.169.254/v1', modele: 'route-llm', cle: SECRET }))).toMatch(/réservée/)
+  })
+
   it('sans réglage, rien n\'est configuré : l\'IA est facultative', async () => {
     const e = await appel('ia.etat')
     expect(e).toMatchObject({ choix: null, configure: false, stockageSecurise: true })
@@ -180,7 +191,7 @@ describe('clé d\'API', () => {
 
   it('sans stockage sécurisé, aucune clé n\'est enregistrée et on le dit', async () => {
     await b.nettoyer()
-    b = await creerBancServices({ chiffrement: { disponible: () => false, chiffrer: () => Buffer.alloc(0), dechiffrer: () => '' } })
+    b = await creerBancServices({ chiffrement: { disponible: async () => false, chiffrer: async () => Buffer.alloc(0), dechiffrer: async () => '' } })
     ia = await demarrerServeurIa({ cle: SECRET })
     expect((await appel('ia.etat')).stockageSecurise).toBe(false)
     expect(await message(appel('ia.enregistrer', reglage(ia.url, { cle: SECRET })))).toMatch(/stockage sécurisé/)

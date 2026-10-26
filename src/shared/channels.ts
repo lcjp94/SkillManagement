@@ -51,5 +51,9 @@ export const CANAUX = [
   'sources.adresse',
   'sources.rechercher',
   'sources.apercu',
+  'maj.etat',
+  'maj.verifier',
+  'maj.telecharger',
+  'maj.installer',
   'sources.importer'
 ] as const

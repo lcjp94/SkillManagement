@@ -8,7 +8,7 @@ import { GABARITS } from '../core/tree'
 import type { ContexteDisque } from '../fs/contexte'
 import type { JsonStore } from '../store/json-store'
 import type { Catalogue } from '@shared/data'
-import type { Referentiels, SkillVue, AppInfo } from '@shared/contrat'
+import type { Referentiels, SkillVue, AppInfo, MiseAJourVue } from '@shared/contrat'
 import type { ReglagesStockes } from '@shared/schemas/reglages'
 import type { CoffreCles } from '../ai/coffre'
 import type { OptionsRequete } from '../ai/http'
@@ -30,6 +30,14 @@ export interface Dialogues {
 
 export type { ReglagesStockes }
 
+/** Mises à jour de l'application : jamais déclenchées sans la personne. */
+export interface MiseAJour {
+  etat(): MiseAJourVue
+  verifier(): Promise<MiseAJourVue>
+  telecharger(): Promise<void>
+  installer(): Promise<void>
+}
+
 export interface Services {
   etat: JsonStore<State>
   reglages: JsonStore<ReglagesStockes>
@@ -49,6 +57,7 @@ export interface Services {
   reseau: OptionsRequete
   skillspector: SkillSpector
   sources: Sources
+  miseAJour: MiseAJour
 }
 
 export const identifiant = (): string => randomUUID()
