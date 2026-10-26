@@ -44,7 +44,7 @@ Pour signer plus tard, sans changer le code : définir `CSC_LINK` (fichier ou co
 
 ## Limites connues
 
-- **Jamais exécuté sur GitHub Actions** : la CI (installeur, test d'installeur, téléversement de l'artefact) n'a jamais tourné, faute de dépôt distant. Le test de mise à jour installe réellement l'application sur le poste qui le lance (dans un dossier temporaire, nettoyé ensuite).
+- **CI** : elle a tourné sur GitHub Actions (poste `windows-latest`) et est **verte** depuis le commit `7198e55` : typecheck, lint, tests, build, parcours de bout en bout, installeur, installation silencieuse et mise à jour ; l'installeur est conservé comme artefact. Une seule vérification reste ignorée là-bas : le test de l'analyse approfondie réelle (l'outil n'y est pas installé). Les premières exécutions ont échoué et ont révélé deux problèmes : une analyse de sécurité trop lente sur une très longue ligne (corrigé, voir `docs/ANALYSE.md`) et un témoin de relancement peu fiable dans le test de mise à jour (sans bureau, l'application relancée s'arrête aussitôt ; le test s'appuie maintenant sur son journal). Le test de mise à jour installe réellement l'application sur le poste qui le lance (dossier temporaire, nettoyé ensuite).
 - **Source GitHub des mises à jour non essayée** : le test utilise un serveur local ; une vraie release GitHub n'a pas été publiée.
 - **Aucune signature** : alerte SmartScreen, et pas de vérification de l'éditeur à la mise à jour.
 - **Fusibles Electron non durcis** (par exemple l'inspection par ligne de commande reste active) : nécessaire pour que Playwright pilote l'application empaquetée ; un durcissement demanderait de tester une autre construction que celle qui est livrée.

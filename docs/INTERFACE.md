@@ -53,4 +53,4 @@ Conventions d'interface : tout le texte est en français, vouvoiement neutre. Le
 - **Non exposé** : la portée « tous mes projets » de Claude Code (dossier personnel) existe côté services mais n'a pas d'écran.
 - M6 a ajouté la rédaction avec une IA, la recherche en ligne et l'analyse approfondie : voir `docs/IA-ET-SOURCES.md`. L'audit axe couvre maintenant aussi les quatre onglets de la fiche projet (un défaut réel trouvé : `aria-controls` d'un onglet pointait vers un panneau inexistant).
 - Le rechargement au retour sur la fenêtre est testé par un événement `focus` simulé, pas par un vrai changement de fenêtre.
-- La CI (Windows) lance désormais ces parcours (environ 1 minute 10 en local) ; elle n'a toujours jamais tourné.
+- La CI (Windows) lance ces parcours sur GitHub Actions (vert au commit `7198e55`, environ 1 minute 10).

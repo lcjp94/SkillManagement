@@ -53,4 +53,4 @@ Quatorze variantes volontairement cassées ont chacune fait échouer au moins un
 - **Pas de contrôle automatique des mises à jour** des skills importés : la mise à jour se fait à la main (« Mettre à jour » à l'import), jamais sans accord.
 - **Catégorie des skills importés** : « importé » (pas d'inférence de catégorie) ; ils n'ont ni métier ni niveau, donc le conseil ne les propose pas spontanément.
 - **Poids de la rédaction** : le nombre de jetons d'un skill rédigé est estimé (longueur ÷ 4).
-- **Écrans natifs** et **CI** : comme en M5 (crochets de test ; la CI n'a jamais tourné).
+- **Écrans natifs** : comme en M5 (crochets de test). La **CI GitHub est verte** (voir `docs/DISTRIBUTION.md`) ; le test de l'outil d'analyse approfondie réel n'y est pas exécuté, l'outil n'étant pas installé sur ce poste.
