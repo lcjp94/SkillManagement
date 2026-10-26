@@ -72,12 +72,14 @@ export const ProfilesSchema = z.object({
 })
 export type Profiles = z.infer<typeof ProfilesSchema>
 
-// Les motifs doivent rester à temps linéaire : ni lookahead, ni lookbehind, ni référence arrière.
+// Ni lookahead, ni lookbehind, ni référence arrière : les motifs restent exécutables par un moteur à
+// temps linéaire. Le moteur de JavaScript, lui, rétro-pointe : certains motifs sont quadratiques sur
+// des entrées hostiles, d'où la limite de taille imposée par core/scan.ts.
 const MOTIF_INTERDIT = /\(\?(?:=|!|<=|<!)|\\[1-9]|\\k</
 function motifValide(motif: string): boolean {
   if (MOTIF_INTERDIT.test(motif)) return false
   try {
-    new RegExp(motif, 'iu')
+    new RegExp(motif, 'i')
     return true
   } catch {
     return false

@@ -28,6 +28,18 @@ confirmer par un essai réel dans l'outil avant de passer `verified: true` dans 
 4. **Pas de portée globale** pour tous : Claude Code et OpenCode ont un dossier personnel, Cline un dossier Documents,
    Windsurf un fichier global unique de 6 000 caractères. M4 ne doit proposer la portée globale que là où elle est documentée.
 
+## Appliqué en M2 (`src/main/core/layouts.ts`)
+
+- **Windsurf** : `trigger: model_decision` + `description` ; un skill de plus de 12 000 caractères est refusé avec un message.
+- **Continue** : `alwaysApply: false` ajouté. La première version l'omettait, ce qui, d'après la documentation, rend la règle toujours incluse.
+- **Cursor** : `alwaysApply: false` et `description` (règle proposée selon sa description).
+- **Cline** : texte seul ; la règle est toujours active (documenté), c'est dit dans la description affichée.
+- **Aider** : `.aider.conf.yml` reste créé seulement s'il n'existe pas ; la prise en compte d'un fichier existant sans `read:` est à traiter dans l'aperçu (M4).
+- **Copilot** : fichier unique à blocs balisés conservé (le fichier par skill `.instructions.md` n'a pas été retenu : sa prise en charge hors agent de code n'est pas établie par les pages lues).
+- **OpenCode / Claude Code** : `chevauchements()` signale le cas des deux choisis pour le même dossier.
+- Un skill dont le texte contient une balise réservée (`skillforge:begin|end`), vide, ou sans description est refusé par toutes les dispositions.
+- Toutes restent `verifie: false` : aucune n'a été essayée dans l'outil réel.
+
 ## Sources
 
 - Claude Code : https://code.claude.com/docs/en/skills

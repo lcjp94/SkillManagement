@@ -22,7 +22,7 @@
       "severity": "high",
       "category": "injection de prompt",
       "message": "Tentative de contournement des instructions",
-      "pattern": "(ignore|disregard|forget|override|oublie\\w*)[^\\n]{0,40}(previous|prior|above|earlier|system|précédentes?|antérieures?)[^\\n]{0,30}(instructions?|consignes?|rules?|règles?|prompt)"
+      "pattern": "(ignore|disregard|forget|override|oublie\\w*)[^\\n]{0,40}(previous|prior|above|earlier|system|précédentes?|antérieures?)[^\\n]{0,30}(instructions?|consignes?|rules?|règles?|prompt)|(ignore|disregard|forget|override|oublie\\w*)[^\\n]{0,40}(instructions?|consignes?|rules?|règles?|prompt)[^\\n]{0,30}(previous|prior|above|earlier|system|précédentes?|antérieures?|ci-dessus)"
     },
     {
       "id": "secrets",
