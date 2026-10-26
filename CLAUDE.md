@@ -365,6 +365,8 @@ Créer · modifier (changer les besoins **propose** des ajouts/retraits, **jamai
 
 ## 14. Universalité : Windows, macOS, Linux
 
+> **Décision du 26 octobre 2026 (porteur du projet) : seule la version Windows est produite.** La CI ne tourne que sur `windows-latest` ; aucun installeur macOS ni Linux n'est construit. Le code reste écrit de façon portable (`path`, `os.homedir()`, écritures atomiques) pour ne pas fermer la porte, mais **aucun support macOS ou Linux n'est annoncé ni testé**. Les critères du § 18 « même scénario sur Windows, macOS, Linux » se lisent donc « sur Windows ». Le reste de ce paragraphe décrit ce qu'il faudrait pour les autres systèmes.
+
 **État honnête** : la première version n'a été testée que sous Windows. Les builds macOS et Linux n'ont jamais été construits ni lancés. L'universalité est à **démontrer par la CI**, pas à supposer.
 
 | Système | Livrable | Points durs |

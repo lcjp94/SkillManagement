@@ -45,6 +45,16 @@ const LevelLimitsSchema = z.object({
   minScore: z.number()
 })
 
+// Un besoin se reconnaît à ses catégories et, quand il en a, à ses mots-clés (voir core/besoins.ts)
+export const BesoinSchema = z.object({
+  id: SlugSchema,
+  libelle: z.string().min(1),
+  description: z.string().min(1),
+  categories: z.array(z.string().min(1)).min(1),
+  motsCles: z.array(z.string().min(1))
+})
+export type Besoin = z.infer<typeof BesoinSchema>
+
 export const ProfilesSchema = z.object({
   natures: z.array(
     z.object({
@@ -57,6 +67,7 @@ export const ProfilesSchema = z.object({
     })
   ),
   objectiveCategories: z.record(z.string(), z.string()),
+  besoins: z.array(BesoinSchema),
   levels: z.record(LevelIdSchema, LevelLimitsSchema),
   weights: z.object({
     objectiveCategory: z.number(),
@@ -67,7 +78,9 @@ export const ProfilesSchema = z.object({
     environment: z.number(),
     customKeyword: z.number(),
     customKeywordMax: z.number(),
-    personaMismatch: z.number()
+    personaMismatch: z.number(),
+    besoin: z.number(),
+    besoinMotSeul: z.number()
   })
 })
 export type Profiles = z.infer<typeof ProfilesSchema>

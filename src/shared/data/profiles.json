@@ -229,6 +229,180 @@
     "environment": 10,
     "customKeyword": 15,
     "customKeywordMax": 30,
-    "personaMismatch": -15
-  }
+    "personaMismatch": -15,
+    "besoin": 50,
+    "besoinMotSeul": 30
+  },
+  "besoins": [
+    {
+      "id": "seo",
+      "libelle": "Référencement (SEO)",
+      "description": "Apparaître plus haut dans les résultats des moteurs de recherche",
+      "categories": [
+        "marketing",
+        "rédaction"
+      ],
+      "motsCles": [
+        "seo",
+        "référencement",
+        "mots-clés",
+        "contenu web"
+      ]
+    },
+    {
+      "id": "reseaux-sociaux",
+      "libelle": "Publication sur les réseaux sociaux",
+      "description": "Préparer et publier régulièrement sur les réseaux sociaux",
+      "categories": [
+        "réseaux sociaux"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "redaction-web",
+      "libelle": "Rédaction de contenu web",
+      "description": "Écrire des articles et des pages pour un site",
+      "categories": [
+        "rédaction"
+      ],
+      "motsCles": [
+        "contenu web",
+        "article",
+        "blog",
+        "rédaction web"
+      ]
+    },
+    {
+      "id": "newsletter",
+      "libelle": "Newsletter",
+      "description": "Écrire et envoyer une lettre d’information",
+      "categories": [
+        "rédaction",
+        "marketing"
+      ],
+      "motsCles": [
+        "newsletter",
+        "emailing",
+        "lettre d’information"
+      ]
+    },
+    {
+      "id": "veille",
+      "libelle": "Veille et recherche",
+      "description": "Suivre un sujet, trouver et vérifier des sources",
+      "categories": [
+        "recherche"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "analyse-donnees",
+      "libelle": "Analyse de données",
+      "description": "Lire, nettoyer et présenter des chiffres",
+      "categories": [
+        "data"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "presentations",
+      "libelle": "Présentations",
+      "description": "Préparer des diaporamas clairs",
+      "categories": [
+        "productivité",
+        "design"
+      ],
+      "motsCles": [
+        "présentation",
+        "slides",
+        "diaporama"
+      ]
+    },
+    {
+      "id": "video",
+      "libelle": "Vidéo",
+      "description": "Écrire, monter et publier des vidéos",
+      "categories": [
+        "vidéo"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "gestion-projet",
+      "libelle": "Gestion de projet",
+      "description": "Planifier, suivre et rendre compte d’un projet",
+      "categories": [
+        "productivité"
+      ],
+      "motsCles": [
+        "projet",
+        "priorisation",
+        "okr"
+      ]
+    },
+    {
+      "id": "qualite-code",
+      "libelle": "Qualité du code",
+      "description": "Relire, tester et fiabiliser du code",
+      "categories": [
+        "développement",
+        "tests"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "securite-code",
+      "libelle": "Sécurité du code",
+      "description": "Repérer et corriger les failles",
+      "categories": [
+        "sécurité"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "deploiement",
+      "libelle": "Déploiement",
+      "description": "Mettre en ligne et surveiller une application",
+      "categories": [
+        "devops"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "juridique",
+      "libelle": "Juridique",
+      "description": "Contrats, notes et veille juridiques",
+      "categories": [
+        "juridique"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "enseignement",
+      "libelle": "Enseignement",
+      "description": "Préparer des séquences et évaluer",
+      "categories": [
+        "enseignement"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "rh",
+      "libelle": "Ressources humaines",
+      "description": "Recrutement, entretiens, intégration",
+      "categories": [
+        "rh"
+      ],
+      "motsCles": []
+    },
+    {
+      "id": "finance",
+      "libelle": "Finance",
+      "description": "Budgets, prévisions et contrôle",
+      "categories": [
+        "finance"
+      ],
+      "motsCles": []
+    }
+  ]
 }

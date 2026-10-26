@@ -35,7 +35,9 @@ const DateIsoSchema = z.iso.datetime()
 export const ProjectSkillSchema = z.object({
   slug: SlugSchema,
   origine: z.enum(['recommande', 'manuel', 'ia', 'importe']),
-  ecarte: z.boolean()
+  ecarte: z.boolean(),
+  // Besoins à l'origine d'une recommandation : permet de proposer le retrait si ces besoins disparaissent
+  pour: z.array(z.string()).optional()
 })
 
 export const ProjectSchema = z.object({
@@ -43,6 +45,8 @@ export const ProjectSchema = z.object({
   nom: ProjectNameSchema,
   description: z.string().max(2000).optional(),
   besoins: z.array(z.string()),
+  // « Autre besoin… » saisi librement : il oriente le conseil par mots-clés
+  autreBesoin: z.string().trim().max(300).optional(),
   metier: z.string().optional(),
   aisance: LevelIdSchema.optional(),
   assistants: z.array(AssistantIdSchema),
@@ -70,6 +74,13 @@ export const StateSchema = z
         ctx.addIssue({ code: 'custom', path: ['projects', index, 'nom'], message: 'Nom de projet en double' })
       }
       vus.add(cle)
+      const slugs = new Set<string>()
+      projet.skills.forEach((skill, i) => {
+        if (slugs.has(skill.slug)) {
+          ctx.addIssue({ code: 'custom', path: ['projects', index, 'skills', i, 'slug'], message: 'Skill en double dans le projet' })
+        }
+        slugs.add(skill.slug)
+      })
     })
   })
 export type State = z.infer<typeof StateSchema>

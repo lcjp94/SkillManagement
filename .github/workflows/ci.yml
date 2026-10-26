@@ -1,5 +1,6 @@
 name: CI
 
+# Windows seulement : décision du porteur du projet (26 octobre 2026). macOS et Linux ne sont ni construits ni testés.
 on:
   push:
     branches: [main]
@@ -7,12 +8,8 @@ on:
 
 jobs:
   verifier:
-    name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+    name: windows-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -35,16 +32,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Les images Ubuntu récentes restreignent les espaces de noms utilisateur, ce qui empêche
-      # le bac à sable de Chromium de démarrer. On le rétablit plutôt que de le désactiver.
-      - name: Autoriser le bac à sable de Chromium (Linux)
-        if: runner.os == 'Linux'
-        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-
-      - name: Test de fumée de l'application compilée (Linux, écran virtuel)
-        if: runner.os == 'Linux'
-        run: xvfb-run --auto-servernum npx playwright test
-
       - name: Test de fumée de l'application compilée
-        if: runner.os != 'Linux'
         run: npx playwright test
