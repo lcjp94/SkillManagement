@@ -8,6 +8,8 @@ import { ProblemesAnalyse } from './Analyse'
 
 /** Services pour lesquels aucun essai avec une vraie clé n'a été fait par l'équipe du projet. */
 const NON_ESSAYES = new Set(['gemini', 'abacus', 'anthropic'])
+/** Services sans clé, jamais essayés avec le vrai outil installé. */
+const NON_ESSAYES_SANS_CLE = new Set(['freellmpool'])
 
 export function SectionIa() {
   const { donnees, erreur, chargement, recharger } = useDonnees('ia.etat')
@@ -30,6 +32,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
   const [adresse, setAdresse] = useState(depart?.adresse ?? '')
   const [modele, setModele] = useState(depart?.modele ?? '')
   const [cle, setCle] = useState('')
+  const [consentement, setConsentement] = useState(Boolean(depart?.consentement))
   const [test, setTest] = useState<{ ok: boolean; message: string } | null>(null)
   const [modeles, setModeles] = useState<string[]>([])
   const [erreur, setErreur] = useState<string | null>(null)
@@ -43,12 +46,14 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
     setAdresse(suivant?.adresse ?? '')
     setModele(suivant?.modele ?? '')
     setCle('')
+    // Un consentement déjà donné pour ce service est conservé ; pour un autre service, il faut le redonner
+    setConsentement(depart?.fournisseur === id && Boolean(depart.consentement))
     setTest(null)
     setModeles([])
     setErreur(null)
   }
 
-  const donneesFormulaire = () => ({ fournisseur, adresse: adresseLibre ? adresse : undefined, modele, ...(cle.trim() ? { cle } : {}) })
+  const donneesFormulaire = () => ({ fournisseur, adresse: adresseLibre ? adresse : undefined, modele, ...(cle.trim() ? { cle } : {}), ...(f?.consentement ? { consentement } : {}) })
 
   const verifier = async () => {
     setOccupe('test')
@@ -83,7 +88,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
   return (
     <div className="flex flex-col gap-4">
       <p className="text-doux">
-        Facultatif. Une IA peut rédiger un skill à votre place. Seul le texte de votre demande est envoyé au service que vous choisissez ; vos fichiers et vos projets ne le sont jamais. Tout le reste de l’application fonctionne sans.
+        Facultatif. Une IA peut rédiger un skill à votre place. Seul le texte de votre demande est envoyé au service, jamais vos fichiers ni vos projets. Avec un service que vous choisissez vous-même, il part chez lui ; certains services (signalés ci-dessous) le transmettent à d’autres. Tout le reste de l’application fonctionne sans.
       </p>
       {!etat.stockageSecurise && <Alerte ton="attention">Le stockage sécurisé de votre ordinateur n’est pas disponible : une clé ne peut pas être enregistrée. Les services sur cet ordinateur, sans clé, restent utilisables.</Alerte>}
       <Champ libelle="Service">
@@ -101,6 +106,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
       {f && (
         <>
           {f.note && <Alerte>{f.note}</Alerte>}
+          {NON_ESSAYES_SANS_CLE.has(f.id) && <Alerte ton="attention">Ce service n’a pas encore été essayé avec l’outil réel installé. Si « Vérifier » échoue alors que l’outil tourne, dites-le-nous.</Alerte>}
           {NON_ESSAYES.has(f.id) && <Alerte ton="attention">Ce service n’a pas encore été essayé avec une vraie clé. Si « Vérifier » échoue alors que votre clé est bonne, dites-le-nous.</Alerte>}
           {f.cle !== 'non' && (
             <div className="flex flex-col gap-1.5">
@@ -135,6 +141,12 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
               </>
             )}
           </Champ>
+          {f.consentement && (
+            <label className="flex items-start gap-2 rounded-xl bg-surface-2 p-3">
+              <input type="checkbox" className="mt-1 size-4 flex-none" checked={consentement} onChange={(e) => setConsentement(e.target.checked)} />
+              <span>{f.consentement}</span>
+            </label>
+          )}
           {test && (
             <Alerte ton={test.ok ? 'ok' : 'erreur'} annonce>
               {test.message}
@@ -149,7 +161,7 @@ function FormulaireIa({ etat, onChange }: { etat: IaEtat; onChange: () => void }
             <Btn onClick={verifier} occupe={occupe === 'test'}>
               Vérifier
             </Btn>
-            <Btn ton="primaire" onClick={() => enregistrer()} occupe={occupe === 'enregistrer'}>
+            <Btn ton="primaire" onClick={() => enregistrer()} occupe={occupe === 'enregistrer'} disabled={Boolean(f.consentement) && !consentement}>
               Enregistrer
             </Btn>
             {depart?.fournisseur === f.id && depart.cleEnregistree && <Btn onClick={() => enregistrer(true)}>Supprimer la clé</Btn>}

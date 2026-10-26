@@ -270,6 +270,8 @@ export const FournisseurVueSchema = z.object({
   cle: z.enum(['oui', 'non', 'selon']),
   lien: z.string(),
   note: z.string().optional(),
+  /** Texte à accepter avant d'enregistrer ce service (il envoie la demande à des tiers qu'il choisit). */
+  consentement: z.string().optional(),
   local: z.boolean()
 })
 export type FournisseurVue = z.infer<typeof FournisseurVueSchema>
@@ -277,7 +279,7 @@ export type FournisseurVue = z.infer<typeof FournisseurVueSchema>
 export const IaEtatSchema = z.object({
   fournisseurs: z.array(FournisseurVueSchema),
   /** Le choix enregistré. La clé n'est jamais renvoyée : seulement le fait qu'elle existe. */
-  choix: z.object({ fournisseur: z.string(), adresse: z.string(), modele: z.string(), cleEnregistree: z.boolean() }).nullable(),
+  choix: z.object({ fournisseur: z.string(), adresse: z.string(), modele: z.string(), cleEnregistree: z.boolean(), consentement: z.boolean() }).nullable(),
   /** Vrai si une rédaction est possible : un service choisi et, s'il en demande une, une clé enregistrée. */
   configure: z.boolean(),
   stockageSecurise: z.boolean()
@@ -288,7 +290,9 @@ export const IaReglageSchema = z.object({
   fournisseur: z.string().max(32),
   adresse: z.string().max(300).optional(),
   modele: z.string().max(200),
-  cle: z.string().max(4096).optional()
+  cle: z.string().max(4096).optional(),
+  /** Consentement donné pour un service qui envoie la demande à des tiers. */
+  consentement: z.boolean().optional()
 })
 
 export const RedactionVueSchema = z.object({

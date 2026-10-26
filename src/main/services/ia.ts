@@ -27,8 +27,9 @@ export async function etat(s: Services): Promise<IaEtat> {
   const cleEnregistree = fournisseur ? await s.coffre.a(fournisseur.id) : false
   return {
     fournisseurs: FOURNISSEURS,
-    choix: choix && fournisseur ? { fournisseur: fournisseur.id, adresse: choix.adresse ?? fournisseur.adresse, modele: choix.modele, cleEnregistree } : null,
-    configure: Boolean(choix && fournisseur && (fournisseur.cle === 'non' || fournisseur.cle === 'selon' || cleEnregistree)),
+    choix: choix && fournisseur ? { fournisseur: fournisseur.id, adresse: choix.adresse ?? fournisseur.adresse, modele: choix.modele, cleEnregistree, consentement: Boolean(choix.consentement) } : null,
+    // Un service qui envoie la demande à des tiers n'est utilisable qu'avec le consentement enregistré
+    configure: Boolean(choix && fournisseur && (fournisseur.cle === 'non' || fournisseur.cle === 'selon' || cleEnregistree) && (!fournisseur.consentement || choix.consentement)),
     stockageSecurise: s.coffreDisponible
   }
 }
@@ -36,9 +37,14 @@ export async function etat(s: Services): Promise<IaEtat> {
 export async function enregistrer(s: Services, e: Entree<'ia.enregistrer'>): Promise<IaEtat> {
   // La connexion est contrôlée (adresse, modèle, clé requise) avant de rien enregistrer
   const { connexion, fournisseur } = await construireConnexion(s, e)
+  const precedent = s.reglages.get().ia
+  const dejaConsenti = precedent?.fournisseur === fournisseur.id && Boolean(precedent.consentement)
+  if (fournisseur.consentement && !e.consentement && !dejaConsenti) {
+    throw new ErreurUtilisateur('Cochez la case de confirmation : ce service envoie votre demande à des tiers, vous devez en être d’accord pour l’utiliser.')
+  }
   if (e.supprimerCle) await s.coffre.supprimer(fournisseur.id)
   if (e.cle?.trim()) await s.coffre.enregistrer(fournisseur.id, e.cle)
-  await s.reglages.update((r) => ({ ...r, ia: { fournisseur: fournisseur.id, modele: connexion.modele, ...(adresseLibre(fournisseur) ? { adresse: connexion.adresse } : {}) } }))
+  await s.reglages.update((r) => ({ ...r, ia: { fournisseur: fournisseur.id, modele: connexion.modele, ...(adresseLibre(fournisseur) ? { adresse: connexion.adresse } : {}), ...(fournisseur.consentement ? { consentement: true } : {}) } }))
   return etat(s)
 }
 
@@ -50,8 +56,10 @@ export async function verifier(s: Services, e: Entree<'ia.tester'>): Promise<Sor
 export async function rediger(s: Services, e: Entree<'ia.rediger'>): Promise<Sortie<'ia.rediger'>> {
   const reglage = s.reglages.get().ia
   if (!reglage) throw new ErreurUtilisateur('Choisissez d’abord un service dans les Réglages.')
-  const { connexion } = await construireConnexion(s, reglage)
-  const metier = s.etat.get().profile?.metier
+  const { connexion, fournisseur } = await construireConnexion(s, reglage)
+  if (fournisseur.consentement && !reglage.consentement) throw new ErreurUtilisateur('Confirmez d’abord, dans les Réglages, que vous acceptez l’envoi de vos demandes à des tiers.')
+  // Un service qui choisit lui-même ses destinataires ne reçoit pas le métier de la personne : seulement ce qu'elle a tapé
+  const metier = fournisseur.consentement ? undefined : s.etat.get().profile?.metier
   const nomMetier = s.catalogue.profiles.natures.find((n) => n.id === metier)?.name
   const id = s.nouvelId()
   try {

@@ -39,8 +39,8 @@ const attendreFin = async (id: string) => {
 }
 
 describe('services proposés', () => {
-  it('les 10 services de CLAUDE.md § 12, avec adresse, modèle et lien', () => {
-    expect(FOURNISSEURS.map((f) => f.id)).toEqual(['openai', 'anthropic', 'gemini', 'abacus', 'mistral', 'openrouter', 'groq', 'ollama', 'lmstudio', 'autre'])
+  it('les 10 services de CLAUDE.md § 12, plus FreeLLMPool, avec adresse, modèle et lien', () => {
+    expect(FOURNISSEURS.map((f) => f.id)).toEqual(['openai', 'anthropic', 'gemini', 'abacus', 'mistral', 'openrouter', 'groq', 'ollama', 'freellmpool', 'lmstudio', 'autre'])
     for (const f of FOURNISSEURS.filter((x) => x.id !== 'autre')) expect(f.lien, f.id).toMatch(/^https:\/\//)
     for (const f of FOURNISSEURS.filter((x) => x.id !== 'autre' && !x.local)) expect(f.adresse, f.id).toMatch(/^https:\/\//)
     for (const f of FOURNISSEURS.filter((x) => x.local)) expect(f.adresse).toMatch(/^http:\/\/localhost:\d+\/v1$/)
@@ -61,8 +61,71 @@ describe('services proposés', () => {
   it('sans réglage, rien n\'est configuré : l\'IA est facultative', async () => {
     const e = await appel('ia.etat')
     expect(e).toMatchObject({ choix: null, configure: false, stockageSecurise: true })
-    expect(e.fournisseurs).toHaveLength(10)
+    expect(e.fournisseurs).toHaveLength(11)
     expect(await message(appel('ia.rediger', { sujet: 'faire un devis' }))).toMatch(/Choisissez d’abord un service/)
+  })
+})
+
+describe('FreeLLMPool : service gratuit qui choisit lui-même ses destinataires', () => {
+  const reglagePool = (url: string, plus: Partial<Entree<'ia.enregistrer'>> = {}) => ({ fournisseur: 'freellmpool', adresse: url, modele: 'auto', ...plus })
+
+  it('est proposé sur cet ordinateur, sans clé, avec un texte de consentement et une note', () => {
+    const f = FOURNISSEURS.find((x) => x.id === 'freellmpool')!
+    expect(f).toMatchObject({ adresse: 'http://localhost:8080/v1', modele: 'auto', cle: 'non', local: true, lien: 'https://github.com/0xzr/freellmpool' })
+    expect(f.consentement).toMatch(/tiers/)
+    expect(f.note).toMatch(/sans préavis/)
+  })
+
+  it('ne s’enregistre pas sans consentement explicite, et rien n’est écrit', async () => {
+    ia = await demarrerServeurIa()
+    expect(await message(appel('ia.enregistrer', reglagePool(ia.url)))).toMatch(/case de confirmation/)
+    expect(await message(appel('ia.enregistrer', reglagePool(ia.url, { consentement: false })))).toMatch(/case de confirmation/)
+    expect((await appel('ia.etat')).choix).toBeNull()
+  })
+
+  it('avec le consentement : enregistré, utilisable, et le consentement est mémorisé', async () => {
+    ia = await demarrerServeurIa()
+    const etat = await appel('ia.enregistrer', reglagePool(ia.url, { consentement: true }))
+    expect(etat).toMatchObject({ configure: true, choix: { fournisseur: 'freellmpool', consentement: true, cleEnregistree: false } })
+    // Un nouvel enregistrement du même service (autre modèle) n'oblige pas à redonner le consentement
+    expect((await appel('ia.enregistrer', reglagePool(ia.url, { modele: 'autre-modele' }))).choix).toMatchObject({ modele: 'autre-modele', consentement: true })
+  })
+
+  it('le consentement ne se transmet pas d’un service à un autre', async () => {
+    ia = await demarrerServeurIa()
+    await appel('ia.enregistrer', reglagePool(ia.url, { consentement: true }))
+    await appel('ia.enregistrer', { fournisseur: 'ollama', adresse: ia.url, modele: 'm' })
+    expect(await message(appel('ia.enregistrer', reglagePool(ia.url)))).toMatch(/case de confirmation/)
+  })
+
+  it('sans consentement enregistré (réglage ancien ou modifié à la main), le service n’est pas utilisable', async () => {
+    ia = await demarrerServeurIa()
+    await appel('ia.enregistrer', reglagePool(ia.url, { consentement: true }))
+    await b.s.reglages.update((r) => ({ ...r, ia: { ...r.ia!, consentement: false } }))
+    expect((await appel('ia.etat')).configure).toBe(false)
+    expect(await message(appel('ia.rediger', { sujet: 'relire un contrat' }))).toMatch(/Confirmez d’abord/)
+    expect(ia.requetes.filter((q) => q.chemin.endsWith('/chat/completions'))).toEqual([])
+  })
+
+  it('ne reçoit jamais le métier de la personne, seulement ce qu’elle a demandé', async () => {
+    await b.s.etat.update((e) => ({ ...e, profile: { metier: 'juriste', aisance: 'debutant', assistants: ['claude-code'], objectifs: [] } }))
+    ia = await demarrerServeurIa({ morceaux: ['x'] })
+    await appel('ia.enregistrer', reglagePool(ia.url, { consentement: true }))
+    const { id } = await appel('ia.rediger', { sujet: 'relire un contrat', besoin: 'Juridique' })
+    await attendreFin(id)
+    const corps = ia.requetes.find((q) => q.chemin.endsWith('/chat/completions'))!.corps
+    expect(corps).toContain('relire un contrat')
+    expect(corps).not.toContain('Métier de la personne')
+    // Avec un service que la personne choisit elle-même, le métier est transmis comme avant
+    await appel('ia.enregistrer', reglagePool(ia.url, { fournisseur: 'ollama' }))
+    const { id: id2 } = await appel('ia.rediger', { sujet: 'relire un contrat' })
+    await attendreFin(id2)
+    expect(ia.requetes.filter((q) => q.chemin.endsWith('/chat/completions')).at(-1)!.corps).toContain('Métier de la personne')
+  })
+
+  it('l’adresse du service local reste soumise à la garde', async () => {
+    expect(await message(appel('ia.enregistrer', reglagePool('http://169.254.169.254/v1', { consentement: true })))).toMatch(/réservée/)
+    expect(await message(appel('ia.enregistrer', reglagePool('http://exemple.org:8080/v1', { consentement: true })))).toMatch(/http/)
   })
 })
 

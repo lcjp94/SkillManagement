@@ -4,7 +4,7 @@ import { z } from 'zod'
 export const ReglagesStockesSchema = z.object({
   version: z.literal(1),
   theme: z.enum(['auto', 'clair', 'sombre']),
-  ia: z.object({ fournisseur: z.string(), adresse: z.string().optional(), modele: z.string() }).optional(),
+  ia: z.object({ fournisseur: z.string(), adresse: z.string().optional(), modele: z.string(), consentement: z.boolean().optional() }).optional(),
   /** Dépôts GitHub ajoutés par la personne, en plus des sources par défaut. */
   sources: z.array(z.string()).max(10).optional()
 })

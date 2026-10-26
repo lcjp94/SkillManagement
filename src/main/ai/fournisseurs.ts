@@ -12,6 +12,11 @@ export interface Fournisseur {
   lien: string
   /** Précision utile avant de saisir la clé (abonnement, adresse d'entreprise…). */
   note?: string
+  /**
+   * Service qui envoie la demande à des tiers qu'il choisit lui-même : un consentement explicite est exigé avant de
+   * l'enregistrer, et on ne lui envoie que le strict nécessaire (jamais le métier de la personne).
+   */
+  consentement?: string
   /** Service qui tourne sur cet ordinateur : l'adresse « http » locale est acceptée. */
   local: boolean
 }
@@ -25,6 +30,17 @@ export const FOURNISSEURS: Fournisseur[] = [
   { id: 'openrouter', libelle: 'OpenRouter', adresse: 'https://openrouter.ai/api/v1', modele: 'openai/gpt-4o-mini', cle: 'oui', lien: 'https://openrouter.ai/keys', local: false },
   { id: 'groq', libelle: 'Groq', adresse: 'https://api.groq.com/openai/v1', modele: 'llama-3.3-70b-versatile', cle: 'oui', lien: 'https://console.groq.com/keys', local: false },
   { id: 'ollama', libelle: 'Ollama (sur cet ordinateur)', adresse: 'http://localhost:11434/v1', modele: 'llama3.1', cle: 'non', lien: 'https://ollama.com/download', local: true },
+  {
+    id: 'freellmpool',
+    libelle: 'FreeLLMPool (gratuit, sur cet ordinateur)',
+    adresse: 'http://localhost:8080/v1',
+    modele: 'auto',
+    cle: 'non',
+    lien: 'https://github.com/0xzr/freellmpool',
+    local: true,
+    note: 'Outil libre à installer et à lancer sur votre ordinateur (Python demandé) : il répartit vos demandes entre des offres gratuites de plusieurs services. Les offres gratuites changent sans préavis et peuvent être limitées ou indisponibles.',
+    consentement: 'Je comprends que ma demande sera envoyée à des services gratuits tiers, choisis automatiquement par l’outil et pouvant la conserver ou la modérer. Je n’y mettrai rien de confidentiel.'
+  },
   { id: 'lmstudio', libelle: 'LM Studio (sur cet ordinateur)', adresse: 'http://localhost:1234/v1', modele: '', cle: 'non', lien: 'https://lmstudio.ai', local: true },
   { id: 'autre', libelle: 'Autre service compatible', adresse: '', modele: '', cle: 'selon', lien: '', local: false }
 ]

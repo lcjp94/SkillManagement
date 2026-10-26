@@ -29,8 +29,8 @@ test('IA facultative : réglage, vérification, rédaction en flux, analyse, enr
     await page.getByRole('link', { name: 'Réglages' }).click()
     await expect(page.getByRole('heading', { name: 'Rédaction de skills avec une IA' })).toBeVisible()
     const service = page.getByLabel('Service', { exact: true })
-    await expect(service.locator('option')).toHaveCount(11) // « Aucun » + les 10 services (#7)
-    for (const nom of ['ChatGPT (OpenAI)', 'Claude (Anthropic)', 'Gemini (Google)', 'Abacus.AI (RouteLLM)', 'Mistral', 'OpenRouter', 'Groq', 'Ollama (sur cet ordinateur)', 'LM Studio (sur cet ordinateur)', 'Autre service compatible']) {
+    await expect(service.locator('option')).toHaveCount(12) // « Aucun » + les 10 services (#7) + FreeLLMPool
+    for (const nom of ['ChatGPT (OpenAI)', 'Claude (Anthropic)', 'Gemini (Google)', 'Abacus.AI (RouteLLM)', 'Mistral', 'OpenRouter', 'Groq', 'Ollama (sur cet ordinateur)', 'FreeLLMPool (gratuit, sur cet ordinateur)', 'LM Studio (sur cet ordinateur)', 'Autre service compatible']) {
       await expect(service.locator('option', { hasText: nom })).toHaveCount(1)
     }
     await service.selectOption({ label: 'Gemini (Google)' })
@@ -121,6 +121,52 @@ test('IA : un skill rédigé avec un contenu dangereux est refusé et ne peut pa
     await expect(dialogue.getByText('Refusé', { exact: true })).toBeVisible()
     await expect(dialogue.getByText(/contenu dangereux : il ne peut pas être enregistré/)).toBeVisible()
     await expect(dialogue.getByRole('button', { name: 'Enregistrer le skill' })).toBeDisabled()
+  } finally {
+    await s.fermer()
+    await faux.fermer()
+  }
+})
+
+test('IA : FreeLLMPool exige un consentement explicite avant d’être enregistré, puis rédige', async () => {
+  const faux = await demarrerServeurIa({ morceaux: morceaux(skillRedige) })
+  const s = await lancer({ dossiers: 1 })
+  const { page } = s
+  try {
+    await demarrer(page)
+    await page.getByRole('button', { name: /Créer « Mon premier projet »/ }).click()
+    await page.getByRole('link', { name: 'Réglages' }).click()
+    await page.getByLabel('Service', { exact: true }).selectOption({ label: 'FreeLLMPool (gratuit, sur cet ordinateur)' })
+    await expect(page.getByText(/répartit vos demandes entre des offres gratuites/)).toBeVisible()
+    await expect(page.getByText(/pas encore été essayé avec l’outil réel/)).toBeVisible()
+    await expect(page.getByLabel(/Clé du service/)).toHaveCount(0) // aucune clé pour ce service
+    await page.getByLabel('Adresse du service').fill(faux.url)
+    await verifierEcran(page, 'Réglages – FreeLLMPool')
+    await auditerAccessibilite(page, 'Réglages – FreeLLMPool')
+
+    // Sans la case cochée, on ne peut pas enregistrer ; la vérification de connexion, elle, reste possible
+    const enregistrer = page.getByRole('button', { name: 'Enregistrer', exact: true })
+    await expect(enregistrer).toBeDisabled()
+    await page.getByRole('button', { name: 'Vérifier' }).click()
+    await expect(page.getByText(/Connexion réussie/)).toBeVisible()
+    await page.getByRole('link', { name: 'Bibliothèque' }).click()
+    await expect(page.getByRole('button', { name: /Rédiger un skill avec une IA/ })).toHaveCount(0)
+
+    await page.getByRole('link', { name: 'Réglages' }).click()
+    await page.getByLabel('Service', { exact: true }).selectOption({ label: 'FreeLLMPool (gratuit, sur cet ordinateur)' })
+    await page.getByLabel('Adresse du service').fill(faux.url)
+    await page.getByLabel(/envoyée à des services gratuits tiers/).check()
+    await expect(enregistrer).toBeEnabled()
+    await enregistrer.click()
+    await expect(page.getByText('Réglage enregistré.')).toBeVisible()
+
+    await page.getByRole('link', { name: 'Bibliothèque' }).click()
+    await page.getByRole('button', { name: /Rédiger un skill avec une IA/ }).click()
+    const dialogue = page.getByRole('dialog', { name: 'Rédiger un skill avec une IA' })
+    await dialogue.getByLabel('Que doit savoir faire ce skill ?').fill('relire un contrat')
+    await dialogue.getByRole('button', { name: 'Rédiger', exact: true }).click()
+    await expect(dialogue.getByLabel('Nom')).toHaveValue('Relire un contrat')
+    // Aucune clé n'est envoyée à ce service
+    expect(faux.requetes.every((r) => r.autorisation === undefined)).toBe(true)
   } finally {
     await s.fermer()
     await faux.fermer()
