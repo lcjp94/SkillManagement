@@ -51,12 +51,6 @@ async function arreterProcessus(dossier: string): Promise<void> {
   await lancerCommande('powershell.exe', ['-NoProfile', '-Command', script]).catch(() => undefined)
 }
 
-async function processusLances(dossier: string): Promise<number> {
-  const script = `(Get-Process | Where-Object { $_.Path -and $_.Path.StartsWith('${dossier.replaceAll("'", "''")}', [StringComparison]::OrdinalIgnoreCase) }).Count`
-  const { stdout } = await lancerCommande('powershell.exe', ['-NoProfile', '-Command', script])
-  return Number(stdout.trim() || '0')
-}
-
 async function desinstaller(dossier: string): Promise<void> {
   await arreterProcessus(dossier)
   const exe = join(dossier, 'Uninstall SkillManagement.exe')
@@ -226,6 +220,7 @@ test('mise à jour : vérifiée, téléchargée et installée seulement sur dema
     expect(await versionDuFichier(exe)).toBe('0.1.0')
     expect(readFileSync(join(dossier, 'resources', 'app-update.yml'), 'utf8')).toContain(url)
 
+    let avantRelance = 0
     const app = await lancerExe(exe, donnees)
     try {
       const page = await app.firstWindow()
@@ -251,6 +246,7 @@ test('mise à jour : vérifiée, téléchargée et installée seulement sur dema
       await page.getByRole('button', { name: 'Télécharger la mise à jour' }).click()
       await expect(page.getByText(/est téléchargée\. L’application va se fermer/)).toBeVisible({ timeout: 180_000 })
       expect(await versionDuFichier(exe)).toBe('0.1.0') // téléchargée, pas encore installée
+      avantRelance = Date.now()
       await page.getByRole('button', { name: 'Redémarrer et installer' }).click()
     } finally {
       await app.close().catch(() => undefined)
@@ -258,18 +254,13 @@ test('mise à jour : vérifiée, téléchargée et installée seulement sur dema
 
     // L'installation silencieuse remplace l'application puis la relance ; on attend la nouvelle version sur le disque
     await expect.poll(() => versionDuFichier(exe), { timeout: 180_000, intervals: [2000] }).toBe('0.1.1')
-    // Le relancement automatique est vérifié (il peut être lent sur un poste chargé), puis on arrête ce processus
-    try {
-      await expect.poll(() => processusLances(dossier), { timeout: 60_000, intervals: [1000] }).toBeGreaterThan(0)
-    } catch (e) {
-      // Sans relancement, dire ce qu'on voit : l'application a-t-elle démarré (dossier de données créé) puis quitté, ou jamais démarré ?
-      const journal = join(donneesParDefaut, 'logs', 'main.log')
-      const { stdout } = await lancerCommande('powershell.exe', ['-NoProfile', '-Command', 'Get-Process | Where-Object { $_.ProcessName -like "SkillManagement*" } | Measure-Object | Select-Object -ExpandProperty Count']).catch(() => ({ stdout: '?' }))
-      throw new Error(
-        `Aucun relancement après la mise à jour. Dossier de données par défaut créé : ${existsSync(donneesParDefaut)} ; journal : ${existsSync(journal) ? readFileSync(journal, 'utf8').split('\n').slice(-12).join(' / ') : 'absent'} ; processus « SkillManagement* » : ${stdout.trim()} ; session interactive : ${process.env['SESSIONNAME'] ?? 'inconnue'}`,
-        { cause: e }
-      )
-    }
+    // Le relancement automatique est prouvé par le journal du dossier de données par défaut, récrit à chaque démarrage
+    // (l'application relancée n'a pas nos arguments). Sur un poste sans bureau, elle peut démarrer puis s'arrêter aussitôt :
+    // le processus n'est donc pas un témoin fiable (vu sur le poste GitHub).
+    const journal = join(donneesParDefaut, 'logs', 'main.log')
+    await expect
+      .poll(() => (existsSync(journal) ? statSync(journal).mtimeMs : 0), { timeout: 60_000, intervals: [1000], message: 'L’application n’a pas été relancée après la mise à jour (journal non récrit)' })
+      .toBeGreaterThan(avantRelance)
     await arreterProcessus(dossier)
 
     // La nouvelle version démarre et retrouve les données de la personne
